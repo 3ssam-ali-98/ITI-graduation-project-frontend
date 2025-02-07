@@ -34,42 +34,6 @@ function Dashboard() {
 			</div>
 
 		</div>
-			{/* <div className="row">
-				<nav aria-label="Page navigation">
-					<ul className="pagination">
-
-						<li className="page-item">
-							<Link className="page-link" to={``}>1</Link>
-						</li>
-						<li className="page-item">
-							<Link className="page-link" to="">2</Link>
-						</li>
-						<li className="page-item active">
-							<Link className="page-link" to="">3</Link>
-						</li>
-						<li className="page-item">
-							<Link className="page-link" to="">4</Link>
-						</li>
-						<li className="page-item">
-							<Link className="page-link" to="">5</Link>
-						</li>
-					</ul>
-				</nav>
-			</div>
-			<div className="row">
-				{
-					moviesList.map((movie) => {
-						return (
-							<MovieCard
-								title={movie.title}
-								text={movie.overview}
-								src={imgBaseURL + movie.poster_path}
-								path={`/movie/${movie.id}`} />
-						)
-
-					})
-				}
-			</div> */}
 		</>
 	);
 }
