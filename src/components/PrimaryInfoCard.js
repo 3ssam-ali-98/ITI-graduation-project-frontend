@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import avatar from "../assets/man-with-laptop-light.png"
 
 
-function PrimaryInfoCard() {
+function PrimaryInfoCard({ ownerName, cardPercent, businessId }) {
 	return (
 
 		<div className="col-lg-8 mb-4 order-0">
@@ -10,12 +10,12 @@ function PrimaryInfoCard() {
 				<div className="d-flex align-items-end row">
 					<div className="col-sm-7">
 						<div className="card-body">
-							<h5 className="card-title text-primary">Congratulations Ahmed! 🎉</h5>
+							<h5 className="card-title text-primary">Congratulations { ownerName }! 🎉</h5>
 							<p className="mb-4">
-								You have done <span className="fw-bold">72%</span> more sales today. Check your business analytics
+								You have done <span className="fw-bold">{ cardPercent }%</span> more sales today. Check your business analytics
 							</p>
 
-							<Link to="/3/clients" className="btn btn-sm btn-outline-primary">View Clients</Link>
+							<Link to={`/${businessId}/clients`} className="btn btn-sm btn-outline-primary">View Clients</Link>
 						</div>
 					</div>
 					<div className="col-sm-5 text-center text-sm-left">

@@ -17,7 +17,7 @@ function Dashboard() {
 		<div className="container">
 
 			<div className="row mt-5">
-				<PrimaryInfoCard />
+				<PrimaryInfoCard ownerName="Ahmed" cardPercent="72" businessId="3" />
 					<div className="col-lg-4 col-md-4 order-1">
 						<div className="row">
 							<SecondryInfoCard cardHeader="Profit" cardNumber="12,628" cardPercentage="72.34" cardIcon={clockIcon} />
