@@ -4,7 +4,7 @@ import clockIcon from "../assets/clock-icon.png"
 import ccIcon from "../assets/cc.png"
 
 
-function DashboardCard4({ }) {
+function DashboardCard4({ cardNumber, cardPercent }) {
 	return (
 		<div className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
 			<div className="card">
@@ -15,12 +15,13 @@ function DashboardCard4({ }) {
 								<h5 className="text-nowrap mb-2">Year Report</h5>
 								<span className="badge text-bg-warning rounded-pill">Year 2024</span>
 							</div>
+
 							<div className="mt-sm-auto">
-								<small className="text-success text-nowrap fw-semibold"><i className="bx bx-chevron-up"></i> 68.2%</small>
-								<h3 className="mb-0">$84,686k</h3>
+								<small className="text-success text-nowrap fw-semibold"><i className="bx bx-chevron-up"></i> {cardPercent}%</small>
+								<h3 className="mb-0">${cardNumber}</h3>
 							</div>
 						</div>
-						
+
 						<div className="resize-triggers"><div className="expand-trigger"><div style={{width: "290px", height: "117px"}}></div></div><div className="contract-trigger"></div></div></div>
 				</div>
 			</div>

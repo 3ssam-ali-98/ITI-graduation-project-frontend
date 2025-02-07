@@ -1,20 +1,20 @@
 
 
-function DashboardCard2({ }) {
+function DashboardCard2({ totalOrders, totalSales, cardNumber1, cardNumber2, cardNumber3, cardNumber4 }) {
 	return (
 		<div className="col-md-6 col-lg-4 col-xl-4 mb-4">
 			<div className="card h-100">
 				<div className="card-header d-flex align-items-center justify-content-between pb-0">
 					<div className="card-title mb-0">
 						<h5 className="m-0 me-2">Statistics</h5>
-						<span className="badge badge-small text-bg-primary mb-2">42.82k Total Sales</span>
+						<span className="badge badge-small text-bg-primary mb-2">{ totalSales }k Total Sales</span>
 					</div>
 
 				</div>
 				<div className="card-body">
 					<div className="d-flex justify-content-between align-items-center mb-3" style={{position: "relative"}}>
 						<div className="d-flex flex-column align-items-center gap-1">
-							<h2 className="mb-2 text-primary">8,258</h2>
+							<h2 className="mb-2 text-primary">{ totalOrders }</h2>
 							<span>Total Orders</span>
 						</div>
 						
@@ -31,7 +31,7 @@ function DashboardCard2({ }) {
 									<small className="text-muted">Mobile, Earbuds, TV</small>
 								</div>
 								<div className="user-progress">
-									<small className="fw-semibold text-success">$82.5k</small>
+									<small className="fw-semibold text-success">${ cardNumber1 }k</small>
 								</div>
 							</div>
 						</li>
@@ -46,7 +46,7 @@ function DashboardCard2({ }) {
 									<small className="text-muted">T-shirt, Jeans, Shoes</small>
 								</div>
 								<div className="user-progress">
-									<small className="fw-semibold text-success">$23.8k</small>
+									<small className="fw-semibold text-success">${ cardNumber2 }k</small>
 								</div>
 							</div>
 						</li>
@@ -61,7 +61,7 @@ function DashboardCard2({ }) {
 									<small className="text-muted">Fine Art, Dining</small>
 								</div>
 								<div className="user-progress">
-									<small className="fw-semibold text-success">$849k</small>
+									<small className="fw-semibold text-success">${ cardNumber3 }k</small>
 								</div>
 							</div>
 						</li>
@@ -76,7 +76,7 @@ function DashboardCard2({ }) {
 									<small className="text-muted">Football, Cricket Kit</small>
 								</div>
 								<div className="user-progress">
-									<small className="fw-semibold text-success">$99</small>
+									<small className="fw-semibold text-success">${ cardNumber4 }</small>
 								</div>
 							</div>
 						</li>

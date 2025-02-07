@@ -4,7 +4,7 @@ import clockIcon from "../assets/clock-icon.png"
 import ccIcon from "../assets/cc.png"
 
 
-function DashboardCard3({ }) {
+function DashboardCard3({ cardNumber1, cardNumber2, cardNumber3, cardNumber4}) {
 	return (
 		<div className="col-md-6 col-lg-4 mb-4">
 			<div className="card">
@@ -23,7 +23,7 @@ function DashboardCard3({ }) {
 									<h6 className="mb-0 text-muted">Send money</h6>
 								</div>
 								<div className="user-progress d-flex align-items-center gap-1">
-									<h6 className="mb-0 text-success">+82.6</h6>
+									<h6 className="mb-0 text-success">+{cardNumber1}</h6>
 									<span className="text-muted">USD</span>
 								</div>
 							</div>
@@ -38,7 +38,7 @@ function DashboardCard3({ }) {
 									<h6 className="mb-0 text-muted">Mac'D</h6>
 								</div>
 								<div className="user-progress d-flex align-items-center gap-1">
-									<h6 className="mb-0 text-success">+270.69</h6>
+									<h6 className="mb-0 text-success">+{cardNumber2}</h6>
 									<span className="text-muted">USD</span>
 								</div>
 							</div>
@@ -53,7 +53,7 @@ function DashboardCard3({ }) {
 									<h6 className="mb-0 text-muted">Refund</h6>
 								</div>
 								<div className="user-progress d-flex align-items-center gap-1">
-									<h6 className="mb-0 text-success">+637.91</h6>
+									<h6 className="mb-0 text-success">+{cardNumber3}</h6>
 									<span className="text-muted">USD</span>
 								</div>
 							</div>
@@ -68,7 +68,7 @@ function DashboardCard3({ }) {
 									<h6 className="mb-0 text-muted">Expneses</h6>
 								</div>
 								<div className="user-progress d-flex align-items-center gap-1">
-									<h6 className="mb-0 text-danger">-838.71</h6>
+									<h6 className="mb-0 text-danger">-{cardNumber4}</h6>
 									<span className="text-muted">USD</span>
 								</div>
 							</div>
