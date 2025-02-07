@@ -9,7 +9,7 @@ import clockIcon from "../assets/clock-icon.png"
 import walletIcon from "../assets/wallet-icon.png"
 import DashboardCard2 from "../components/DashboardCard2";
 import DashboardCard3 from "../components/DashboardCard3";
-
+import DashboardCard4 from "../components/DashboardCard4";
 
 function Dashboard() {
 	return (
@@ -27,9 +27,10 @@ function Dashboard() {
 				
 			</div>
 
-			<div className="row">
+			<div className="row mb-5">
 				<DashboardCard2 />
 				<DashboardCard3 />
+				<DashboardCard4 />
 			</div>
 
 		</div>

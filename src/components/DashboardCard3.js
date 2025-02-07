@@ -6,7 +6,7 @@ import ccIcon from "../assets/cc.png"
 
 function DashboardCard3({ }) {
 	return (
-		<div className="col-md-6 col-lg-4 order-2 mb-4">
+		<div className="col-md-6 col-lg-4 mb-4">
 			<div className="card">
 				<div className="card-header d-flex align-items-center justify-content-between">
 					<h5 className="card-title m-0 me-2">Transactions</h5>

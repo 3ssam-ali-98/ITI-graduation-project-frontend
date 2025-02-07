@@ -2,7 +2,7 @@
 
 function DashboardCard2({ }) {
 	return (
-		<div className="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+		<div className="col-md-6 col-lg-4 col-xl-4 mb-4">
 			<div className="card h-100">
 				<div className="card-header d-flex align-items-center justify-content-between pb-0">
 					<div className="card-title mb-0">
