@@ -1,4 +1,5 @@
 
+
 import Navbar from './pages/Navbar';
 import Services from './pages/Services';
 import AboutUs from './pages/AboutUs';
@@ -8,6 +9,8 @@ import Register from './pages/regeister';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import LandingPage from './pages/landingpage';
 import Dashboard from './pages/dashoboard';
+import ClientTable from './pages/ClientTable';
+import CompanyDetails from './pages/ClientDetails';
 
 function App() {
   return (
@@ -20,6 +23,8 @@ function App() {
           <Route path="/about" component={AboutUs } exact />
           <Route path="/contact" component={ContactUs } exact />
           <Route path="/:bussiness_id/dashboard" component={Dashboard} exact />
+          <Route path="/:bussiness_id/clients" component={ClientTable} exact/>
+          <Route path="/:bussiness_id/clients/company-details/:id" component={CompanyDetails} exact/>
           <div className='d-flex container-fluid flex-wrap align-content-center justify-content-center'>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
@@ -27,7 +32,6 @@ function App() {
         </Switch>
       </BrowserRouter>
     </div>
-
   );
 }
 
