@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 function Tablec({ clients }) {
+  const bussiness_id = useParams().bussiness_id;
+
+  
+
+  
   return (
     <table className="table table-striped table-bordered" style={{ borderColor: "#4D869C", color: "#4D869C" }}>
       <thead style={{ backgroundColor: "#EEF7FF", color: "#4D869C" }}>
@@ -19,7 +25,7 @@ function Tablec({ clients }) {
             <td>{client.id}</td>
             <td>
               <Link
-                to={`/company-details/${client.id}`}
+                to={`/${bussiness_id}/clients/company-details/${client.id}`}
                 style={{ color: "#4D869C", textDecoration: "none" }}
                 onMouseEnter={(e) => (e.target.style.color = "#7AB2B2")}
                 onMouseLeave={(e) => (e.target.style.color = "#4D869C")}

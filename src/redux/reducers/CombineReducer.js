@@ -5,8 +5,8 @@ import { loggeduser } from "./loggeduserreducer";
 
 
 
-// export default combineReducers({
+export default combineReducers({
 
     user : loggeduser
 
-// })
+})
