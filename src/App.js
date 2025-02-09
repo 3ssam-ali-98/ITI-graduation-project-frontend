@@ -16,15 +16,15 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
+        <Navbar/>
         <Switch>
           <Route path="/" component={LandingPage } exact />
           <Route path="/services" component={Services } exact />
           <Route path="/about" component={AboutUs } exact />
           <Route path="/contact" component={ContactUs } exact />
-          <Route path="/:bussiness_id/dashboard" component={Dashboard} exact />
+          <Route path="/:bussiness_id/dashboard" component={Dashboard} exact/>
           <Route path="/:bussiness_id/clients" component={ClientTable} exact/>
-          <Route path="/:bussiness_id/clients/company-details/:id" component={CompanyDetails} exact/>
+          <Route path="/:bussiness_id/clients/client-details/:id" component={CompanyDetails} exact/>
           <div className='d-flex container-fluid flex-wrap align-content-center justify-content-center'>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>

@@ -1,5 +1,6 @@
 const INITIAL_VALUE = {
-    name: ''
+    name: '',
+    id: ''
 }
 
 export function loggeduser (state=INITIAL_VALUE, action){
@@ -10,6 +11,11 @@ export function loggeduser (state=INITIAL_VALUE, action){
                 ...state,
                 name: action.payload
             }
+        case "id":  
+        return{
+            ...state,
+            id: action.payload
+        }  
         default: 
             return state
     }

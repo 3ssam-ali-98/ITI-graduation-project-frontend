@@ -8,14 +8,18 @@ function Register(){
     
     const formRef = useRef();
     const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
+    
+    
 
     const [password, setPassword] = useState('')
     const [userdata, setUsrdat] = useState({
         name: '',
         password: '',
         email: '',
-        businessName: ''
+        businessName: '',
+        id:''
       });
+ 
     
     const [reppassword, setrepPassword] = useState('')
 
@@ -46,7 +50,8 @@ function Register(){
                 e.target.className = "form-control is-valid"
                 setUsrdat({
                     ...userdata,  
-                    email: value
+                    email: value,
+                    id: usersdata.length+1
                   })             
                 } 
                 else 
@@ -164,13 +169,13 @@ function Register(){
 
     }
     
-    const changepage = () => {
-        navigate.push('/login');
-    }
+    // const changepage = () => {
+    //     navigate.push('/login');
+    // }
 
     return(
         <>
-            <form className="needs-validation m-5" novalidate style={{width: '25%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
+            <form className="needs-validation m-5" noValidate style={{width: '25%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
                 <div className="" >
                     <h1 style={{textAlign: "center"}}>Register</h1>
                     
@@ -188,9 +193,9 @@ function Register(){
                     <Input idn="busname" inlabl="Business Name" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
 
 
-                    <div className='d-flex' style={{justifyContent: 'space-between'}}>
-                        <Button bclr="success" title1="Register" mar="15px" clck={valall}/>
-                        <Button bclr="primary" title1="login" clck={changepage}/>
+                    <div className='d-flex' style={{justifyContent: 'center'}}>
+                        <Button bclr="success" title1="Sign up" mar="15px" clck={valall}/>
+                        {/* <Button bclr="primary" title1="login" clck={changepage}/> */}
                     </div>
                 </div>
             </form>

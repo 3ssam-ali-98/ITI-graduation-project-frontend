@@ -25,7 +25,7 @@ function Tablec({ clients }) {
             <td>{client.id}</td>
             <td>
               <Link
-                to={`/${bussiness_id}/clients/company-details/${client.id}`}
+                to={`/${bussiness_id}/clients/client-details/${client.id}`}
                 style={{ color: "#4D869C", textDecoration: "none" }}
                 onMouseEnter={(e) => (e.target.style.color = "#7AB2B2")}
                 onMouseLeave={(e) => (e.target.style.color = "#4D869C")}

@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { useDispatch} from 'react-redux';
 import { loggedUser } from '../redux/actions/loggeduseraction';
+import { Userid } from '../redux/actions/loggeduseraction';
+import { Link } from 'react-router-dom';
 
 
 function Login(){
@@ -14,6 +16,7 @@ function Login(){
     const [password, setPassword] = useState('')
     const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
     const dispatch = useDispatch();
+    const [invalmsg, setInvalmsg] = useState("");
 
 
     const formRef = useRef();
@@ -29,24 +32,26 @@ function Login(){
         {
             if (mailrgx.test(value)) 
                 {  
-                e.target.className = "form-control is-valid"
+                e.target.className = "form-control"
                 setemail(value)
                 } 
                 else 
                 {
                 e.target.className = "form-control is-invalid"
+                setInvalmsg("please enter a valid mail")
                 }
         }
         else if (e.target.id === "password")
         {
             if (value.length >= 8) 
             {  
-            e.target.className = "form-control is-valid"
+            e.target.className = "form-control"
             setPassword(value)
             } 
             else 
             {
             e.target.className = "form-control is-invalid"
+            setInvalmsg("Please enter a valid password")
             }
         }  
     }
@@ -78,42 +83,44 @@ function Login(){
             {
             console.log('Login successful');
             dispatch(loggedUser(user.name))
+            dispatch(Userid(user.id))
             navigate.push('/');
             }
             else
             {
-                console.log('wrong password');
+                setInvalmsg("wrong password")
             }
 
         } 
         else 
         {
-            console.log('wrong email');
+            setInvalmsg("email not found")
         }
     }
 
-    const changepage = () => {
-        navigate.push('/register');
-      }
+    // const changepage = () => {
+    //     navigate.push('/register');
+    //   }
     
 
     return(
         <>
-            <form className="needs-validation m-5" noValidate style={{width: '15%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
+            <form className="needs-validation m-5" noValidate style={{width: '20%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
                 <div className="" >
                     <h1 style={{textAlign: "center"}}>Login</h1>
                     
-                    <Input idn="mail" inlabl="E-mail" intype="text" valmsg="looking good" invalmsg="please enter a valid email" blurfun={checkinp} chgfun={resetval}/>
+                    <Input idn="mail" inlabl="E-mail" intype="text" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
 
 
-                    <Input idn="password" inlabl="Password" intype={showPassword ? "text" : "password"} valmsg="looking good" invalmsg="Password cannot be less than 8 characters" blurfun={checkinp} chgfun={resetval}/>
-                    <div className='d-flex'>
+                    <Input idn="password" inlabl="Password" intype={showPassword ? "text" : "password"} invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
+                    <div className='d-flex mb-3'>
                         <input type='checkbox'  onChange={() => setShowPassword((prev) => !prev)}/>
                         <p className='mb-0' style={{marginLeft: "10px"}}>Show Password</p>
                     </div>
                     
                     <Button bclr="primary" title1="login" mar="15px" wid="100%" clck={valall} valmsg="success" invalmsg="Please check the errors"/>
-                    <Button bclr="success" title1="Register" wid="100%" clck={changepage}/>
+                    <p>Don't have an account? sign up <Link to={'/register'}>here</Link></p>
+                    {/* <Button bclr="success" title1="Register" wid="100%" clck={changepage}/> */}
                 </div>
             </form>
         </>

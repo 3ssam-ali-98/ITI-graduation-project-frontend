@@ -1,8 +1,8 @@
 // import MovieCard from "../components/MovieCardCP";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { Link } from "react-router-dom";
+// import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import PrimaryInfoCard from "../components/PrimaryInfoCard";
 import SecondryInfoCard from "../components/SecondryInfoCard";
 import clockIcon from "../assets/clock-icon.png"
@@ -10,14 +10,18 @@ import walletIcon from "../assets/wallet-icon.png"
 import DashboardCard2 from "../components/DashboardCard2";
 import DashboardCard3 from "../components/DashboardCard3";
 import DashboardCard4 from "../components/DashboardCard4";
+import { useSelector} from 'react-redux';
 
 function Dashboard() {
+
+	const name = useSelector((state) => state.user.name)
+    const id = useSelector((state) => state.user.id)
 	return (
 		<>
 		<div className="container">
 
 			<div className="row mt-5">
-				<PrimaryInfoCard ownerName="Ahmed" cardPercent="72" businessId="3" />
+				<PrimaryInfoCard ownerName={name} cardPercent="72" businessId={id} />
 					<div className="col-lg-4 col-md-4 order-1">
 						<div className="row">
 							<SecondryInfoCard cardHeader="Profit" cardNumber="12,628" cardPercentage="72.34" cardIcon={clockIcon} />
