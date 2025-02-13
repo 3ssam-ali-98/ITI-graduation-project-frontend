@@ -9,29 +9,59 @@ function ClientTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [clientsPerPage] = useState(10); 
+  const [filteredClients, setFilteredClients] = useState(clients); 
+  const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    axios
-      .get("https://retoolapi.dev/Qzn5ap/data") 
+
+    const fetchclients = () => {axios.get("https://retoolapi.dev/JjUxYA/clients") 
       .then((response) => {
         const totalClients = response.data;
         setClients(totalClients);
+        setFilteredClients(totalClients)
         setTotalPages(Math.ceil(totalClients.length / clientsPerPage)); 
         setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching clients:", err);
         setLoading(false);
-      });
-  }, []);
+      });}
+
+
+  useEffect(() => {
+      
+        fetchclients();
+    }, []);
+
+  const deleteclientHandler = (e) => {
+    axios.delete(`https://retoolapi.dev/JjUxYA/clients/${e}`)
+            .then((response) => {console.log('Product deleted:', response.data)
+              fetchclients();
+            })
+            .catch((err) => console.log('Error deleting product:', err))
+}
 
   const indexOfLastClient = currentPage * clientsPerPage;
   const indexOfFirstClient = indexOfLastClient - clientsPerPage;
-  const currentClients = clients.slice(indexOfFirstClient, indexOfLastClient);
+  const currentClients = filteredClients.slice(indexOfFirstClient, indexOfLastClient);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const searchfun = (e) => {
+    const query = e.target.value.toLowerCase(); 
+    setSearchQuery(query);
+
+
+    const filtered = clients.filter(client =>
+      client.name.toLowerCase().includes(query)
+    );
+
+
+    setFilteredClients(filtered);
+    setTotalPages(Math.ceil(filtered.length / clientsPerPage));
+   
+}
 
   return (
     <div className="container my-4">
@@ -42,7 +72,13 @@ function ClientTable() {
         <p style={{ fontSize: '1.2rem', color: '#7AB2B2' }}>Loading clients...</p>
       ) : (
         <>
-          <Tablec clients={currentClients} />
+          <div className="mb-3" > 
+            <form class="d-flex justify-content-center" role="search">
+                <input class="form-control me-2 w-25" type="search" placeholder="Search Clients" aria-label="Search" onChange={searchfun}/>
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+          </div>
+          <Tablec clients={currentClients} deleteclientHandler={deleteclientHandler} pagesnumber={currentPage} />
           <PaginationBtn
             currentPage={currentPage}
             totalPages={totalPages}

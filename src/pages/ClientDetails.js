@@ -4,13 +4,15 @@ import axios from "axios";
 import Dcard from "../components/Dcard"; 
 
 function CompanyDetails() {
+    const bussiness_id = useParams().bussiness_id;
     const { id } = useParams(); 
     const [company, setCompany] = useState(null); 
     const [loading, setLoading] = useState(true); 
+    
 
     useEffect(() => {
         axios
-            .get("https://retoolapi.dev/Qzn5ap/data") 
+            .get("https://retoolapi.dev/JjUxYA/clients") 
             .then((response) => {
                 const companyData = response.data.find((client) => client.id === parseInt(id)); 
                 setCompany(companyData); 
@@ -32,16 +34,18 @@ function CompanyDetails() {
 
     return (
         <div className="container my-5">
-            <Dcard
-                name={company["Column 1"]} 
-                company={company["Column 2"]} 
-                position={company["Column 3"]} 
-                phone={company["Column 4"]} 
-                email={company["Column 5"]} 
-                department={company["Column 6"]} 
-                posterPath={company["Column 7"]} 
-                location={company["Column 8"]} 
-                website={company["Column 9"]} 
+            <Dcard props={company}
+                name={company.name} 
+                // company={company["Column 2"]} 
+                // position={company["Column 3"]} 
+                phone={company.phone}
+                email={company.email} 
+                // department={company["Column 6"]} 
+                // posterPath={company["Column 7"]} 
+                location={company.address} 
+                notes={company.notes} 
+                // rating={company.rating}
+                // website={company["Column 9"]} 
             />
         </div>
     );

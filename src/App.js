@@ -11,6 +11,8 @@ import LandingPage from './pages/landingpage';
 import Dashboard from './pages/dashoboard';
 import ClientTable from './pages/ClientTable';
 import CompanyDetails from './pages/ClientDetails';
+import Addclient from './pages/addclient';
+import Editclient from './pages/editclient';
 
 function App() {
   return (
@@ -24,8 +26,10 @@ function App() {
           <Route path="/contact" component={ContactUs } exact />
           <Route path="/:bussiness_id/dashboard" component={Dashboard} exact/>
           <Route path="/:bussiness_id/clients" component={ClientTable} exact/>
-          <Route path="/:bussiness_id/clients/client-details/:id" component={CompanyDetails} exact/>
+          <Route path="/:bussiness_id/clients/:id" component={CompanyDetails} exact/>
           <div className='d-flex container-fluid flex-wrap align-content-center justify-content-center'>
+            <Route exact path="/:bussiness_id/add-client" component={Addclient}/>
+            <Route exact path="/:bussiness_id/edit-client/:id" component={Editclient}/>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
           </div>
