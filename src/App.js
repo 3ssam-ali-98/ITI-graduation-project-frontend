@@ -10,7 +10,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import LandingPage from './pages/landingpage';
 import Dashboard from './pages/dashoboard';
 import ClientTable from './pages/ClientTable';
-import CompanyDetails from './pages/ClientDetails';
+import ClientDetails from './pages/ClientDetails';
 import Addclient from './pages/addclient';
 import Editclient from './pages/editclient';
 
@@ -26,10 +26,10 @@ function App() {
           <Route path="/contact" component={ContactUs } exact />
           <Route path="/:bussiness_id/dashboard" component={Dashboard} exact/>
           <Route path="/:bussiness_id/clients" component={ClientTable} exact/>
-          <Route path="/:bussiness_id/clients/:id" component={CompanyDetails} exact/>
+          <Route path="/:bussiness_id/clients/:client_id" component={ClientDetails} exact/>
           <div className='d-flex container-fluid flex-wrap align-content-center justify-content-center'>
             <Route exact path="/:bussiness_id/add-client" component={Addclient}/>
-            <Route exact path="/:bussiness_id/edit-client/:id" component={Editclient}/>
+            <Route exact path="/:bussiness_id/edit-client/:client_id" component={Editclient}/>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
           </div>

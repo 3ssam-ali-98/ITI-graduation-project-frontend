@@ -8,11 +8,6 @@ function Navbar(){
     const dispatch = useDispatch();
     const name = useSelector((state) => state.user.name)
 
-
-
-
-
-
     return(
         <nav className="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
             <div className="container-fluid">

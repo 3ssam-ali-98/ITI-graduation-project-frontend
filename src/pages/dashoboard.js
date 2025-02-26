@@ -1,8 +1,3 @@
-// import MovieCard from "../components/MovieCardCP";
-// import { useEffect, useState } from "react";
-// import axios from "axios";
-// import { Link } from "react-router-dom";
-// import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import PrimaryInfoCard from "../components/PrimaryInfoCard";
 import SecondryInfoCard from "../components/SecondryInfoCard";
 import clockIcon from "../assets/clock-icon.png"
@@ -15,7 +10,8 @@ import { useSelector} from 'react-redux';
 function Dashboard() {
 
 	const name = useSelector((state) => state.user.name)
-    const id = useSelector((state) => state.user.id)
+	const id = useSelector((state) => state.user.id)
+
 	return (
 		<>
 		<div className="container">
