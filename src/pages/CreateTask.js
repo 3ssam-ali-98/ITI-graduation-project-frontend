@@ -7,20 +7,23 @@ import Input from "../components/inputs";
 function CreateTask() {
     const formRef = useRef();
     const history = useHistory();
-    const userId = useSelector((state) => state.user.id);
+    const businessId = useSelector((state) => state.user.user.id);
 
-    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || {};
-    const userTasks = Array.isArray(storedTasks[String(userId)]) ? storedTasks[String(userId)] : [];
-    const employees = JSON.parse(localStorage.getItem("usersdata"))?.filter(user => user.type === "Employee") || [];
+    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    // const userTasks = Array.isArray(storedTasks[String(businessId)]) ? storedTasks[String(businessId)] : [];
+    const userTasks = JSON.parse(localStorage.getItem("tasks"))?.filter(task => task.businessid === businessId) || [];
+    const employees = JSON.parse(localStorage.getItem("usersdata"))?.filter(user => user.type === "Employee" && user.id === businessId) || [];
 
-    const [tasks, setTasks] = useState(userTasks);
+
+    // const [tasks, setTasks] = useState(userTasks);
     const [task, setTask] = useState({
-        id: userTasks.length > 0 ? userTasks[userTasks.length - 1].id + 1 : 1,
+        id: userTasks.length +1,
         name: "",
         description: "",
         priority: "Low",
         assignedTo: employees.length > 0 ? employees[0].name : "",  
         deadline: "",
+        businessid: businessId,
         completed: false
     });
 
@@ -28,10 +31,10 @@ function CreateTask() {
     const [successMsg, setSuccessMsg] = useState(false);
 
     useEffect(() => {
-        if (!userId) {
+        if (!businessId) {
             setErrorMsg("No user logged in. Please log in first.");
         }
-    }, [userId]);
+    }, [businessId]);
 
     const validateInput = (e) => {
         const { value, id } = e.target;
@@ -54,7 +57,7 @@ function CreateTask() {
     };
 
     const submitTask = () => {
-        if (!userId) {
+        if (!businessId) {
             setErrorMsg("No user logged in. Please log in first.");
             return;
         }
@@ -72,25 +75,25 @@ function CreateTask() {
         }
 
         if (!hasError) {
-            const updatedTasks = [...tasks, task];
-            const updatedStorage = { ...storedTasks, [String(userId)]: updatedTasks };
-            localStorage.setItem("tasks", JSON.stringify(updatedStorage));
+            const updatedTasks = [...storedTasks, task];
+            // const Tasks = { ...storedTasks, [String(businessId)]: updatedTasks };
+            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
 
-            setTasks(updatedTasks);
-            setTask({
-                id: task.id + 1,
-                name: "",
-                description: "",
-                priority: "Low",
-                assignedTo: employees.length > 0 ? employees[0].name : "",
-                deadline: "",
-                completed: false
-            });
+            // setTasks(updatedTasks);
+            // setTask({
+            //     id: task.id + 1,
+            //     name: "",
+            //     description: "",
+            //     priority: "Low",
+            //     assignedTo: employees.length > 0 ? employees[0].name : "",
+            //     deadline: "",
+            //     completed: false
+            // });
 
             setSuccessMsg(true);
 
             setTimeout(() => {
-                history.push(`/${userId}/dashboard`);
+                history.push(`/${businessId}/dashboard`);
             }, 2000);
         } else {
             setSuccessMsg(false);
@@ -123,6 +126,7 @@ function CreateTask() {
                 <div className="mb-3">
                     <label className="form-label">Assigned To</label>
                     <select id="assignedTo" value={task.assignedTo} onChange={(e) => setTask({ ...task, assignedTo: e.target.value })} className="form-control">
+                        <option selected>No one assigned yet</option>
                         {employees.length > 0 ? (
                             employees.map((employee) => (
                                 <option key={employee.id} value={employee.name}>
@@ -132,6 +136,7 @@ function CreateTask() {
                         ) : (
                             <option>No employees available</option>
                         )}
+                        
                     </select>
                 </div>
 

@@ -16,6 +16,7 @@ function PrimaryInfoCard({ ownerName, cardPercent, businessId }) {
 							</p>
 
 							<Link to={`/${businessId}/clients`} className="btn btn-sm btn-outline-primary">View Clients</Link>
+							<Link to={`/${businessId}/create-task`} className="btn btn-sm btn-outline-primary">create task</Link>
 						</div>
 					</div>
 					<div className="col-sm-5 text-center text-sm-left">
