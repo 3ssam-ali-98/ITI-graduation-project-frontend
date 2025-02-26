@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Button from "../components/button"
 import Input from "../components/inputs"
 import { useState } from "react";
@@ -13,9 +13,12 @@ function AddEmployee(){
     const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
     const id = useSelector((state) => state.user.user.id)
     const businessname = useSelector((state) => state.user.user.businessName)
-
+    const navigate = useHistory();
     
-    
+    useEffect(() => {
+        if(!id)
+            navigate.push('/login')
+    }, [id])
 
     const [password, setPassword] = useState('')
     const [userdata, setUsrdat] = useState({
@@ -37,7 +40,7 @@ function AddEmployee(){
     const mobilergx = /^(010|011|012|015)\d{8}$/
     const [invalmsg, setInvalmsg] = useState("");
 
-    const navigate = useHistory();
+   
 
     
 
@@ -60,7 +63,7 @@ function AddEmployee(){
                 setUsrdat({
                     ...userdata,  
                     email: value,
-                    id: usersdata.length+1
+                    // id: usersdata.length+1
                   })             
                 } 
                 else 

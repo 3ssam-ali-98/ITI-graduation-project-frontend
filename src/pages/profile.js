@@ -30,6 +30,8 @@ function Profile(){
                         <p>mobile number : {user.mobilenumber}</p>
                         <hr></hr>
                         <p>business Name : {user.businessName}</p>
+                        <hr></hr>
+                        <p>Role : {user.type}</p>
                         {/* <Button bclr="primary" title1="Edit profile" mar="15px" clck={() => history.push(`/edit-profile`)}/> */}
                     </div>
                     
