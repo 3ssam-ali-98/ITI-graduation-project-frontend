@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { useDispatch} from 'react-redux';
 import { loggedUser } from '../redux/actions/loggeduseraction';
-import { Userid } from '../redux/actions/loggeduseraction';
+// import { Userid } from '../redux/actions/loggeduseraction';
 import { Link } from 'react-router-dom';
 
 
@@ -82,8 +82,8 @@ function Login(){
             if (user.password === password)
             {
             console.log('Login successful');
-            dispatch(loggedUser(user.name))
-            dispatch(Userid(user.id))
+            dispatch(loggedUser(user))
+            // dispatch(Userid(user.id))
             navigate.push('/');
             }
             else

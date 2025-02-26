@@ -3,7 +3,7 @@ export const loggedUser = (payload) => ({
     payload
   });
 
-  export const Userid = (payload) => ({
-    type: "id",
-    payload
-  });
+  // export const Userid = (payload) => ({
+  //   type: "id",
+  //   payload
+  // });
