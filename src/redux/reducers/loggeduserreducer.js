@@ -1,9 +1,13 @@
+
 const INITIAL_VALUE = {
+
     user: ''
     
+
 }
 
-export function loggeduser (state=INITIAL_VALUE, action){
+export function loggeduser(state = INITIAL_VALUE, action) {
+
 
     switch(action.type){
         case "user":
@@ -19,4 +23,5 @@ export function loggeduser (state=INITIAL_VALUE, action){
         default: 
             return state
     }
+
 }

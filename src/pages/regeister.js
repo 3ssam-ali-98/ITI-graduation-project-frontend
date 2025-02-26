@@ -4,6 +4,7 @@ import Input from "../components/inputs"
 import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 
+
 function Register(){
     
     const formRef = useRef();
@@ -223,6 +224,7 @@ function Register(){
     )
 
     
+
 
 }
 
