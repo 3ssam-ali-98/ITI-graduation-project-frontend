@@ -11,8 +11,11 @@ import ClientTable from './pages/ClientTable';
 import CompanyDetails from './pages/ClientDetails';
 import Addclient from './pages/addclient';
 import Editclient from './pages/editclient';
+import CreateTask from './pages/CreateTask';
+import EditTask from './pages/UpdateTask';
 import AddEmployee from './pages/addemployee'
 import Profile from './pages/profile';
+
 
 function App() {
   return (
@@ -26,6 +29,8 @@ function App() {
           <Route path="/contact" component={ContactUs } exact />
           <Route path="/profile" component={Profile } exact />
           <Route path="/:bussiness_id/dashboard" component={Dashboard} exact/>
+          <Route exact path="/:bussiness_id/create-task" component={CreateTask}/>
+          <Route exact path="/:bussiness_id/edit-task/:task_id" component={EditTask}/>
           <Route path="/:bussiness_id/clients" component={ClientTable} exact/>
           <Route path="/:bussiness_id/clients/:id" component={CompanyDetails} exact/>
           <div className='d-flex container-fluid flex-wrap align-content-center justify-content-center'>
