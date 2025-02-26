@@ -13,6 +13,7 @@ import ClientTable from './pages/ClientTable';
 import CompanyDetails from './pages/ClientDetails';
 import Addclient from './pages/addclient';
 import Editclient from './pages/editclient';
+import CreateTask from './pages/CreateTask';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/about" component={AboutUs } exact />
           <Route path="/contact" component={ContactUs } exact />
           <Route path="/:bussiness_id/dashboard" component={Dashboard} exact/>
+          <Route exact path="/:bussiness_id/create-task" component={CreateTask}/>
           <Route path="/:bussiness_id/clients" component={ClientTable} exact/>
           <Route path="/:bussiness_id/clients/:id" component={CompanyDetails} exact/>
           <div className='d-flex container-fluid flex-wrap align-content-center justify-content-center'>
