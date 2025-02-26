@@ -14,8 +14,8 @@ import { useSelector} from 'react-redux';
 
 function Dashboard() {
 
-	const name = useSelector((state) => state.user.name)
-    const id = useSelector((state) => state.user.id)
+	const name = useSelector((state) => state.user.user.name)
+    const id = useSelector((state) => state.user.user.id)
 	return (
 		<>
 		<div className="container">

@@ -3,11 +3,17 @@ import Button from "../components/button"
 import Input from "../components/inputs"
 import { useState } from "react";
 import { useHistory } from 'react-router-dom';
+import { useSelector} from 'react-redux';
 
-function Register(){
+
+
+function AddEmployee(){
     
     const formRef = useRef();
     const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
+    const id = useSelector((state) => state.user.user.id)
+    const businessname = useSelector((state) => state.user.user.businessName)
+
     
     
 
@@ -17,9 +23,9 @@ function Register(){
         password: '',
         email: '',
         mobilenumber:'',
-        businessName: '',
-        id:'',
-        type: 'Owner'
+        businessName: businessname,
+        id:id,
+        type: 'Employee'
       });
  
     
@@ -44,7 +50,7 @@ function Register(){
             if (user)
             {
                 e.target.className = "form-control is-invalid"
-                setInvalmsg("email already exists")
+                setInvalmsg("an emplyee with this email already exists")
             }
             else
             {
@@ -124,22 +130,22 @@ function Register(){
             setInvalmsg("Passwords don't match")
             }
         }
-        else if (e.target.id === "busname")
-        {
-            if (namergx.test(value))
-            {  
-            e.target.className = "form-control is-valid"
-            setUsrdat({
-                ...userdata,  
-                businessName: value
-              });
-            } 
-            else 
-            {
-            e.target.className = "form-control is-invalid"
-            setInvalmsg("please enter a valid Business name")
-            }
-        }    
+        // else if (e.target.id === "busname")
+        // {
+        //     if (namergx.test(value))
+        //     {  
+        //     e.target.className = "form-control is-valid"
+        //     setUsrdat({
+        //         ...userdata,  
+        //         businessName: value
+        //       });
+        //     } 
+        //     else 
+        //     {
+        //     e.target.className = "form-control is-invalid"
+        //     setInvalmsg("please enter a valid Business name")
+        //     }
+        // }    
     }
 
     const resetval = (e) => {
@@ -180,11 +186,15 @@ function Register(){
                 formHasError = true;
               }
         }
-        if (!formHasError) {
-            navigate.push('/login'); 
+        if (!formHasError) { 
             const newusersdata = [...usersdata, userdata] 
             localStorage.setItem('usersdata', JSON.stringify(newusersdata))  
-          }
+            for (let element of formElements) {
+
+                    const e = {target: element}
+
+                    e.target.value = ""
+          }}
 
     }
     
@@ -196,7 +206,7 @@ function Register(){
         <>
             <form className="needs-validation m-5" noValidate style={{width: '25%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
                 <div className="" >
-                    <h1 style={{textAlign: "center"}}>Register</h1>
+                    <h1 style={{textAlign: "center"}}>Add Employee</h1>
                     
                     <Input idn="name" inlabl="Name" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
                     
@@ -210,11 +220,8 @@ function Register(){
 
                     <Input idn="passwordcon" inlabl="Confirm Password" intype="password" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={storeval}/>
 
-                    <Input idn="busname" inlabl="Business Name" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
-
-
                     <div className='d-flex' style={{justifyContent: 'center'}}>
-                        <Button bclr="success" title1="Sign up" mar="15px" clck={valall}/>
+                        <Button bclr="success" title1="Add Employee" mar="15px" clck={valall}/>
                         {/* <Button bclr="primary" title1="login" clck={changepage}/> */}
                     </div>
                 </div>
@@ -226,4 +233,4 @@ function Register(){
 
 }
 
-export default Register
+export default AddEmployee
