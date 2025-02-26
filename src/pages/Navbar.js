@@ -2,19 +2,20 @@ import { useHistory } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
 import { useSelector, useDispatch} from 'react-redux';
 import { loggedUser } from '../redux/actions/loggeduseraction';
-import { Userid } from '../redux/actions/loggeduseraction';
+// import { Userid } from '../redux/actions/loggeduseraction';
 
 function Navbar() {
 
     const logout = () => {
         dispatch(loggedUser(''))
-        dispatch(Userid(''))
+        // dispatch(Userid(''))
     }
 
     const history = useHistory();
     const dispatch = useDispatch();
-    const name = useSelector((state) => state.user.name)
-    const id = useSelector((state) => state.user.id)
+    const name = useSelector((state) => state.user.user.name)
+    // console.log(useSelector((state) => state.user.user))
+    const id = useSelector((state) => state.user.user.id)
     return (
         <nav className="navbar navbar-expand-lg sticky-top" style={{ backgroundColor: "#4D869C" }}>
             <div className="container">
@@ -23,8 +24,10 @@ function Navbar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 {name && (<div className="d-flex flex-row">
-                    <button className="nav-link text-white" style={{marginRight : '10px'}}>Logged in as ({name})</button> 
-                    <button className="nav-link text-white" onClick={() => history.push(`/${id}/dashboard`)}>Buissness insights</button>
+                    <button className="nav-link text-white" onClick={() => history.push(`/profile`)} style={{marginRight : '10px'}}>Welcome back, {name.split(" ")[0]}</button> 
+                    <button className="nav-link text-white" style={{marginRight : '10px'}} onClick={() => history.push(`/${id}/dashboard`)}>Buissness insights</button>
+                    <button className="nav-link text-white" onClick={() => history.push(`${id}/add-employee`)} style={{marginRight : '10px'}}>Add employee</button>
+
                 </div>)}
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto">
