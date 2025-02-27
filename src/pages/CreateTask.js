@@ -10,18 +10,15 @@ function CreateTask() {
     const businessId = useSelector((state) => state.user.user.id);
 
     const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    // const userTasks = Array.isArray(storedTasks[String(businessId)]) ? storedTasks[String(businessId)] : [];
     const userTasks = JSON.parse(localStorage.getItem("tasks"))?.filter(task => task.businessid === businessId) || [];
     const employees = JSON.parse(localStorage.getItem("usersdata"))?.filter(user => user.type === "Employee" && user.id === businessId) || [];
 
-
-    // const [tasks, setTasks] = useState(userTasks);
     const [task, setTask] = useState({
-        id: userTasks.length +1,
+        id: userTasks.length + 1,
         name: "",
         description: "",
         priority: "Low",
-        assignedTo: employees.length > 0 ? employees[0].name : "",  
+        assignedTo: employees.length > 0 ? employees[0].name : "",
         deadline: "",
         businessid: businessId,
         completed: false
@@ -47,10 +44,14 @@ function CreateTask() {
         } else if (id === "description" && value.length < 10) {
             isValid = false;
             message = "Description must be at least 10 characters long.";
+        } else if (id === "deadline" && !value) {
+            isValid = false;
+            message = "Deadline is required.";
         }
 
         e.target.className = `form-control ${isValid ? "is-valid" : "is-invalid"}`;
         setErrorMsg(isValid ? "" : message);
+        
         if (isValid) setTask({ ...task, [id]: value });
 
         return isValid;
@@ -66,7 +67,7 @@ function CreateTask() {
         let hasError = false;
 
         for (let element of formElements) {
-            if (element.tagName === "INPUT" || element.tagName === "SELECT") {
+            if (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "TEXTAREA") {
                 const isValid = validateInput({ target: element });
                 if (!isValid) {
                     hasError = true;
@@ -76,20 +77,7 @@ function CreateTask() {
 
         if (!hasError) {
             const updatedTasks = [...storedTasks, task];
-            // const Tasks = { ...storedTasks, [String(businessId)]: updatedTasks };
             localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-
-            // setTasks(updatedTasks);
-            // setTask({
-            //     id: task.id + 1,
-            //     name: "",
-            //     description: "",
-            //     priority: "Low",
-            //     assignedTo: employees.length > 0 ? employees[0].name : "",
-            //     deadline: "",
-            //     completed: false
-            // });
-
             setSuccessMsg(true);
 
             setTimeout(() => {
@@ -112,7 +100,19 @@ function CreateTask() {
                 )}
 
                 <Input idn="name" inlabl="Task Name" intype="text" valmsg="Looking good" invalmsg={errorMsg} blurfun={validateInput} />
-                <Input idn="description" inlabl="Description" intype="text" valmsg="Looking good" invalmsg={errorMsg} blurfun={validateInput} />
+
+                <div className="mb-3">
+                    <label className="form-label">Description</label>
+                    <textarea
+                        id="description"
+                        className="form-control"
+                        rows="4"
+                        value={task.description}
+                        onChange={(e) => setTask({ ...task, description: e.target.value })}
+                        onBlur={validateInput}
+                    ></textarea>
+                    {errorMsg && <div className="invalid-feedback">{errorMsg}</div>}
+                </div>
 
                 <div className="mb-3">
                     <label className="form-label">Priority</label>
@@ -136,7 +136,6 @@ function CreateTask() {
                         ) : (
                             <option>No employees available</option>
                         )}
-                        
                     </select>
                 </div>
 
