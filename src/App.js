@@ -11,10 +11,12 @@ import ClientTable from './pages/ClientTable';
 import ClientDetails from './pages/ClientDetails';
 import Addclient from './pages/addclient';
 import Editclient from './pages/editclient';
+import TaskList from './pages/TaskList';
 import CreateTask from './pages/CreateTask';
 import EditTask from './pages/UpdateTask';
 import AddEmployee from './pages/addemployee'
 import Profile from './pages/profile';
+
 
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
           <Route path="/services" component={Services } exact />
           <Route path="/about" component={AboutUs } exact />
           <Route path="/contact" component={ContactUs } exact />
+          <Route path="/tasks" component={TaskList } exact />
           <Route path="/profile" component={Profile } exact />
           <Route path="/:bussiness_id/dashboard" component={Dashboard} exact/>
           <Route exact path="/:bussiness_id/create-task" component={CreateTask}/>
