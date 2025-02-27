@@ -1,22 +1,27 @@
+
 const INITIAL_VALUE = {
-    name: '',
-    id: ''
+
+    user: ''
+    
+
 }
 
-export function loggeduser (state=INITIAL_VALUE, action){
+export function loggeduser(state = INITIAL_VALUE, action) {
+
 
     switch(action.type){
         case "user":
             return{
                 ...state,
-                name: action.payload
+                user: action.payload
             }
-        case "id":  
-        return{
-            ...state,
-            id: action.payload
-        }  
+        // case "id":  
+        // return{
+        //     ...state,
+        //     id: action.payload
+        // }  
         default: 
             return state
     }
+
 }

@@ -6,20 +6,15 @@ import { useLocation } from 'react-router-dom';
 function Dcard(props) {
 
   const location = useLocation();
-    // console.log(location.state.index);
-    
-    // const { state } = location;
-    const index = location.state.index;
-    console.log(index)
-  
-  const bussiness_id = useParams().bussiness_id;
-  const { id } = useParams(); 
+  // const index = location.state.index;  
+  const { bussiness_id, client_id } = useParams();
   const history = useHistory();
 
-  const editDetails = (e, index) => {
-    history.push(`/${bussiness_id}/edit-client/${e}`,{
-        index:  index  });
-}
+  const build_client_update_url = (client_id) => {
+    history.push(`/${bussiness_id}/edit-client/${client_id}`);
+    // return `/${bussiness_id}/clients/${client_id}`;
+  }
+
   
   return (
     <div
@@ -90,22 +85,28 @@ function Dcard(props) {
           <p style={{ color: "#4D869C" }}>
             <strong>Location:</strong> {props.location}
           </p>
+
           {/* <p style={{ color: "#4D869C" }}>
             <strong>rating: </strong> {props.rating}
           </p> */}
-          {props.notes !== '-' &&(<p style={{ color: "#4D869C" }}>
-            <strong>notes:</strong>{" "}
-            <div
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: "#7AB2B2", textDecoration: "none" }}
-            >
-              {props.notes}
-            </div>
-          </p>)}
+
+          { props.notes !== '-' &&
+            ( 
+              <p style={{ color: "#4D869C" }}>
+                <strong>notes:</strong>{" "}
+                <span
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#7AB2B2", textDecoration: "none" }}
+                >
+                  {props.notes}
+                </span>
+              </p>
+            )
+          }
           <div className="d-flex justify-content-around align-items-center">
             <Link to={`/${bussiness_id}/clients/`} className="btn btn-danger" onClick={props.clcback}> Go back</Link>
-            <button className="btn btn-warning" onClick={() => editDetails(id, index)}> Edit client Data</button>
+            <button className="btn btn-warning" onClick={() => build_client_update_url(client_id)}> Edit client Data</button>
           </div>
         </div>
       </div>

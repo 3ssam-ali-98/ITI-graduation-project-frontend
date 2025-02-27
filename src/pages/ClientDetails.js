@@ -1,54 +1,48 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Dcard from "../components/Dcard"; 
+import Dcard from "../components/Dcard";
+import { useLocation } from "react-router-dom";
 
-function CompanyDetails() {
-    const bussiness_id = useParams().bussiness_id;
-    const { id } = useParams(); 
-    const [company, setCompany] = useState(null); 
-    const [loading, setLoading] = useState(true); 
-    
 
-    useEffect(() => {
-        axios
-            .get("https://retoolapi.dev/JjUxYA/clients") 
-            .then((response) => {
-                const companyData = response.data.find((client) => client.id === parseInt(id)); 
-                setCompany(companyData); 
-                setLoading(false); 
-            })
-            .catch((err) => {
-                console.error("Error fetching company details:", err);
-                setLoading(false); 
-            });
-    }, [id]); 
+function ClientDetails() {
+	const {bussiness_id, client_id} = useParams();
+	const [client, setClient] = useState(null);
+	const [loading, setLoading] = useState(true);
 
-    if (loading) {
-        return <div>Loading company details...</div>; 
-    }
 
-    if (!company) {
-        return <div>Company not found!</div>; 
-    }
+	useEffect(() => {
+		axios
+			.get(`https://retoolapi.dev/JjUxYA/clients/${client_id}`)
+			.then((response) => {
+				setClient(response.data);
+				setLoading(false);
+			})
+			.catch((err) => {
+				console.error("Error fetching client details:", err);
+				setLoading(false);
+			});
+	}, [client_id]);
 
-    return (
-        <div className="container my-5">
-            <Dcard props={company}
-                name={company.name} 
-                // company={company["Column 2"]} 
-                // position={company["Column 3"]} 
-                phone={company.phone}
-                email={company.email} 
-                // department={company["Column 6"]} 
-                // posterPath={company["Column 7"]} 
-                location={company.address} 
-                notes={company.notes} 
-                // rating={company.rating}
-                // website={company["Column 9"]} 
-            />
-        </div>
-    );
+	if (loading) {
+		return <div>Loading company details...</div>;
+	}
+
+	if (!client) {
+		return <div>Company not found!</div>;
+	}
+
+	return (
+		<div className="container my-5">
+			<Dcard props={client}
+				name={client.name}
+				phone={client.phone}
+				email={client.email}
+				location={client.address}
+				notes={client.notes}
+			/>
+		</div>
+	);
 }
 
-export default CompanyDetails;
+export default ClientDetails;
