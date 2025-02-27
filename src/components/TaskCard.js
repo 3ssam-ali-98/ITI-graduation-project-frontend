@@ -1,18 +1,33 @@
 import React from "react";
+import Button from '../components/button';
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+
+
 
 function TaskCard({ task }) {
+    const businessId = useSelector((state) => state.user.user.id);
+        const history = useHistory();
+    
+
     return (
         <div className="card shadow-sm border-0 rounded-3">
-            <button className="btn btn-sm btn-success">Add Task</button>
+
             <div className="card-body">
-                <h5 className="card-title fw-bold">{task.name}</h5>
-                <p className="card-text text-muted">{task.description}</p>
+                <h5 className="card-title fw-bold">Task name: {task.name}</h5>
+                <p className="card-text text-muted">Task description: {task.description}</p>
 
                 <div className="d-flex justify-content-between">
-                    <span className={`badge bg-${task.priority === "High" ? "danger" : task.priority === "Medium" ? "warning" : "success"}`}>
-                        {task.priority}
-                    </span>
-                    <span className="text-muted">{task.deadline}</span>
+                    <div>
+                        <strong>Priority: </strong>
+                        <span className={`badge bg-${task.priority === "High" ? "danger" : task.priority === "Medium" ? "warning" : "success"}`}>
+                            {task.priority}
+                        </span>
+                    </div>
+                    <div>
+                        <strong>Deadline: </strong>
+                        <span className="text-muted">{task.deadline}</span>
+                    </div>
                 </div>
 
                 <p className="card-text mt-2">
@@ -24,8 +39,8 @@ function TaskCard({ task }) {
                 </p>
 
                 <div className="d-flex justify-content-between">
-                    <button className="btn btn-sm btn-primary">Update</button>
-                    <button className="btn btn-sm btn-danger">Delete</button>
+                <Button bclr="primary" title1="Edit Task" mar="15px" clck={()=>history.push(`/${businessId}/edit-task/${task.id}`)} />
+                <Button bclr="danger" title1="Delete Task" mar="15px"/>
                 </div>
             </div>
         </div>

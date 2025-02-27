@@ -81,8 +81,8 @@ function CreateTask() {
             setSuccessMsg(true);
 
             setTimeout(() => {
-                history.push(`/${businessId}/dashboard`);
-            }, 2000);
+                history.push(`/${businessId}/tasks`);
+            }, 1000);
         } else {
             setSuccessMsg(false);
         }

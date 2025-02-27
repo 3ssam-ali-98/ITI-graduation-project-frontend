@@ -29,7 +29,7 @@ function App() {
           <Route path="/services" component={Services } exact />
           <Route path="/about" component={AboutUs } exact />
           <Route path="/contact" component={ContactUs } exact />
-          <Route path="/tasks" component={TaskList } exact />
+          <Route path="/:bussiness_id/tasks" component={TaskList } exact />
           <Route path="/profile" component={Profile } exact />
           <Route path="/:bussiness_id/dashboard" component={Dashboard} exact/>
           <Route exact path="/:bussiness_id/create-task" component={CreateTask}/>

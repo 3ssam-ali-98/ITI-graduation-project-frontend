@@ -14,9 +14,11 @@ function PrimaryInfoCard({ ownerName, cardPercent, businessId }) {
 							<p className="mb-4">
 								You have done <span className="fw-bold">{ cardPercent }%</span> more sales today. Check your business analytics
 							</p>
-
-							<Link to={`/${businessId}/clients`} className="btn btn-sm btn-outline-primary">View Clients</Link>
-							<Link to={`/${businessId}/create-task`} className="btn btn-sm btn-outline-primary">create task</Link>
+							<div className="gap-2 d-flex">
+								<Link to={`/${businessId}/clients`} className="btn btn-sm btn-outline-primary">Manage Clients</Link>
+								<Link to={`/${businessId}/tasks`} className="btn btn-sm btn-outline-primary">Manage Tasks</Link>
+								<Link to={`/${businessId}/tasks`} className="btn btn-sm btn-outline-primary">Manage Employees</Link>
+							</div>
 						</div>
 					</div>
 					<div className="col-sm-5 text-center text-sm-left">
