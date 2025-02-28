@@ -17,7 +17,7 @@ function PrimaryInfoCard({ ownerName, cardPercent, businessId }) {
 							<div className="gap-2 d-flex">
 								<Link to={`/${businessId}/clients`} className="btn btn-sm btn-outline-primary">Manage Clients</Link>
 								<Link to={`/${businessId}/tasks`} className="btn btn-sm btn-outline-primary">Manage Tasks</Link>
-								<Link to={`/${businessId}/tasks`} className="btn btn-sm btn-outline-primary">Manage Employees</Link>
+								<Link to={`/${businessId}/employees`} className="btn btn-sm btn-outline-primary">Manage Employees</Link>
 							</div>
 						</div>
 					</div>

@@ -6,8 +6,8 @@ import Modal from "./modal";
 import { useState } from "react";
 
 function Tablec({ clients, deleteclientHandler, pagesnumber }) {
-  const bussiness_id = useParams().bussiness_id;
-  const history = useHistory();
+  const { bussiness_id } = useParams();
+  // const history = useHistory();
   const [clientId, setProductId] = useState(null);
 
   const getclientid = (e) => {
@@ -19,7 +19,6 @@ function Tablec({ clients, deleteclientHandler, pagesnumber }) {
   }
 
   const moreDetails = (client_id) => {
-    // history.push(`/${bussiness_id}/clients/${e}`);//,{ index: index });
     return `/${bussiness_id}/clients/${client_id}`
   }
 
@@ -30,8 +29,6 @@ function Tablec({ clients, deleteclientHandler, pagesnumber }) {
           <tr className="align-text-center">
             <th className="text-center">ID</th>
             <th className="text-center">Name</th>
-            {/* <th>Company</th>
-            <th>Position</th> */}
             <th className="text-center">Phone</th>
             <th className="text-center">Email</th>
             <th className="text-center">Address</th>
@@ -47,20 +44,21 @@ function Tablec({ clients, deleteclientHandler, pagesnumber }) {
               <td>{client.email}</td>
               <td>{client.address}</td>
               <td className="d-flex justify-content-around align-items-center">
-                {/* <Button bclr={"primary"} title1={"more details"} clck={ () => moreDetails(client.id, pagesnumber > 1 ? `${pagesnumber - 1}${index}` : `${index}`)}/> */}
-                {/* <Button bclr={"danger"} title1={"remove client"}/> */}
-                <Modal modal_button_text={"Remove client"} modal_title={"Removal Confirmation"} modal_message={"Are you sure you want to remove this client, Data are delted permenantly"} modal_reject_text={"No, Canecl"} modal_accept_text={"Yes, I am sure"} modal_button={() => getclientid(client.id)} modal_accept={() => deletclient(clientId)} />
+                <Modal 
+                  modal_button_text={"Delete"} 
+                  modal_title={"Removal Confirmation"} 
+                  modal_message={"Are you sure you want to delete?"} 
+                  modal_reject_text={"No, Canecl"} 
+                  modal_accept_text={"Yes, I am sure"} 
+                  modal_button={() => getclientid(client.id)} 
+                  modal_accept={() => deletclient(clientId)} 
+                />
 
               </td>
-
-              {/* <td>{client["Column 5"] || "N/A"}</td> */}
             </tr>
           ))}
         </tbody>
       </table>
-      <div className="d-flex justify-content-center align-items-center mt-3">
-        <Button bclr={"success"} title1={"Add client"} clck={ () => history.push(`/${bussiness_id}/add-client`)} />
-      </div>   
     </>
   );
 }
