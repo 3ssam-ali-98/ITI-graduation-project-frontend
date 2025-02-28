@@ -12,6 +12,9 @@ function Dashboard() {
 
 	const name = useSelector((state) => state.user.user.name)
   const id = useSelector((state) => state.user.user.id)
+	const state = useSelector((state) => state);
+
+	console.log(state);
 
 	return (
 		<>

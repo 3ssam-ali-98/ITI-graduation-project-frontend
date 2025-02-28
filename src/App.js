@@ -16,6 +16,7 @@ import CreateTask from './pages/CreateTask';
 import EditTask from './pages/UpdateTask';
 import AddEmployee from './pages/addemployee'
 import Profile from './pages/profile';
+import EmployeesTable from './pages/EmployeesTable'; 
 
 
 
@@ -41,6 +42,7 @@ function App() {
             <Route exact path="/:bussiness_id/edit-client/:client_id" component={Editclient}/>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
+            <Route exact path="/:bussiness_id/employees" component={EmployeesTable} />
             <Route exact path="/:bussiness_id/add-employee" component={AddEmployee}/>
           </div>
         </Switch>

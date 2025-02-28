@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Tablec from "../components/Tablec";
 import PaginationBtn from "../components/PaginationBtn";
+import Button from "../components/button";
+import { useHistory } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+
 
 function ClientTable() {
   const [clients, setClients] = useState([]);
@@ -11,6 +15,8 @@ function ClientTable() {
   const [clientsPerPage] = useState(10);
   const [filteredClients, setFilteredClients] = useState(clients);
   const [searchQuery, setSearchQuery] = useState('');
+  const history = useHistory();
+  const { bussiness_id } = useParams();
 
 
   const fetchclients = () => {
@@ -81,6 +87,9 @@ function ClientTable() {
               <button class="btn btn-outline-primary" type="submit">Search</button>
             </form>
           </div>
+            <div className="d-flex justify-content-center align-items-center mt-3">
+              <Button bclr={"success"} title1={"Add Client"} clck={() => history.push(`/${bussiness_id}/add-client`)} />
+            </div>  
           <Tablec clients={currentClients} deleteclientHandler={deleteclientHandler} pagesnumber={currentPage} />
           <PaginationBtn
             currentPage={currentPage}
