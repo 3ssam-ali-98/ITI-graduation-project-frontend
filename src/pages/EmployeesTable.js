@@ -18,6 +18,8 @@ function EmployeesTable() {
 	const history = useHistory();
 	const { bussiness_id } = useParams();
 
+    // const employees = JSON.parse(localStorage.getItem("usersdata"))?.filter(user => user.type === "Employee" && user.id === businessId) || [];
+
 
 	const fetchEmployees = () => {
 		axios.get("https://retoolapi.dev/JjUxYA/clients")

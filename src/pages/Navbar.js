@@ -26,7 +26,7 @@ function Navbar() {
                 {name && (<div className="d-flex flex-row">
                     <button className="nav-link text-white" onClick={() => history.push(`/profile`)} style={{marginRight : '10px'}}>Welcome back, {name.split(" ")[0]}</button> 
                     <button className="nav-link text-white" style={{marginRight : '10px'}} onClick={() => history.push(`/${id}/dashboard`)}>Buissness insights</button>
-                    <button className="nav-link text-white" onClick={() => history.push(`/${id}/add-employee`)} style={{marginRight : '10px'}}>Add employee</button>
+                    {/* <button className="nav-link text-white" onClick={() => history.push(`/${id}/add-employee`)} style={{marginRight : '10px'}}>Add employee</button> */}
 
                 </div>)}
                 <div className="collapse navbar-collapse" id="navbarNav">
