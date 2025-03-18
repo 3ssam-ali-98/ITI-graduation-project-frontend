@@ -20,7 +20,7 @@ function ClientTable() {
 
 
   const fetchclients = () => {
-    axios.get("https://retoolapi.dev/JjUxYA/clients")
+    axios.get("http://127.0.0.1:8000/api/clients/")
     .then((response) => {
       const totalClients = response.data;
       setClients(totalClients);
