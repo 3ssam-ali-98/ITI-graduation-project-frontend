@@ -3,35 +3,38 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import Button from "../components/button";
 import Input from "../components/inputs";
+import axios from "axios";
 
 function EditTask() {
     const formRef = useRef();
     const history = useHistory();
-    const  taskId  = useParams().task_id;
-    // console.log(useParams().task_id)
-    // console.log(taskId)
+    const { task_id } = useParams();
     const businessId = useSelector((state) => state.user.user.id);
     
-    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    const employees = JSON.parse(localStorage.getItem("usersdata"))?.filter(user => user.type === "Employee" && user.id === businessId) || [];
-    
     const [task, setTask] = useState(null);
+    const [employees, setEmployees] = useState([]);
     const [errorMsg, setErrorMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState(false);
-    // const existingTask = storedTasks.filter(t => t.businessid == businessId);
-    // const existingTask = storedTasks.find(t => t.id == parseInt(taskId));
-
-    // console.log(storedTasks)
-    // console.log(existingTask)
 
     useEffect(() => {
-        const existingTask = storedTasks.find(t => t.id == parseInt(taskId) && t.businessid == businessId);
-        if (existingTask) {
-            setTask(existingTask);
-        } else {
-            setErrorMsg("Task not found.");
-        }
-    }, [taskId, businessId]);
+        axios.get(`http://127.0.0.1:8000/tasks/${task_id}/`)
+            .then(response => {
+                if (response.data.businessid === businessId) {
+                    setTask(response.data);
+                } else {
+                    setErrorMsg("Task not found or access denied.");
+                }
+            })
+            .catch(() => setErrorMsg("Error fetching task."));
+    }, [task_id, businessId]);
+
+    useEffect(() => {
+        axios.get("http://127.0.0.1:8000/users/")
+            .then(response => {
+                setEmployees(response.data.filter(user => user.type === "Employee" && user.id === businessId));
+            })
+            .catch(() => setErrorMsg("Error fetching employees."));
+    }, [businessId]);
 
     if (!task) {
         return <div className="text-center text-danger">{errorMsg || "Loading task..."}</div>;
@@ -59,10 +62,12 @@ function EditTask() {
     };
 
     const submitTask = () => {
-        const updatedTasks = storedTasks.map(t => (t.id === task.id ? task : t));
-        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-        setSuccessMsg(true);
-        setTimeout(() => history.push(`/${businessId}/tasks`), 1000);
+        axios.put(`http://127.0.0.1:8000/tasks/${task_id}/`, task)
+            .then(() => {
+                setSuccessMsg(true);
+                setTimeout(() => history.push(`/${businessId}/tasks`), 1000);
+            })
+            .catch(() => setErrorMsg("Error updating task."));
     };
 
     return (
@@ -103,6 +108,3 @@ function EditTask() {
 }
 
 export default EditTask;
-
-
-
