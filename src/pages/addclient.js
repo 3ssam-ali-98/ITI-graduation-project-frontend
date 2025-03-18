@@ -15,7 +15,8 @@ function Addclient(){
     
     const [clients, setclients] = useState([]);
     useEffect(() => {
-        axios.get("https://retoolapi.dev/JjUxYA/clients")
+        axios.get("http://127.0.0.1:8000/api/clients/")
+
         .then((responce) => setclients(responce.data))
         .catch((err) => console.log(err))
     }, [])
