@@ -3,6 +3,8 @@ import Button from "../components/button"
 import Input from "../components/inputs"
 import { useState } from "react";
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
+
 
 
 function Register(){
@@ -182,9 +184,21 @@ function Register(){
               }
         }
         if (!formHasError) {
-            navigate.push('/login'); 
-            const newusersdata = [...usersdata, userdata] 
-            localStorage.setItem('usersdata', JSON.stringify(newusersdata))  
+                axios.post('http://localhost:8000/users/', {
+                username: userdata.name,
+                email: userdata.email,
+                password: userdata.password,
+                // business: userdata.businessName,
+                mobile_phone: userdata.mobilenumber,
+                user_type: "Business Owner" 
+            })
+            .then(response => {
+                console.log('User registered successfully:', response.data);
+                navigate.push('/login');  
+            })
+            .catch(error => {
+                console.error('Registration failed:', error.response?.data || error.message);
+            });  
           }
 
     }

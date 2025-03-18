@@ -1,18 +1,21 @@
 import { useHistory } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
-import { useSelector, useDispatch} from 'react-redux';
-import { loggedUser } from '../redux/actions/loggeduseraction';
+import { useSelector} from 'react-redux';
+// import { loggedUser } from '../redux/actions/loggeduseraction';
 // import { Userid } from '../redux/actions/loggeduseraction';
 
 function Navbar() {
 
     const logout = () => {
-        dispatch(loggedUser(''))
+        // dispatch(loggedUser(''))
+        localStorage.removeItem("token");
+        // localStorage.removeItem("user_id");
+        localStorage.removeItem("user_type");
         // dispatch(Userid(''))
     }
 
     const history = useHistory();
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const name = useSelector((state) => state.user.user.name)
     // console.log(useSelector((state) => state.user.user))
     const id = useSelector((state) => state.user.user.id)
