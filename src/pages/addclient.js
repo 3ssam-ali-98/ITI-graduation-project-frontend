@@ -15,7 +15,7 @@ function Addclient(){
     
     const [clients, setclients] = useState([]);
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/api/clients/")
+        axios.get("http://127.0.0.1:8000/clients/")
 
         .then((responce) => setclients(responce.data))
         .catch((err) => console.log(err))
@@ -177,7 +177,14 @@ function Addclient(){
         }
         if (!formHasError) {
 
-            axios.post('https://retoolapi.dev/JjUxYA/clients', client)
+            axios.post('http://127.0.0.1:8000/clients/', 
+            {
+                name: client.name,
+                email: client.email,
+                phone: client.phone,
+
+            }
+            )
                 .then((response) => {console.log('Product added:', response.data)
                 setclients((prevProducts) => [...prevProducts, response.data]);
                 })
@@ -211,9 +218,9 @@ function Addclient(){
                     <Input idn="mail" inlabl="E-mail" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
 
 
-                    <Input idn="phone" inlabl="Phone number" intype="password" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} />
+                    <Input idn="phone" inlabl="Phone number" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} />
 
-                    <Input idn="address" inlabl="Address" intype="password" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} />
+                    <Input idn="address" inlabl="Address" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} />
 
                     <Input idn="notes" inlabl="Comments & notes" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
 
