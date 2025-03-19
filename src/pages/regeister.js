@@ -188,7 +188,7 @@ function Register(){
                 username: userdata.name,
                 email: userdata.email,
                 password: userdata.password,
-                // business: userdata.businessName,
+                business_name: userdata.businessName,
                 mobile_phone: userdata.mobilenumber,
                 user_type: "Business Owner" 
             })

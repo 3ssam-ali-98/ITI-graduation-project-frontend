@@ -1,7 +1,7 @@
 
 const INITIAL_VALUE = {
 
-    user: ''
+    user: { role: "", name: "", id: "" }
     
 
 }

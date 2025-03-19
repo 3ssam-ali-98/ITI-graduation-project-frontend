@@ -17,12 +17,14 @@ function EmployeesTable() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const history = useHistory();
 	const { bussiness_id } = useParams();
+	console.log(employees);
+	
 
     // const employees = JSON.parse(localStorage.getItem("usersdata"))?.filter(user => user.type === "Employee" && user.id === businessId) || [];
 
 
 	const fetchEmployees = () => {
-		axios.get("https://retoolapi.dev/JjUxYA/clients")
+		axios.get("http://127.0.0.1:8000/employees/")
 			.then((response) => {
 				const totalEmployees = response.data;
 				setEmployee(totalEmployees);
@@ -43,7 +45,7 @@ function EmployeesTable() {
 	}, []);
 
 	const deleteEmployeeHandler = (e) => {
-		axios.delete(`https://retoolapi.dev/JjUxYA/clients/${e}`)
+		axios.delete(`http://127.0.0.1:8000/employees/${e}/`)
 			.then((response) => {
 				fetchEmployees();
 			})
