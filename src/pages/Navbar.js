@@ -8,12 +8,16 @@ function Navbar() {
 
     const logout = () => {
         dispatch(loggedUser(''))
+        localStorage.removeItem("token");
+        // localStorage.removeItem("user_id");
+        localStorage.removeItem("role");
         // dispatch(Userid(''))
     }
 
     const history = useHistory();
     const dispatch = useDispatch();
     const name = useSelector((state) => state.user.user.name)
+    // const role = useSelector((state) => state.user.user.role)
     // console.log(useSelector((state) => state.user.user))
     const id = useSelector((state) => state.user.user.id)
     return (

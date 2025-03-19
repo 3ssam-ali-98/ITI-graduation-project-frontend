@@ -7,6 +7,8 @@ import { useDispatch} from 'react-redux';
 import { loggedUser } from '../redux/actions/loggeduseraction';
 // import { Userid } from '../redux/actions/loggeduseraction';
 import { Link } from 'react-router-dom';
+import axios from "axios";
+
 
 
 function Login(){
@@ -14,7 +16,7 @@ function Login(){
     const [showPassword, setShowPassword] = useState(false);
     const [email, setemail] = useState('')
     const [password, setPassword] = useState('')
-    const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
+    // const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
     const dispatch = useDispatch();
     const [invalmsg, setInvalmsg] = useState("");
 
@@ -76,27 +78,25 @@ function Login(){
             }
             checkinp(e)
         }
-        const user = usersdata.find(user => user.email === email);
-        if (user) 
-        {
-            if (user.password === password)
-            {
-            console.log('Login successful');
-            dispatch(loggedUser(user))
+        axios.post('http://localhost:8000/login/', {
+            email: email,
+            password: password,
+        })
+        .then(response => {
+            console.log('User registered successfully:', response.data);
+            dispatch(loggedUser({role : response.data.user_type, name : response.data.user_name, id : response.data.user_id}))
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("id", response.data.user_id);
+            localStorage.setItem("role", response.data.user_type);
+            navigate.push('/');  
+        })
+        .catch(error => {
+            console.error('login failed:', error.response?.data || error.message);
+        });
             // dispatch(Userid(user.id))
-            navigate.push('/');
-            }
-            else
-            {
-                setInvalmsg("wrong password")
-            }
-
-        } 
-        else 
-        {
-            setInvalmsg("email not found")
         }
-    }
+           
+    
 
     // const changepage = () => {
     //     navigate.push('/register');

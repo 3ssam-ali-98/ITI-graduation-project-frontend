@@ -4,6 +4,7 @@ import Input from "../components/inputs"
 import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { useSelector} from 'react-redux';
+import axios from "axios";
 
 
 
@@ -190,8 +191,21 @@ function AddEmployee(){
               }
         }
         if (!formHasError) { 
-            const newusersdata = [...usersdata, userdata] 
-            localStorage.setItem('usersdata', JSON.stringify(newusersdata))  
+            axios.post('http://localhost:8000/employees/', {
+                username: userdata.name,
+                email: userdata.email,
+                password: userdata.password,
+                business_name: userdata.businessName,
+                mobile_phone: userdata.mobilenumber,
+                user_type: "Employee" 
+            })
+            .then(response => {
+                console.log('User registered successfully:', response.data);
+                // navigate.push('/login');  
+            })
+            .catch(error => {
+                console.error('Registration failed:', error.response?.data || error.message);
+            }); 
             for (let element of formElements) {
 
                     const e = {target: element}
