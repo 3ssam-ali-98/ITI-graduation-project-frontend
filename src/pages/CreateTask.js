@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 import Button from "../components/button";
 import Input from "../components/inputs";
 
@@ -9,27 +10,30 @@ function CreateTask() {
     const history = useHistory();
     const businessId = useSelector((state) => state.user.user.id);
 
-    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    const userTasks = JSON.parse(localStorage.getItem("tasks"))?.filter(task => task.businessid === businessId) || [];
-    const employees = JSON.parse(localStorage.getItem("usersdata"))?.filter(user => user.type === "Employee" && user.id === businessId) || [];
-
     const [task, setTask] = useState({
-        id: userTasks.length + 1,
         name: "",
         description: "",
         priority: "Low",
-        assignedTo: employees.length > 0 ? employees[0].name : "",
+        assignedTo: "",
         deadline: "",
         businessid: businessId,
         completed: false
     });
-
+    
+    const [employees, setEmployees] = useState([]);
     const [errorMsg, setErrorMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState(false);
 
     useEffect(() => {
         if (!businessId) {
             setErrorMsg("No user logged in. Please log in first.");
+        } else {
+            axios.get("http://127.0.0.1:8000/users/")
+                .then(response => {
+                    const employeeList = response.data.filter(user => user.user_type === "Employee" && user.business === businessId);
+                    setEmployees(employeeList);
+                })
+                .catch(error => console.error("Error fetching employees:", error));
         }
     }, [businessId]);
 
@@ -63,29 +67,17 @@ function CreateTask() {
             return;
         }
 
-        const formElements = formRef.current.elements;
-        let hasError = false;
-
-        for (let element of formElements) {
-            if (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "TEXTAREA") {
-                const isValid = validateInput({ target: element });
-                if (!isValid) {
-                    hasError = true;
-                }
-            }
-        }
-
-        if (!hasError) {
-            const updatedTasks = [...storedTasks, task];
-            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-            setSuccessMsg(true);
-
-            setTimeout(() => {
-                history.push(`/${businessId}/tasks`);
-            }, 1000);
-        } else {
-            setSuccessMsg(false);
-        }
+        axios.post("http://127.0.0.1:8000/tasks/", task)
+            .then(() => {
+                setSuccessMsg(true);
+                setTimeout(() => {
+                    history.push(`/${businessId}/tasks`);
+                }, 1000);
+            })
+            .catch(error => {
+                console.error("Error creating task:", error);
+                setErrorMsg("Failed to create task. Please try again.");
+            });
     };
 
     return (
@@ -129,8 +121,8 @@ function CreateTask() {
                         <option selected>No one assigned yet</option>
                         {employees.length > 0 ? (
                             employees.map((employee) => (
-                                <option key={employee.id} value={employee.name}>
-                                    {employee.name}
+                                <option key={employee.id} value={employee.id}>
+                                    {employee.username}
                                 </option>
                             ))
                         ) : (

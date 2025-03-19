@@ -13,7 +13,7 @@ function EditClient() {
 	const [errorMsg, setErrorMsg] = useState("");
 
 	useEffect(() => {
-		axios.get(`https://retoolapi.dev/JjUxYA/clients/${client_id}`)
+		axios.get(`http://127.0.0.1:8000/clients/${client_id}/`)
 			.then(res => setClient(res.data))
 			.catch(err => console.error("Error fetching client:", err));
 	}, [client_id]);
@@ -37,11 +37,15 @@ function EditClient() {
 	};
 
 	const submitEdit = () => {
-		if (!Object.values(client).some(value => !value)) {
-			axios.patch(`https://retoolapi.dev/JjUxYA/clients/${client_id}`, client)
+		// if (!Object.values(client).some(value => !value)) {
+			axios.patch(`http://127.0.0.1:8000/clients/${client_id}/`,{
+				name: client.name,
+                email: client.email,
+                phone: client.phone,
+			})
 				.then(() => history.push(`/${bussiness_id}/clients`))
 				.catch(err => console.error("Error updating client:", err));
-		}
+		// }
 	};
 
 	return (

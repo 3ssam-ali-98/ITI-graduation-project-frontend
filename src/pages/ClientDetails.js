@@ -13,7 +13,7 @@ function ClientDetails() {
 
 	useEffect(() => {
 		axios
-			.get(`https://retoolapi.dev/JjUxYA/clients/${client_id}`)
+			.get(`http://127.0.0.1:8000/clients/${client_id}/`)
 			.then((response) => {
 				setClient(response.data);
 				setLoading(false);

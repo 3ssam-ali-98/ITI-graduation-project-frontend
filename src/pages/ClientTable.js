@@ -20,7 +20,7 @@ function ClientTable() {
 
 
   const fetchclients = () => {
-    axios.get("https://retoolapi.dev/JjUxYA/clients")
+    axios.get("http://127.0.0.1:8000/clients/")
     .then((response) => {
       const totalClients = response.data;
       setClients(totalClients);
@@ -41,7 +41,7 @@ function ClientTable() {
   }, []);
 
   const deleteclientHandler = (e) => {
-    axios.delete(`https://retoolapi.dev/JjUxYA/clients/${e}`)
+    axios.delete(`http://127.0.0.1:8000/clients/${e}/`)
       .then((response) => {
         console.log('Product deleted:', response.data)
         fetchclients();
