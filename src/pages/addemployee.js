@@ -15,6 +15,7 @@ function AddEmployee(){
     const id = useSelector((state) => state.user.user.id)
     const businessname = useSelector((state) => state.user.user.businessName)
     const navigate = useHistory();
+    const token = localStorage.getItem("token");
     
     useEffect(() => {
         if(!id)
@@ -198,6 +199,11 @@ function AddEmployee(){
                 business_name: userdata.businessName,
                 mobile_phone: userdata.mobilenumber,
                 user_type: "Employee" 
+            },
+            {
+                headers: {
+                    Authorization: `Token ${token}`
+                }
             })
             .then(response => {
                 console.log('User registered successfully:', response.data);

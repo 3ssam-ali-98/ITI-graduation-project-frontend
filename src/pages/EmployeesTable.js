@@ -18,13 +18,20 @@ function EmployeesTable() {
 	const history = useHistory();
 	const { bussiness_id } = useParams();
 	console.log(employees);
+	const token = localStorage.getItem("token");
+
 	
 
     // const employees = JSON.parse(localStorage.getItem("usersdata"))?.filter(user => user.type === "Employee" && user.id === businessId) || [];
 
 
 	const fetchEmployees = () => {
-		axios.get("http://127.0.0.1:8000/employees/")
+		axios.get("http://127.0.0.1:8000/employees/",
+		{
+			headers: {
+				Authorization: `Token ${token}`
+			}
+		})
 			.then((response) => {
 				const totalEmployees = response.data;
 				setEmployee(totalEmployees);
