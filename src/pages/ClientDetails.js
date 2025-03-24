@@ -9,11 +9,16 @@ function ClientDetails() {
 	const {bussiness_id, client_id} = useParams();
 	const [client, setClient] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const token = localStorage.getItem("token");
 
 
 	useEffect(() => {
 		axios
-			.get(`http://127.0.0.1:8000/clients/${client_id}/`)
+			.get(`http://127.0.0.1:8000/clients/${client_id}/`,{
+                headers: {
+                    Authorization: `Token ${token}`
+                }
+            })
 			.then((response) => {
 				setClient(response.data);
 				setLoading(false);
@@ -25,11 +30,11 @@ function ClientDetails() {
 	}, [client_id]);
 
 	if (loading) {
-		return <div>Loading company details...</div>;
+		return <div>Loading Client details...</div>;
 	}
 
 	if (!client) {
-		return <div>Company not found!</div>;
+		return <div>Client not found!</div>;
 	}
 
 	return (

@@ -7,15 +7,20 @@ import axios from "axios";
 import { useParams } from 'react-router-dom';
 
 
-function Addclient() {
+function Addclient(){
 	const formRef = useRef();
 	// const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
 	const bussiness_id = useParams().bussiness_id;
 	const history = useHistory();
+	const token = localStorage.getItem("token");
 
 	const [clients, setclients] = useState([]);
 	useEffect(() => {
-		axios.get("http://127.0.0.1:8000/clients/")
+		axios.get("http://127.0.0.1:8000/clients/", {
+			headers: {
+				Authorization: `Token ${token}`
+			}
+		})
 
 			.then((responce) => setclients(responce.data))
 			.catch((err) => console.log(err))
@@ -151,19 +156,25 @@ function Addclient() {
 		}
 		if (!formHasError) {
 
-			axios.post('http://127.0.0.1:8000/clients/',
-				{
-					name: client.name,
-					email: client.email,
-					phone: client.phone,
+            axios.post('http://127.0.0.1:8000/clients/', 
+            {
+                name: client.name,
+                email: client.email,
+                phone: client.phone,
+								address: client.address,
+								notes: client.notes,
 
-				}
-			)
-				.then((response) => {
-					console.log('Product added:', response.data)
-					setclients((prevProducts) => [...prevProducts, response.data]);
-				})
-				.catch((err) => console.log('Error adding product:', err))
+            },
+						{
+							headers: {
+								Authorization: `Token ${token}`
+							}
+						}
+            )
+                .then((response) => {console.log('Product added:', response.data)
+                setclients((prevProducts) => [...prevProducts, response.data]);
+                })
+                .catch((err) => console.log('Error adding product:', err))
 
 			for (let element of formElements) {
 

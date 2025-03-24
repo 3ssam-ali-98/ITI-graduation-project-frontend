@@ -13,9 +13,14 @@ function Profile(){
     const [user, setUser] = useState({});
     console.log(user)
     const id = useSelector((state) => state.user.user.id)
+    const token = localStorage.getItem("token");
     useEffect(() => {
             axios
-                .get(`http://127.0.0.1:8000/users/${id}/`)
+                .get(`http://127.0.0.1:8000/users/${id}/`, {
+                    headers: {
+                        Authorization: `Token ${token}`
+                    }
+                })
                 .then((response) => {
                     setUser(response.data);
                 })
@@ -33,18 +38,27 @@ function Profile(){
                     <div>
                         <h1>User info</h1>
                         <hr></hr>
-                        <p>Name : {user.username}</p>
+                        <div className="d-flex flex-row gap-5">
+                            <p>First Name : {user.first_name}</p>
+                            <p>Last Name : {user.last_name}</p>
+                        </div>
+                        <hr></hr>
+                        <p>Username : {user.username}</p>
                         <hr></hr>
                         <p>E-mail : {user.email}</p>
                         <hr></hr>
-                        <p>Password : {user.password}</p>
+                        <p>Password : ********</p>
                         <hr></hr>
                         <p>mobile number : {user.mobile_phone}</p>
                         <hr></hr>
                         <p>business Name : {user.business_name}</p>
                         <hr></hr>
                         <p>Role : {user.user_type}</p>
-                        <Button bclr="primary" title1="Edit profile" mar="15px" clck={() => history.push(`/edit-profile`)}/>
+                        <div className="d-flex flex-row gap-5">
+                            <Button bclr="primary" title1="Change Username" mar="15px" clck={() => history.push(`/edit-profile`)}/>
+                            <Button bclr="warning" title1="Change Mobile Number" mar="15px" clck={() => history.push(`/edit-profile`)}/>
+                            <Button bclr="danger" title1="Change Password" mar="15px" clck={() => history.push(`/edit-profile`)}/>
+                        </div>        
                     </div>
                     
                 </div>

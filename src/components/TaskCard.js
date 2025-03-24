@@ -35,7 +35,7 @@ function TaskCard({ task }) {
                     </div>
                 </div>
                 <p className="card-text mt-2">
-                    <strong>Assigned To:</strong> {task.assignedTo}
+                    <strong>Assigned To:</strong> {task.assigned_employee}
                 </p>
                 <p className={`card-text fw-bold ${task.completed ? "text-success" : "text-danger"}`}>
                     {task.completed ? "✅ Completed" : "⏳ Pending"}
