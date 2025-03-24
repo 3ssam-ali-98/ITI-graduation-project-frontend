@@ -10,6 +10,8 @@ function EditTask() {
     const history = useHistory();
     const { task_id } = useParams();
     const businessId = useSelector((state) => state.user.user.id);
+	const token = localStorage.getItem("token");
+
     
     const [task, setTask] = useState(null);
     const [employees, setEmployees] = useState([]);
@@ -17,24 +19,28 @@ function EditTask() {
     const [successMsg, setSuccessMsg] = useState(false);
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/tasks/${task_id}/`)
+        axios.get(`http://127.0.0.1:8000/tasks/${task_id}/`,{
+            headers: {
+                Authorization: `Token ${token}`
+            }
+        })
             .then(response => {
-                if (response.data.businessid === businessId) {
                     setTask(response.data);
-                } else {
-                    setErrorMsg("Task not found or access denied.");
-                }
             })
             .catch(() => setErrorMsg("Error fetching task."));
     }, [task_id, businessId]);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/users/")
+        axios.get("http://127.0.0.1:8000/employees/",{
+            headers: {
+                Authorization: `Token ${token}`
+            }
+        })
             .then(response => {
-                setEmployees(response.data.filter(user => user.type === "Employee" && user.id === businessId));
+                setEmployees(response.data);
             })
             .catch(() => setErrorMsg("Error fetching employees."));
-    }, [businessId]);
+    }, [task_id]);
 
     if (!task) {
         return <div className="text-center text-danger">{errorMsg || "Loading task..."}</div>;
@@ -62,7 +68,11 @@ function EditTask() {
     };
 
     const submitTask = () => {
-        axios.put(`http://127.0.0.1:8000/tasks/${task_id}/`, task)
+        axios.put(`http://127.0.0.1:8000/tasks/${task_id}/`, task,{
+            headers: {
+                Authorization: `Token ${token}`
+            }
+        })
             .then(() => {
                 setSuccessMsg(true);
                 setTimeout(() => history.push(`/${businessId}/tasks`), 1000);
@@ -91,10 +101,10 @@ function EditTask() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Assigned To</label>
-                    <select id="assignedTo" value={task.assignedTo} onChange={(e) => setTask({ ...task, assignedTo: e.target.value })} className="form-control">
+                    <select id="assignedTo" value={task.assigned_to} onChange={(e) => setTask({ ...task, assigned_to: e.target.value })} className="form-control">
                         <option selected>No one assigned yet</option>
                         {employees.map((employee) => (
-                            <option key={employee.id} value={employee.name}>{employee.name}</option>
+                            <option key={employee.id} value={employee.id}>{employee.first_name} {employee.last_name}</option>
                         ))}
                     </select>
                 </div>

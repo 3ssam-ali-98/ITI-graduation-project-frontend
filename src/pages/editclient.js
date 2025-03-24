@@ -11,9 +11,15 @@ function EditClient() {
 	const history = useHistory();
 	const [client, setClient] = useState({ name: '', email: '', phone: '', address: '', notes: '' });
 	const [errorMsg, setErrorMsg] = useState("");
+	const token = localStorage.getItem("token");
+
 
 	useEffect(() => {
-		axios.get(`http://127.0.0.1:8000/clients/${client_id}/`)
+		axios.get(`http://127.0.0.1:8000/clients/${client_id}/`,{
+			headers: {
+				Authorization: `Token ${token}`
+			}
+		})
 			.then(res => setClient(res.data))
 			.catch(err => console.error("Error fetching client:", err));
 	}, [client_id]);
@@ -42,7 +48,11 @@ function EditClient() {
 				name: client.name,
                 email: client.email,
                 phone: client.phone,
-			})
+			},{
+                headers: {
+                    Authorization: `Token ${token}`
+                }
+            })
 				.then(() => history.push(`/${bussiness_id}/clients`))
 				.catch(err => console.error("Error updating client:", err));
 		// }

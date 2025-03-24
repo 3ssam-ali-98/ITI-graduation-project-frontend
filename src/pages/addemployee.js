@@ -24,7 +24,9 @@ function AddEmployee(){
 
     const [password, setPassword] = useState('')
     const [userdata, setUsrdat] = useState({
-        name: '',
+        irst_name: '',
+        last_name: '',
+        username: '',
         password: '',
         email: '',
         mobilenumber:'',
@@ -73,6 +75,38 @@ function AddEmployee(){
                 e.target.className = "form-control is-invalid"
                 setInvalmsg("please enter a valid email")
                 }
+            }
+        }
+        else if (e.target.id === "first_name")
+        {
+            if (namergx.test(value)) 
+            {  
+            e.target.className = "form-control is-valid"
+            setUsrdat({
+                ...userdata,  
+                first_name: value
+                });
+            } 
+            else 
+            {
+            e.target.className = "form-control is-invalid"
+            setInvalmsg("please enter a valid name")
+            }
+        }
+        else if (e.target.id === "last_name")
+        {
+            if (namergx.test(value)) 
+            {  
+            e.target.className = "form-control is-valid"
+            setUsrdat({
+                ...userdata,  
+                last_name: value
+                });
+            } 
+            else 
+            {
+            e.target.className = "form-control is-invalid"
+            setInvalmsg("please enter a valid name")
             }
         }
         else if (e.target.id === "name")
@@ -193,10 +227,11 @@ function AddEmployee(){
         }
         if (!formHasError) { 
             axios.post('http://localhost:8000/employees/', {
-                username: userdata.name,
+                first_name: userdata.first_name,
+                last_name: userdata.last_name,
+                username: userdata.username,
                 email: userdata.email,
                 password: userdata.password,
-                business_name: userdata.businessName,
                 mobile_phone: userdata.mobilenumber,
                 user_type: "Employee" 
             },
@@ -230,8 +265,17 @@ function AddEmployee(){
             <form className="needs-validation m-5" noValidate style={{width: '25%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
                 <div className="" >
                     <h1 style={{textAlign: "center"}}>Add Employee</h1>
+
+                    <div className='d-flex justify-content-between gap-5'>
+                        <div>
+                            <Input idn="first_name" inlabl="First name" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
+                        </div>
+                        <div>
+                            <Input idn="last_name" inlabl="Last name" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
+                        </div>
+                    </div>
                     
-                    <Input idn="name" inlabl="Name" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
+                    <Input idn="name" inlabl="Username" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
                     
 
 
