@@ -17,10 +17,15 @@ function ClientTable() {
   const [searchQuery, setSearchQuery] = useState('');
   const history = useHistory();
   const { bussiness_id } = useParams();
+  const token = localStorage.getItem("token");
 
 
   const fetchclients = () => {
-    axios.get("http://127.0.0.1:8000/clients/")
+    axios.get("http://127.0.0.1:8000/clients/",{
+      headers: {
+          Authorization: `Token ${token}`
+      }
+  })
     .then((response) => {
       const totalClients = response.data;
       setClients(totalClients);
@@ -41,7 +46,11 @@ function ClientTable() {
   }, []);
 
   const deleteclientHandler = (e) => {
-    axios.delete(`http://127.0.0.1:8000/clients/${e}/`)
+    axios.delete(`http://127.0.0.1:8000/clients/${e}/`,{
+      headers: {
+          Authorization: `Token ${token}`
+      }
+  })
       .then((response) => {
         console.log('Product deleted:', response.data)
         fetchclients();

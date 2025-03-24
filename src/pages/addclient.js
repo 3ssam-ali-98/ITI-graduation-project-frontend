@@ -12,10 +12,15 @@ function Addclient(){
     // const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
     const bussiness_id = useParams().bussiness_id;
     const history = useHistory();
+    const token = localStorage.getItem("token");
     
     const [clients, setclients] = useState([]);
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/clients/")
+        axios.get("http://127.0.0.1:8000/clients/",{
+            headers: {
+                Authorization: `Token ${token}`
+            }
+        })
 
         .then((responce) => setclients(responce.data))
         .catch((err) => console.log(err))
@@ -182,7 +187,14 @@ function Addclient(){
                 name: client.name,
                 email: client.email,
                 phone: client.phone,
+                address: client.address,
+                notes: client.notes,
 
+            },
+            {
+                headers: {
+                    Authorization: `Token ${token}`
+                }
             }
             )
                 .then((response) => {console.log('Product added:', response.data)

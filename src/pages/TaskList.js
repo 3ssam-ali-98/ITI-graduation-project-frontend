@@ -8,10 +8,15 @@ import axios from "axios";
 function TaskList() {
     // const businessId = useSelector((state) => state.user.user.id);
     const history = useHistory();
+	const token = localStorage.getItem("token");
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/tasks/")
+        axios.get("http://127.0.0.1:8000/tasks/",{
+            headers: {
+                Authorization: `Token ${token}`
+            }
+        })
             .then(response => {
                 setTasks(response.data);
             })

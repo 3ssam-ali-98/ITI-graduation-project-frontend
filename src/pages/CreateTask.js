@@ -9,6 +9,8 @@ function CreateTask() {
     const formRef = useRef();
     const history = useHistory();
     const businessId = useSelector((state) => state.user.user.id);
+    const token = localStorage.getItem("token");
+
 
     const [task, setTask] = useState({
         name: "",
@@ -16,7 +18,7 @@ function CreateTask() {
         priority: "Low",
         assignedTo: "",
         deadline: "",
-        businessid: businessId,
+        // businessid: businessId,
         completed: false
     });
     
@@ -28,9 +30,13 @@ function CreateTask() {
         if (!businessId) {
             setErrorMsg("No user logged in. Please log in first.");
         } else {
-            axios.get("http://127.0.0.1:8000/users/")
+            axios.get("http://127.0.0.1:8000/employees/",{
+                headers: {
+                    Authorization: `Token ${token}`
+                }
+            })
                 .then(response => {
-                    const employeeList = response.data.filter(user => user.user_type === "Employee" && user.business === businessId);
+                    const employeeList = response.data;
                     setEmployees(employeeList);
                 })
                 .catch(error => console.error("Error fetching employees:", error));
@@ -67,7 +73,11 @@ function CreateTask() {
             return;
         }
 
-        axios.post("http://127.0.0.1:8000/tasks/", task)
+        axios.post("http://127.0.0.1:8000/tasks/", task,{
+            headers: {
+                Authorization: `Token ${token}`
+            }
+        })
             .then(() => {
                 setSuccessMsg(true);
                 setTimeout(() => {
