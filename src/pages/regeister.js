@@ -11,6 +11,9 @@ function Register(){
     
     const formRef = useRef();
     const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
+    const [errorMsg, setErrorMsg] = useState('');
+    const [successMsg, setSuccessMsg] = useState(false);
+    
     
     
 
@@ -229,11 +232,29 @@ function Register(){
                 user_type: "Business Owner" 
             })
             .then(response => {
-                console.log('User registered successfully:', response.data);
-                navigate.push('/login');  
+                setErrorMsg("");
+                setSuccessMsg(true);
+                setTimeout(() => {
+                    navigate.push('/login');
+                }, 1000);
+                  
             })
             .catch(error => {
                 console.error('Registration failed:', error.response?.data || error.message);
+                if (error.response?.data) {
+                    const errors = error.response.data;
+                    let errorMessages = ["Registration failed due to the following:"];
+            
+
+                    Object.keys(errors).forEach((key) => {
+                        errorMessages.push(`- ${key}: ${errors[key].join(", ")}`);
+                    });
+            
+                    setErrorMsg(errorMessages.join("\n"));
+                } else {
+                    setErrorMsg("Registration failed. Please try again.");
+                }
+
             });  
           }
 
@@ -248,6 +269,19 @@ function Register(){
             <form className="needs-validation m-5" noValidate style={{width: '25%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
                 <div className="" >
                     <h1 style={{textAlign: "center"}}>Register</h1>
+
+                    {errorMsg && (
+                    <div className="alert alert-danger text-center" role="alert">
+                        {errorMsg.split("\n").map((line, index) => (
+                            <div key={index}>{line}</div>
+                        ))}
+                    </div>
+                    )}
+                    {successMsg && (
+                    <div className="alert alert-success text-center" role="alert">
+                        Registerd successfully! Redirecting...
+                    </div>
+                    )}
 
                     <div className='d-flex justify-content-between gap-5'>
                         <div>

@@ -19,6 +19,7 @@ function Login(){
     // const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
     const dispatch = useDispatch();
     const [invalmsg, setInvalmsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState('');
 
 
     const formRef = useRef();
@@ -88,10 +89,23 @@ function Login(){
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("id", response.data.user_id);
             localStorage.setItem("role", response.data.user_type);
+            localStorage.setItem("name", response.data.user_name);
             navigate.push('/');  
         })
         .catch(error => {
             console.error('login failed:', error.response?.data || error.message);
+            setErrorMsg(error.response?.data?.error);
+            console.log(error.response?.data.error)
+            // if (error.response?.data) {
+    
+            //     Object.keys(errors).forEach((key) => {
+            //         errorMessages.push(`- ${key}: ${errors[key].join(", ")}`);
+            //     });
+        
+            //     setErrorMsg(errorMessages.join("\n"));
+            // } else {
+            //     setErrorMsg("Registration failed. Please try again.");
+            // }
         });
             // dispatch(Userid(user.id))
         }
@@ -109,6 +123,13 @@ function Login(){
                 <div className="" >
                     <h1 style={{textAlign: "center"}}>Login</h1>
                     
+                    {errorMsg && (
+                    <div className="alert alert-danger text-center" role="alert">
+                        {errorMsg.split("\n").map((line, index) => (
+                            <div key={index}>{line}</div>
+                        ))}
+                    </div>
+                    )}
                     <Input idn="mail" inlabl="E-mail" intype="text" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
 
 

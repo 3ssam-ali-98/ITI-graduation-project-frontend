@@ -17,7 +17,9 @@ import EditTask from './pages/UpdateTask';
 import AddEmployee from './pages/addemployee'
 import Profile from './pages/profile';
 import EmployeesTable from './pages/EmployeesTable'; 
+import EditProfile from './pages/editprofile';
 import TaskDetails from "./pages/TaskDetails";
+
 
 
 
@@ -44,6 +46,7 @@ function App() {
             <Route exact path="/:bussiness_id/edit-client/:client_id" component={Editclient}/>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
+            <Route exact path="/edit-profile" component={EditProfile}/>
             <Route exact path="/:bussiness_id/employees" component={EmployeesTable} />
             <Route exact path="/:bussiness_id/add-employee" component={AddEmployee}/>
           </div>

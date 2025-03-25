@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { useSelector} from 'react-redux';
 import axios from "axios";
+import Modal from '../components/modal';
 
 
 
@@ -16,6 +17,8 @@ function AddEmployee(){
     const businessname = useSelector((state) => state.user.user.businessName)
     const navigate = useHistory();
     const token = localStorage.getItem("token");
+    const [successMsg, setSuccessMsg] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
     
     useEffect(() => {
         if(!id)
@@ -237,27 +240,43 @@ function AddEmployee(){
             },
             {
                 headers: {
-                    Authorization: `Token ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             })
             .then(response => {
-                console.log('User registered successfully:', response.data);
-                navigate.push('/{id}/employees'); 
+
+                setSuccessMsg(true);
+                setTimeout(() => {
+                    navigate.push(`/2/employees`);
+                }, 1000);  
+
             })
             .catch(error => {
-                console.error('Registration failed:', error.response?.data || error.message);
-            }); 
-            for (let element of formElements) {
+                if (error.response && error.response.status === 401) 
+                {
+                    document.getElementById("modal").click();
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("id");
+                    localStorage.removeItem("role");
+                    localStorage.removeItem("name");
+                } 
+                else if (error.response?.data)
+                {
+                    const errors = error.response.data;
+                    let errorMessages = ["Employee creation failed due to the following:"];
+            
 
-                    const e = {target: element}
-
-                    e.target.value = ""
-          }}
-
+                    Object.keys(errors).forEach((key) => {
+                        errorMessages.push(`- ${key}: ${errors[key].join(", ")}`);
+                    });
+            
+                    setErrorMsg(errorMessages.join("\n"));
+                }    
+            });}
     }
     
-    // const changepage = () => {
-    //     navigate.push('/login');
+    // const openmodal = () => {
+    //     document.getElementById("modal").click();
     // }
 
     return(
@@ -265,6 +284,29 @@ function AddEmployee(){
             <form className="needs-validation m-5" noValidate style={{width: '25%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
                 <div className="" >
                     <h1 style={{textAlign: "center"}}>Add Employee</h1>
+
+                    {successMsg && (
+                    <div className="alert alert-success text-center" role="alert">
+                        Employee Added successfully! Redirecting...
+                    </div>
+                    )}
+                    {errorMsg && (
+                    <div className="alert alert-danger text-center" role="alert">
+                        {errorMsg.split("\n").map((line, index) => (
+                            <div key={index}>{line}</div>
+                        ))}
+                    </div>
+                    )}
+                    {/* <Button bclr="success" title1="open modal" mar="15px" clck={openmodal}/> */}
+                    <Modal
+                        id="modal"
+                        hidden={true} 
+                        modal_title={"Session expired!"} 
+                        modal_message={"Your login Session has expired, please login again"} 
+                        modal_accept_text={"Go To Login"} 
+                        modal_accept={() => navigate.push('/login')} 
+                        modal_close={() => navigate.push('/login')} 
+                    />
 
                     <div className='d-flex justify-content-between gap-5'>
                         <div>
