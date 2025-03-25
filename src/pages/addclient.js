@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 
-
 function Addclient() {
 	const formRef = useRef();
 	// const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
