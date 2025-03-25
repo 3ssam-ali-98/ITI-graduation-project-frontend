@@ -11,72 +11,72 @@ function CreateTask() {
     const businessId = useSelector((state) => state.user.user.id);
     const token = localStorage.getItem("token");
 
-
     const [task, setTask] = useState({
         name: "",
         description: "",
-        priority: "Low",
+        priority: "Medium",
         assignedTo: "",
         deadline: "",
-        // businessid: businessId,
         completed: false
     });
-    
+
     const [employees, setEmployees] = useState([]);
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsgs, setErrorMsgs] = useState({});
     const [successMsg, setSuccessMsg] = useState(false);
 
+    // Fetch employees
     useEffect(() => {
         if (!businessId) {
-            setErrorMsg("No user logged in. Please log in first.");
+            setErrorMsgs((prev) => ({ ...prev, general: "No user logged in. Please log in first." }));
         } else {
-            axios.get("http://127.0.0.1:8000/employees/",{
-                headers: {
-                    Authorization: `Token ${token}`
-                }
+            axios.get("http://127.0.0.1:8000/employees/", {
+                headers: { Authorization: `Token ${token}` }
             })
                 .then(response => {
-                    const employeeList = response.data;
-                    setEmployees(employeeList);
+                    setEmployees(response.data);
                 })
-                .catch(error => console.error("Error fetching employees:", error));
+                .catch(error => {
+                    console.error("Error fetching employees:", error);
+                    setErrorMsgs((prev) => ({ ...prev, general: "Failed to load employees." }));
+                });
         }
-    }, [businessId]);
+    }, [businessId, token]);
 
+    // Validate input fields
     const validateInput = (e) => {
         const { value, id } = e.target;
-        let isValid = true;
         let message = "";
 
         if (id === "name" && !/^[A-Za-z0-9]+(\s+[A-Za-z0-9]+)*$/.test(value)) {
-            isValid = false;
             message = "Task name must contain only letters and numbers.";
         } else if (id === "description" && value.length < 10) {
-            isValid = false;
             message = "Description must be at least 10 characters long.";
         } else if (id === "deadline" && !value) {
-            isValid = false;
             message = "Deadline is required.";
         }
 
-        e.target.className = `form-control ${isValid ? "is-valid" : "is-invalid"}`;
-        setErrorMsg(isValid ? "" : message);
-        
-        if (isValid) setTask({ ...task, [id]: value });
+        setErrorMsgs((prev) => ({ ...prev, [id]: message }));
 
-        return isValid;
+        e.target.className = `form-control ${message ? "is-invalid" : "is-valid"}`;
+
+        if (!message) {
+            setTask((prevTask) => ({ ...prevTask, [id]: value }));
+        }
     };
 
+    // Handle task submission
     const submitTask = () => {
         if (!businessId) {
-            setErrorMsg("No user logged in. Please log in first.");
+            setErrorMsgs((prev) => ({ ...prev, general: "No user logged in. Please log in first." }));
             return;
         }
 
-        axios.post("http://127.0.0.1:8000/tasks/", task,{
-            headers: {
-                Authorization: `Token ${token}`
-            }
+        // Convert deadline to ISO format for Django DateTimeField
+        const formattedDeadline = task.deadline ? new Date(task.deadline).toISOString() : null;
+        const newTask = { ...task, deadline: formattedDeadline, business: businessId };
+
+        axios.post("http://127.0.0.1:8000/tasks/", newTask, {
+            headers: { Authorization: `Token ${token}` }
         })
             .then(() => {
                 setSuccessMsg(true);
@@ -86,7 +86,7 @@ function CreateTask() {
             })
             .catch(error => {
                 console.error("Error creating task:", error);
-                setErrorMsg("Failed to create task. Please try again.");
+                setErrorMsgs((prev) => ({ ...prev, general: "Failed to create task. Please try again." }));
             });
     };
 
@@ -101,7 +101,14 @@ function CreateTask() {
                     </div>
                 )}
 
-                <Input idn="name" inlabl="Task Name" intype="text" valmsg="Looking good" invalmsg={errorMsg} blurfun={validateInput} />
+                <Input 
+                    idn="name" 
+                    inlabl="Task Name" 
+                    intype="text" 
+                    valmsg="Looking good" 
+                    invalmsg={errorMsgs.name} 
+                    blurfun={validateInput} 
+                />
 
                 <div className="mb-3">
                     <label className="form-label">Description</label>
@@ -113,7 +120,7 @@ function CreateTask() {
                         onChange={(e) => setTask({ ...task, description: e.target.value })}
                         onBlur={validateInput}
                     ></textarea>
-                    {errorMsg && <div className="invalid-feedback">{errorMsg}</div>}
+                    {errorMsgs.description && <div className="invalid-feedback">{errorMsgs.description}</div>}
                 </div>
 
                 <div className="mb-3">
@@ -128,7 +135,7 @@ function CreateTask() {
                 <div className="mb-3">
                     <label className="form-label">Assigned To</label>
                     <select id="assignedTo" value={task.assignedTo} onChange={(e) => setTask({ ...task, assignedTo: e.target.value })} className="form-control">
-                        <option selected>No one assigned yet</option>
+                        <option value="">No one assigned yet</option>
                         {employees.length > 0 ? (
                             employees.map((employee) => (
                                 <option key={employee.id} value={employee.id}>
@@ -136,12 +143,20 @@ function CreateTask() {
                                 </option>
                             ))
                         ) : (
-                            <option>No employees available</option>
+                            <option disabled>No employees available</option>
                         )}
                     </select>
                 </div>
 
-                <Input idn="deadline" inlabl="Deadline" intype="date" valmsg="Looking good" invalmsg={errorMsg} blurfun={validateInput} />
+                {/* Deadline input updated to datetime-local */}
+                <Input 
+                    idn="deadline" 
+                    inlabl="Deadline" 
+                    intype="datetime-local" 
+                    valmsg="Looking good" 
+                    invalmsg={errorMsgs.deadline} 
+                    blurfun={validateInput} 
+                />
 
                 <div className="d-flex justify-content-center mt-3">
                     <Button bclr="success" title1="Create Task" clck={submitTask} />

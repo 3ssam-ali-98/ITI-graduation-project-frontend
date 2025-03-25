@@ -1,6 +1,5 @@
-
-
 function Modal(props) {
+
 	return (
 		<>
 			<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={props.modal_button} id={props.id} hidden={props.hidden}>
@@ -27,4 +26,4 @@ function Modal(props) {
 	)
 }
 
-export default Modal
+export default Modal;

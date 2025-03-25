@@ -244,10 +244,12 @@ function AddEmployee(){
                 }
             })
             .then(response => {
+
                 setSuccessMsg(true);
                 setTimeout(() => {
                     navigate.push(`/2/employees`);
                 }, 1000);  
+
             })
             .catch(error => {
                 if (error.response && error.response.status === 401) 
