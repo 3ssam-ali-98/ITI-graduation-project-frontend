@@ -314,8 +314,6 @@ function Register(){
         </>
     )
 
-    
-
 
 }
 

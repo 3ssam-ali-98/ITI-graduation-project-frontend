@@ -3,8 +3,8 @@ import axios from "axios";
 import Tablec from "../components/Tablec";
 import PaginationBtn from "../components/PaginationBtn";
 import Button from "../components/button";
-import { useHistory } from "react-router-dom";
-import { useParams } from 'react-router-dom';
+import { useHistory, Link, useParams } from "react-router-dom";
+import Modal from "../components/modal";
 
 
 function EmployeesTable() {
@@ -17,13 +17,7 @@ function EmployeesTable() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const history = useHistory();
 	const { bussiness_id } = useParams();
-	console.log(employees);
 	const token = localStorage.getItem("token");
-
-	
-
-    // const employees = JSON.parse(localStorage.getItem("usersdata"))?.filter(user => user.type === "Employee" && user.id === businessId) || [];
-
 
 	const fetchEmployees = () => {
 		axios.get("http://127.0.0.1:8000/employees/",
@@ -45,16 +39,17 @@ function EmployeesTable() {
 			});
 	}
 
-
 	useEffect(() => {
 
 		fetchEmployees();
 	}, []);
 
 	const deleteEmployeeHandler = (e) => {
+
 		axios.delete(`http://127.0.0.1:8000/employees/${e}/`,{
 			headers: {
 				Authorization: `Bearer ${token}`
+
 			}
 		})
 			.then((response) => {
@@ -102,7 +97,39 @@ function EmployeesTable() {
 					<div className="d-flex justify-content-center align-items-center mt-3">
 						<Button bclr={"success"} title1={"Add employee"} clck={() => history.push(`/${bussiness_id}/add-employee`)} />
 					</div>   
-					<Tablec clients={currentEmployees} deleteclientHandler={deleteEmployeeHandler} pagesnumber={currentPage} />
+
+					<table className="table table-responsive table-striped table-bordered " style={{ borderColor: "#4D869C", color: "#4D869C", }}>
+						<thead style={{ backgroundColor: "#EEF7FF", color: "#4D869C" }}>
+							<tr className="align-text-center">
+								<th className="text-center">Name</th>
+								<th className="text-center">Phone</th>
+								<th className="text-center">Email</th>
+								<th className="text-center">Options</th>
+							</tr>
+						</thead>
+						<tbody style={{ backgroundColor: "#CDE8E5" }}>
+								{currentEmployees.map((employee, index) => (
+								<tr style={{ borderBottom: "1px solid #7AB2B2" }}>
+									<td>
+											{employee.username}
+									</td>
+									<td>{employee.mobile_phone}</td>
+									<td>{employee.email}</td>
+									<td className="d-flex justify-content-around align-items-center">
+										<Modal
+											modal_button_text={"Delete"}
+											modal_title={"Removal Confirmation"}
+											modal_message={"Are you sure you want to delete?"}
+											modal_reject_text={"No, Canecl"}
+											modal_accept_text={"Yes, I am sure"}
+											modal_accept={() => deleteEmployeeHandler(employee.id)}
+										/>
+
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
 					<PaginationBtn
 						currentPage={currentPage}
 						totalPages={totalPages}

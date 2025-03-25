@@ -4,4 +4,4 @@ import { loggeduser } from "./loggeduserreducer";
 
 export default combineReducers({
     user : loggeduser
-})
+}) 

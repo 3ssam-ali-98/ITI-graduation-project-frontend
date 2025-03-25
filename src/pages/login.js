@@ -3,12 +3,11 @@ import Button from "../components/button"
 import Input from "../components/inputs"
 import { useState } from "react";
 import { useHistory } from 'react-router-dom';
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loggedUser } from '../redux/actions/loggeduseraction';
 // import { Userid } from '../redux/actions/loggeduseraction';
 import { Link } from 'react-router-dom';
 import axios from "axios";
-
 
 
 function Login(){
@@ -147,7 +146,6 @@ function Login(){
         </>
     )
 
-    
 
 }
 

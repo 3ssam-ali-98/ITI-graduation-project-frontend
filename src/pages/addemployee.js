@@ -2,10 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import Button from "../components/button"
 import Input from "../components/inputs"
 import { useState } from "react";
-import { useHistory } from 'react-router-dom';
-import { useSelector} from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from "axios";
 import Modal from '../components/modal';
+
 
 
 
@@ -24,22 +25,6 @@ function AddEmployee(){
         if(!id)
             navigate.push('/login')
     }, [id])
-
-    const [password, setPassword] = useState('')
-    const [userdata, setUsrdat] = useState({
-        irst_name: '',
-        last_name: '',
-        username: '',
-        password: '',
-        email: '',
-        mobilenumber:'',
-        businessName: businessname,
-        id:id,
-        type: 'Employee'
-      });
- 
-    
-    const [reppassword, setrepPassword] = useState('')
 
     const mailrgx = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]{4,}\.[a-zA-Z]{3,}$/
     const passrgx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -337,8 +322,6 @@ function AddEmployee(){
             </form>
         </>
     )
-
-    
 
 }
 

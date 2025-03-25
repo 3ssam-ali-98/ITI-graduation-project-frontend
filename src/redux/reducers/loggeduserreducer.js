@@ -1,27 +1,17 @@
-
 const INITIAL_VALUE = {
-
-    user: { role: "", name: "", id: "" }
-    
-
+	user: { role: "", name: "", id: "", token: "" }
 }
 
 export function loggeduser(state = INITIAL_VALUE, action) {
-
-
-    switch(action.type){
-        case "user":
-            return{
-                ...state,
-                user: action.payload
-            }
-        // case "id":  
-        // return{
-        //     ...state,
-        //     id: action.payload
-        // }  
-        default: 
-            return state
-    }
-
+	console.log("Reducer action triggered:", action);  // Log the action
+	switch (action.type) {
+		case "user":
+			console.log("Updating user in Redux:", action.payload);  // Log user update
+			return {
+				...state,
+				user: action.payload,
+			};
+		default:
+			return state;
+	}
 }
