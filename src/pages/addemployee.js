@@ -116,7 +116,7 @@ function AddEmployee(){
             e.target.className = "form-control is-valid"
             setUsrdat({
                 ...userdata,  
-                name: value
+                username: value
               });
             } 
             else 
@@ -242,7 +242,7 @@ function AddEmployee(){
             })
             .then(response => {
                 console.log('User registered successfully:', response.data);
-                // navigate.push('/login');  
+                navigate.push('/{id}/employees'); 
             })
             .catch(error => {
                 console.error('Registration failed:', error.response?.data || error.message);

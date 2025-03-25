@@ -17,6 +17,7 @@ import EditTask from './pages/UpdateTask';
 import AddEmployee from './pages/addemployee'
 import Profile from './pages/profile';
 import EmployeesTable from './pages/EmployeesTable'; 
+import TaskDetails from "./pages/TaskDetails";
 
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/about" component={AboutUs } exact />
           <Route path="/contact" component={ContactUs } exact />
           <Route path="/:bussiness_id/tasks" component={TaskList } exact />
+          <Route path="/:bussiness_id/tasks/:task_id" component={TaskDetails} exact />
           <Route path="/profile" component={Profile } exact />
           <Route path="/:bussiness_id/dashboard" component={Dashboard} exact/>
           <Route exact path="/:bussiness_id/create-task" component={CreateTask}/>
