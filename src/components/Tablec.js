@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Modal from "./modal";
 import { useState } from "react";
 
-function Tablec({ clients, deleteclientHandler, pagesnumber }) {
+function Tablec({ clients, deleteclientHandler, pagesnumber, role }) {
   // const { bussiness_id } = useParams();
   // const history = useHistory();
   const [clientId, setProductId] = useState(null);
@@ -27,24 +27,24 @@ function Tablec({ clients, deleteclientHandler, pagesnumber }) {
       <table className="table table-responsive table-striped table-bordered " style={{ borderColor: "#4D869C", color: "#4D869C",  }}>
         <thead style={{ backgroundColor: "#EEF7FF", color: "#4D869C" }}>
           <tr className="align-text-center">
-            <th className="text-center">ID</th>
+            {/* <th className="text-center">ID</th> */}
             <th className="text-center">Name</th>
             <th className="text-center">Phone</th>
             <th className="text-center">Email</th>
             <th className="text-center">Address</th>
-            <th className="text-center">Options</th>
+            {role === "Business Owner" &&(<th className="text-center">Options</th>)}
           </tr>
         </thead>
         <tbody style={{ backgroundColor: "#CDE8E5" }}>
           {clients.map((client ,index) => (
             <tr key={client.id} style={{ borderBottom: "1px solid #7AB2B2" }}>
-              <td>{client.id}</td>
+              {/* <td>{client.id}</td> */}
               <td><Link to={{ pathname: `${moreDetails(client.id)}`, state: { index } }}>{client.name}</Link></td>
               <td>{client.phone}</td>
               <td>{client.email}</td>
               <td>{client.address}</td>
-              <td className="d-flex justify-content-around align-items-center">
-                <Modal 
+              {role === "Business Owner" &&(<td className="d-flex justify-content-around align-items-center">
+              <Modal 
                   modal_button_text={"Delete"} 
                   target="delete-modal"
                   modal_title={"Removal Confirmation"} 
@@ -55,7 +55,7 @@ function Tablec({ clients, deleteclientHandler, pagesnumber }) {
                   modal_accept={() => deletclient(clientId)} 
                 />
 
-              </td>
+              </td>)}
             </tr>
           ))}
         </tbody>

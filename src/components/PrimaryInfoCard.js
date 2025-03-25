@@ -2,7 +2,11 @@ import { Link } from "react-router-dom";
 import avatar from "../assets/man-with-laptop-light.png"
 
 
-function PrimaryInfoCard({ ownerName, cardPercent, businessId }) {
+
+
+function PrimaryInfoCard({ ownerName, cardPercent, role }) {
+	
+	
 	return (
 
 		<div className="col-lg-8 mb-4 order-0">
@@ -17,7 +21,7 @@ function PrimaryInfoCard({ ownerName, cardPercent, businessId }) {
 							<div className="gap-2 d-flex">
 								<Link to={`/clients`} className="btn btn-sm btn-outline-primary">Manage Clients</Link>
 								<Link to={`/tasks`} className="btn btn-sm btn-outline-primary">Manage Tasks</Link>
-								<Link to={`/employees`} className="btn btn-sm btn-outline-primary">Manage Employees</Link>
+								{role === "Business Owner" && (<Link to={`/employees`} className="btn btn-sm btn-outline-primary">Manage Employees</Link>)}
 							</div>
 						</div>
 					</div>

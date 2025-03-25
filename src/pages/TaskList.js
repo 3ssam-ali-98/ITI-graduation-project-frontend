@@ -14,6 +14,7 @@ function TaskList() {
 	const token = sessionStorage.getItem("token");
     const [tasks, setTasks] = useState([]);
     const id = sessionStorage.getItem("id");
+    const role = sessionStorage.getItem("role");
     
         useEffect(() => {
                 if(!id)
@@ -76,9 +77,9 @@ function TaskList() {
                 <TaskCard task={tasks} deletetaskHandler={deleteTaskHandler}/>
 
             </div>
-            <div className="d-flex justify-content-center mt-5">
+            {role === "Business Owner" &&(<div className="d-flex justify-content-center mt-5">
                 <Button bclr="success" title1="Add Task" mar="15px" clck={() => history.push(`/create-task`)} />
-            </div>
+            </div>)}
         </div>
     );
 };

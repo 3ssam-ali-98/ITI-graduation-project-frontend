@@ -20,6 +20,7 @@ function ClientTable() {
   // const { bussiness_id } = useParams();
   const token = sessionStorage.getItem("token");
   const id = sessionStorage.getItem("id");
+  const role = sessionStorage.getItem("role");
   
     useEffect(() => {
         if(!id)
@@ -128,7 +129,7 @@ function ClientTable() {
             <div className="d-flex justify-content-center align-items-center mt-3">
               <Button bclr={"success"} title1={"Add Client"} clck={() => history.push(`/add-client`)} />
             </div>  
-          <Tablec clients={currentClients} deleteclientHandler={deleteclientHandler} pagesnumber={currentPage} />
+          <Tablec clients={currentClients} deleteclientHandler={deleteclientHandler} pagesnumber={currentPage} role={role} />
           <PaginationBtn
             currentPage={currentPage}
             totalPages={totalPages}

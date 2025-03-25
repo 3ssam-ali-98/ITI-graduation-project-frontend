@@ -14,8 +14,9 @@ function Dashboard() {
 
 	const name = useSelector((state) => state.user.user.name)
   	// const id = useSelector((state) => state.user.user.id)
-	const state = useSelector((state) => state);
+	// const state = useSelector((state) => state);
 	const id = sessionStorage.getItem("id");
+	const role = sessionStorage.getItem("role");
 	const history = useHistory();
 	
 	
@@ -24,14 +25,14 @@ function Dashboard() {
 					history.push('/')
 			}, [id, history])
 
-	console.log(state);
+	// console.log(state);
 
 	return (
 		<>
 		<div className="container">
 
 			<div className="row mt-5">
-				<PrimaryInfoCard ownerName={name} cardPercent="72" businessId={id} />
+				<PrimaryInfoCard ownerName={name} cardPercent="72" role={role} />
 					<div className="col-lg-4 col-md-4 order-1">
 						<div className="row">
 							{/* <SecondryInfoCard cardHeader="Profit" cardNumber="12,628" cardPercentage="72.34" cardIcon={clockIcon} /> */}
