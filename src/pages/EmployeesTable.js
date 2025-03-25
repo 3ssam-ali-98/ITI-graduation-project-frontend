@@ -29,7 +29,7 @@ function EmployeesTable() {
 		axios.get("http://127.0.0.1:8000/employees/",
 		{
 			headers: {
-				Authorization: `Token ${token}`
+				Authorization: `Bearer ${token}`
 			}
 		})
 			.then((response) => {
@@ -52,7 +52,11 @@ function EmployeesTable() {
 	}, []);
 
 	const deleteEmployeeHandler = (e) => {
-		axios.delete(`http://127.0.0.1:8000/employees/${e}/`)
+		axios.delete(`http://127.0.0.1:8000/employees/${e}/`,{
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
 			.then((response) => {
 				fetchEmployees();
 			})

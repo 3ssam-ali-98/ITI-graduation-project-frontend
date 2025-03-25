@@ -5,6 +5,7 @@ import { useSelector} from 'react-redux';
 import profileicon from "../assets/blank-profile.png" 
 import axios from "axios";
 import { useState, useEffect } from "react";
+import Modal2 from "../components/modal2" 
 
 
 function Profile(){
@@ -18,7 +19,7 @@ function Profile(){
             axios
                 .get(`http://127.0.0.1:8000/users/${id}/`, {
                     headers: {
-                        Authorization: `Token ${token}`
+                        Authorization: `Bearer ${token}`
                     }
                 })
                 .then((response) => {
@@ -55,9 +56,9 @@ function Profile(){
                         <hr></hr>
                         <p>Role : {user.user_type}</p>
                         <div className="d-flex flex-row gap-5">
-                            <Button bclr="primary" title1="Change Username" mar="15px" clck={() => history.push(`/edit-profile`)}/>
-                            <Button bclr="warning" title1="Change Mobile Number" mar="15px" clck={() => history.push(`/edit-profile`)}/>
-                            <Button bclr="danger" title1="Change Password" mar="15px" clck={() => history.push(`/edit-profile`)}/>
+                            <Button bclr="primary" title1="Edit profile" clck={() => history.push(`/edit-profile`)}/>
+                            {/* <Button bclr="warning" title1="Change Mobile Number" mar="15px" clck={() => history.push(`/edit-profile`)}/> */}
+                            <Modal2/>
                         </div>        
                     </div>
                     

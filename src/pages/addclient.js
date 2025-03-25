@@ -13,6 +13,7 @@ function Addclient(){
     const bussiness_id = useParams().bussiness_id;
     const history = useHistory();
     const token = localStorage.getItem("token");
+    const [successMsg, setSuccessMsg] = useState(false);
     
     const [clients, setclients] = useState([]);
     useEffect(() => {
@@ -197,8 +198,10 @@ function Addclient(){
                 }
             }
             )
-                .then((response) => {console.log('Product added:', response.data)
-                setclients((prevProducts) => [...prevProducts, response.data]);
+                .then((response) => {setSuccessMsg(true);
+                    setTimeout(() => {
+                        history.push(`/2/clients`);
+                    }, 1000);
                 })
                 .catch((err) => console.log('Error adding product:', err))
 
@@ -222,6 +225,11 @@ function Addclient(){
             <form className="needs-validation m-5" noValidate style={{width: '25%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
                 <div className="" >
                     <h1 style={{textAlign: "center"}}>Add client</h1>
+                    {successMsg && (
+                    <div className="alert alert-success text-center" role="alert">
+                        Client Added successfully! Redirecting...
+                    </div>
+                    )}
                     
                     <Input idn="name" inlabl="Name" intype="text" valmsg="looking good" invalmsg={invalmsg} blurfun={checkinp} chgfun={resetval}/>
                     
