@@ -1,7 +1,7 @@
-import paypalIcon from "../assets/paypal.png"
-import walletIcon from "../assets/wallet-icon.png"
-import clockIcon from "../assets/clock-icon.png"
-import ccIcon from "../assets/cc.png"
+// import paypalIcon from "../assets/paypal.png"
+// import walletIcon from "../assets/wallet-icon.png"
+// import clockIcon from "../assets/clock-icon.png"
+// import ccIcon from "../assets/cc.png"
 
 
 function DashboardCard4({ cardNumber, cardPercent }) {

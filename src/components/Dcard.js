@@ -1,17 +1,17 @@
 import React from "react";
 import { Link, useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 
 function Dcard(props) {
 
-  const location = useLocation();
+  // const location = useLocation();
   // const index = location.state.index;  
-  const { bussiness_id, client_id } = useParams();
+  const {client_id } = useParams();
   const history = useHistory();
 
   const build_client_update_url = (client_id) => {
-    history.push(`/${bussiness_id}/edit-client/${client_id}`);
+    history.push(`/edit-client/${client_id}`);
     // return `/${bussiness_id}/clients/${client_id}`;
   }
 
@@ -105,7 +105,7 @@ function Dcard(props) {
             )
           }
           <div className="d-flex justify-content-around align-items-center">
-            <Link to={`/${bussiness_id}/clients/`} className="btn btn-danger" onClick={props.clcback}> Go back</Link>
+            <Link to={`/clients`} className="btn btn-danger" onClick={props.clcback}> Go back</Link>
             <button className="btn btn-warning" onClick={() => build_client_update_url(client_id)}> Edit client Data</button>
           </div>
         </div>

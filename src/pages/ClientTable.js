@@ -3,8 +3,9 @@ import axios from "axios";
 import Tablec from "../components/Tablec";
 import PaginationBtn from "../components/PaginationBtn";
 import Button from "../components/button";
+import Modal from '../components/modal';
 import { useHistory } from "react-router-dom";
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 
 
 function ClientTable() {
@@ -14,16 +15,22 @@ function ClientTable() {
   const [totalPages, setTotalPages] = useState(1);
   const [clientsPerPage] = useState(10);
   const [filteredClients, setFilteredClients] = useState(clients);
-  const [searchQuery, setSearchQuery] = useState('');
+  // const [searchQuery, setSearchQuery] = useState('');
   const history = useHistory();
-  const { bussiness_id } = useParams();
-  const token = localStorage.getItem("token");
+  // const { bussiness_id } = useParams();
+  const token = sessionStorage.getItem("token");
+  const id = sessionStorage.getItem("id");
+  
+    useEffect(() => {
+        if(!id)
+          history.push('/')
+      }, [id, history])
 
 
   const fetchclients = () => {
     axios.get("http://127.0.0.1:8000/clients/",{
       headers: {
-          Authorization: `Token ${token}`
+          Authorization: `Bearer ${token}`
       }
   })
     .then((response) => {
@@ -33,8 +40,15 @@ function ClientTable() {
       setTotalPages(Math.ceil(totalClients.length / clientsPerPage));
       setLoading(false);
     })
-    .catch((err) => {
-      console.error("Error fetching clients:", err);
+    .catch((error) => {
+      if (error.response && error.response.status === 401) 
+        {
+          document.getElementById("modal").click();
+          sessionStorage.removeItem("token");
+          sessionStorage.removeItem("id");
+          sessionStorage.removeItem("role");
+          sessionStorage.removeItem("name");
+        }
       setLoading(false);
     });
   }
@@ -43,19 +57,26 @@ function ClientTable() {
   useEffect(() => {
 
     fetchclients();
-  }, []);
+  },[] );
 
   const deleteclientHandler = (e) => {
     axios.delete(`http://127.0.0.1:8000/clients/${e}/`,{
       headers: {
-          Authorization: `Token ${token}`
+          Authorization: `Bearer ${token}`
       }
   })
       .then((response) => {
         console.log('Product deleted:', response.data)
         fetchclients();
       })
-      .catch((err) => console.log('Error deleting product:', err))
+      .catch((error) => {if (error.response && error.response.status === 401) 
+        {
+          document.getElementById("modal").click();
+          sessionStorage.removeItem("token");
+          sessionStorage.removeItem("id");
+          sessionStorage.removeItem("role");
+          sessionStorage.removeItem("name");
+        }})
   }
 
   const indexOfLastClient = currentPage * clientsPerPage;
@@ -68,7 +89,7 @@ function ClientTable() {
 
   const searchfun = (e) => {
     const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
+    // setSearchQuery(query);
 
     const filtered = clients.filter(client =>
       client.name.toLowerCase().includes(query)
@@ -89,13 +110,23 @@ function ClientTable() {
       ) : (
         <>
           <div className="mb-3" >
+          <Modal
+              id="modal"
+              target="session-modal"
+              hidden={true} 
+              modal_title={"Session expired!"} 
+              modal_message={"Your login Session has expired, please login again"} 
+              modal_accept_text={"Go To Login"} 
+              modal_accept={() => history.push('/login')} 
+              modal_close={() => history.push('/login')} 
+          />
             <form class="d-flex justify-content-center" role="search">
               <input class="form-control me-2 w-25" type="search" placeholder="Search Clients" aria-label="Search" onChange={searchfun} />
               <button class="btn btn-outline-primary" type="submit">Search</button>
             </form>
           </div>
             <div className="d-flex justify-content-center align-items-center mt-3">
-              <Button bclr={"success"} title1={"Add Client"} clck={() => history.push(`/${bussiness_id}/add-client`)} />
+              <Button bclr={"success"} title1={"Add Client"} clck={() => history.push(`/add-client`)} />
             </div>  
           <Tablec clients={currentClients} deleteclientHandler={deleteclientHandler} pagesnumber={currentPage} />
           <PaginationBtn

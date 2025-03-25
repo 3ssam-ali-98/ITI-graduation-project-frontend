@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
-import { useSelector, useDispatch} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { loggedUser } from '../redux/actions/loggeduseraction';
 // import { Userid } from '../redux/actions/loggeduseraction';
 
@@ -8,18 +8,20 @@ function Navbar() {
 
     const logout = () => {
         dispatch(loggedUser(''))
-        localStorage.removeItem("token");
-        // localStorage.removeItem("user_id");
-        localStorage.removeItem("role");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("id");
+        sessionStorage.removeItem("role");
+        sessionStorage.removeItem("name");
+        history.push('/login')
         // dispatch(Userid(''))
     }
 
     const history = useHistory();
     const dispatch = useDispatch();
+    // const name = sessionStorage.getItem("name");
     const name = useSelector((state) => state.user.user.name)
-    // const role = useSelector((state) => state.user.user.role)
     // console.log(useSelector((state) => state.user.user))
-    const id = useSelector((state) => state.user.user.id)
+    // const id = useSelector((state) => state.user.user.id)
     return (
         <nav className="navbar navbar-expand-lg sticky-top" style={{ backgroundColor: "#4D869C" }}>
             <div className="container">
@@ -29,7 +31,7 @@ function Navbar() {
                 </button>
                 {name && (<div className="d-flex flex-row">
                     <button className="nav-link text-white" onClick={() => history.push(`/profile`)} style={{marginRight : '10px'}}>Welcome back, {name.split(" ")[0]}</button> 
-                    <button className="nav-link text-white" style={{marginRight : '10px'}} onClick={() => history.push(`/${id}/dashboard`)}>Buissness insights</button>
+                    <button className="nav-link text-white" style={{marginRight : '10px'}} onClick={() => history.push(`/dashboard`)}>Buissness insights</button>
                     {/* <button className="nav-link text-white" onClick={() => history.push(`/${id}/add-employee`)} style={{marginRight : '10px'}}>Add employee</button> */}
 
                 </div>)}

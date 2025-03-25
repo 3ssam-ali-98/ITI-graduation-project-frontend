@@ -15,7 +15,7 @@ function Login(){
     const [showPassword, setShowPassword] = useState(false);
     const [email, setemail] = useState('')
     const [password, setPassword] = useState('')
-    // const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
+    // const usersdata = JSON.parse(sessionStorage.getItem('usersdata')) || []
     const dispatch = useDispatch();
     const [invalmsg, setInvalmsg] = useState("");
     const [errorMsg, setErrorMsg] = useState('');
@@ -85,10 +85,10 @@ function Login(){
         .then(response => {
             console.log('User registered successfully:', response.data);
             dispatch(loggedUser({role : response.data.user_type, name : response.data.user_name, id : response.data.user_id}))
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("id", response.data.user_id);
-            localStorage.setItem("role", response.data.user_type);
-            localStorage.setItem("name", response.data.user_name);
+            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("id", response.data.user_id);
+            sessionStorage.setItem("role", response.data.user_type);
+            sessionStorage.setItem("name", response.data.user_name);
             navigate.push('/');  
         })
         .catch(error => {
@@ -118,7 +118,11 @@ function Login(){
 
     return(
         <>
-            <form className="needs-validation m-5" noValidate style={{width: '20%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
+        <div className="row p-3 m-5">
+			<div className="col-lg-8 co-md-6 col-sm-12 mx-auto">
+				<div className="card">
+					<div className="card-body">
+            <form className="needs-validation m-5" noValidate onSubmit={(e) => e.preventDefault()} ref={formRef}>
                 <div className="" >
                     <h1 style={{textAlign: "center"}}>Login</h1>
                     
@@ -143,6 +147,10 @@ function Login(){
                     {/* <Button bclr="success" title1="Register" wid="100%" clck={changepage}/> */}
                 </div>
             </form>
+            </div>
+                </div>
+            </div>
+        </div>
         </>
     )
 

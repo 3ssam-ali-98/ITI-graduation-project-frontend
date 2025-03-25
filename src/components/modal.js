@@ -2,14 +2,14 @@ function Modal(props) {
 
 	return (
 		<>
-			<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={props.modal_button} id={props.id} hidden={props.hidden}>
+			<button type="button" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target={`#modal-${props.target}`} onClick={props.modal_button} id={props.id} hidden={props.hidden}>
 				{props.modal_button_text}
 			</button>
-			<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal fade" id={`modal-${props.target}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby={`modalLabel-${props.target}`} aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="staticBackdropLabel">{props.modal_title}</h1>
+							<h1 class="modal-title fs-5" id={`modalLabel-${props.target}`}>{props.modal_title}</h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={props.modal_close}></button>
 						</div>
 						<div class="modal-body">

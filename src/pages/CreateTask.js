@@ -3,19 +3,26 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Button from "../components/button";
+import Modal from '../components/modal';
 import Input from "../components/inputs";
 
 function CreateTask() {
     const formRef = useRef();
     const history = useHistory();
     const businessId = useSelector((state) => state.user.user.id);
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
+    const id = sessionStorage.getItem("id");
+    
+        useEffect(() => {
+                if(!id)
+                    history.push('/')
+            }, [id, history])
 
     const [task, setTask] = useState({
         name: "",
         description: "",
         priority: "Medium",
-        assignedTo: "",
+        assigned_to: "",
         deadline: "",
         completed: false
     });
@@ -23,14 +30,13 @@ function CreateTask() {
     const [employees, setEmployees] = useState([]);
     const [errorMsgs, setErrorMsgs] = useState({});
     const [successMsg, setSuccessMsg] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
+    
 
     // Fetch employees
     useEffect(() => {
-        if (!businessId) {
-            setErrorMsgs((prev) => ({ ...prev, general: "No user logged in. Please log in first." }));
-        } else {
             axios.get("http://127.0.0.1:8000/employees/", {
-                headers: { Authorization: `Token ${token}` }
+                headers: { Authorization: `Bearer ${token}` }
             })
                 .then(response => {
                     setEmployees(response.data);
@@ -39,7 +45,7 @@ function CreateTask() {
                     console.error("Error fetching employees:", error);
                     setErrorMsgs((prev) => ({ ...prev, general: "Failed to load employees." }));
                 });
-        }
+        
     }, [businessId, token]);
 
     // Validate input fields
@@ -66,27 +72,46 @@ function CreateTask() {
 
     // Handle task submission
     const submitTask = () => {
-        if (!businessId) {
+        if (!id) {
             setErrorMsgs((prev) => ({ ...prev, general: "No user logged in. Please log in first." }));
             return;
         }
 
         // Convert deadline to ISO format for Django DateTimeField
         const formattedDeadline = task.deadline ? new Date(task.deadline).toISOString() : null;
-        const newTask = { ...task, deadline: formattedDeadline, business: businessId };
+        const newTask = { ...task, deadline: formattedDeadline};
 
         axios.post("http://127.0.0.1:8000/tasks/", newTask, {
-            headers: { Authorization: `Token ${token}` }
+            headers: { Authorization: `Bearer ${token}` }
         })
             .then(() => {
                 setSuccessMsg(true);
+                setErrorMsg('');
                 setTimeout(() => {
-                    history.push(`/${businessId}/tasks`);
+                    history.push(`/tasks`);
                 }, 1000);
             })
             .catch(error => {
-                console.error("Error creating task:", error);
-                setErrorMsgs((prev) => ({ ...prev, general: "Failed to create task. Please try again." }));
+                if (error.response && error.response.status === 401) 
+					{
+						document.getElementById("modal").click();
+						sessionStorage.removeItem("token");
+						sessionStorage.removeItem("id");
+						sessionStorage.removeItem("role");
+						sessionStorage.removeItem("name");
+					} 
+					else if (error.response?.data)
+					{
+						const errors = error.response.data;
+						let errorMessages = ["Client creation failed due to the following:"];
+				
+	
+						Object.keys(errors).forEach((key) => {
+							errorMessages.push(`- ${key}: ${errors[key].join(", ")}`);
+						});
+				
+						setErrorMsg(errorMessages.join("\n"));
+					} 
             });
     };
 
@@ -100,6 +125,23 @@ function CreateTask() {
                         Task created successfully! Redirecting...
                     </div>
                 )}
+                {errorMsg && (
+                                <div className="alert alert-danger text-center" role="alert">
+                                    {errorMsg.split("\n").map((line, index) => (
+                                        <div key={index}>{line}</div>
+                                    ))}
+                                </div>
+                                )}
+								<Modal
+                                    id="modal"
+                                    target="session-modal"
+                                    hidden={true} 
+                                    modal_title={"Session expired!"} 
+                                    modal_message={"Your login Session has expired, please login again"} 
+                                    modal_accept_text={"Go To Login"} 
+                                    modal_accept={() => history.push('/login')} 
+                                    modal_close={() => history.push('/login')} 
+                                />
 
                 <Input 
                     idn="name" 
@@ -134,12 +176,12 @@ function CreateTask() {
 
                 <div className="mb-3">
                     <label className="form-label">Assigned To</label>
-                    <select id="assignedTo" value={task.assignedTo} onChange={(e) => setTask({ ...task, assignedTo: e.target.value })} className="form-control">
+                    <select id="assignedTo" value={task.assigned_to} onChange={(e) => setTask({ ...task, assigned_to: e.target.value })} className="form-control">
                         <option value="">No one assigned yet</option>
                         {employees.length > 0 ? (
                             employees.map((employee) => (
                                 <option key={employee.id} value={employee.id}>
-                                    {employee.username}
+                                    {employee.first_name} {employee.last_name}
                                 </option>
                             ))
                         ) : (

@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Button from '../components/button';
 import Input from '../components/inputs';
+import Modal from '../components/modal';
+
 
 
 function EditProfile() {
@@ -11,11 +13,16 @@ function EditProfile() {
     const history = useHistory();
     const [user, setUser] = useState({ first_name: '', last_name:'', username:'', email: '', mobile_phone: '', business_name: ''});
     const [errorMsg, setErrorMsg] = useState("");
-    const token = localStorage.getItem("token");
-    const id = localStorage.getItem("id");
-    const role = localStorage.getItem("role");
+    const token = sessionStorage.getItem("token");
+    const id = sessionStorage.getItem("id");
+    const role = sessionStorage.getItem("role");
     const [errorMsg2, setErrorMsg2] = useState('');
     const [successMsg, setSuccessMsg] = useState(false);
+    
+        useEffect(() => {
+                if(!id)
+                    history.push('/')
+            }, [id, history])
 
 
 
@@ -68,9 +75,17 @@ function EditProfile() {
                     history.push(`/profile`);
                 }, 1000);})
                 .catch(error => {
-                    if (error.response?.data) {
+                    if (error.response && error.response.status === 401) 
+                        {
+                            document.getElementById("modal").click();
+                            sessionStorage.removeItem("token");
+                            sessionStorage.removeItem("id");
+                            sessionStorage.removeItem("role");
+                            sessionStorage.removeItem("name");
+                        } 
+                    else if (error.response?.data) {
                         const errors = error.response.data;
-                        let errorMessages = ["Registration failed due to the following:"];
+                        let errorMessages = ["Profile edit failed due to the following:"];
                 
     
                         Object.keys(errors).forEach((key) => {
@@ -89,8 +104,12 @@ function EditProfile() {
     };
 
     return (
+        <>
+        <div className="row p-3 m-5">
+			<div className="col-lg-8 co-md-6 col-sm-12 mx-auto">
+				<div className="card">
+					<div className="card-body">
         <form className="needs-validation m-5" noValidate ref={formRef}
-            style={{ width: '25%', border: "1px solid black", padding: "20px", borderRadius: '10px' }}
             onSubmit={(e) => e.preventDefault()}>
             <h1 className="text-center">Edit Profile</h1>
             {errorMsg2 && (<div className="alert alert-danger text-center" role="alert">
@@ -104,6 +123,16 @@ function EditProfile() {
                 Data changed successfully!
             </div>
             )}
+            <Modal
+                id="modal"
+                hidden={true} 
+                target="session-modal"
+                modal_title={"Session expired!"} 
+                modal_message={"Your login Session has expired, please login again"} 
+                modal_accept_text={"Go To Login"} 
+                modal_accept={() => history.push('/login')} 
+                modal_close={() => history.push('/login')} 
+            />
             <div className='d-flex justify-content-between gap-5'>
                 {['first_name','last_name'].map(field => (
                     <Input key={field} idn={field} inlabl={field.charAt(0).toUpperCase() + field.slice(1)}
@@ -123,6 +152,11 @@ function EditProfile() {
                 <Button bclr="primary" title1="Go Back" clck={() => history.push(`/profile`)} />
             </div>
         </form>
+        </div>
+                </div>
+            </div>
+        </div>
+        </>
     );
 }
 

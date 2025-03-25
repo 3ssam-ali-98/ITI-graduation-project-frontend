@@ -4,26 +4,36 @@ import Input from "../components/inputs"
 import { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
+import Modal from '../components/modal';
+
 
 function Addclient() {
 	const formRef = useRef();
-	// const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
-	const bussiness_id = useParams().bussiness_id;
+	// const usersdata = JSON.parse(sessionStorage.getItem('usersdata')) || []
+	// const bussiness_id = useParams().bussiness_id;
 	const history = useHistory();
-	const token = localStorage.getItem("token");
+	const token = sessionStorage.getItem("token");
+	const [successMsg, setSuccessMsg] = useState(false);
+	const [errorMsg, setErrorMsg] = useState('');
+	const id = sessionStorage.getItem("id");
 
-	const [clients, setclients] = useState([]);
 	useEffect(() => {
-		axios.get("http://127.0.0.1:8000/clients/", {
-			headers: {
-				Authorization: `Token ${token}`
-			}
-		})
+			if(!id)
+				history.push('/')
+		}, [id, history])
 
-			.then((responce) => setclients(responce.data))
-			.catch((err) => console.log(err))
-	}, [])
+	// const [clients, setclients] = useState([]);
+	// useEffect(() => {
+	// 	axios.get("http://127.0.0.1:8000/clients/", {
+	// 		headers: {
+	// 			Authorization: `Bearer ${token}`
+	// 		}
+	// 	})
+
+	// 		.then((responce) => setclients(responce.data))
+	// 		.catch((err) => console.log(err))
+	// },)
 
 	const [client, setclient] = useState({
 		name: '',
@@ -45,8 +55,8 @@ function Addclient() {
 			name: {
 				regex: namergx,
 				error: "please enter a valid name",
-				extraCheck: () => clients.some(client => client.name.toLowerCase() === value.toLowerCase()),
-				extraError: "client already exists"
+				// extraCheck: () => clients.some(client => client.name.toLowerCase() === value.toLowerCase()),
+				// extraError: "client already exists"
 			},
 			mail: { regex: mailrgx, error: "please enter a valid email" },
 			phone: { regex: phone_adrress_rgx, error: "Please enter a valid Phone number" },
@@ -119,20 +129,41 @@ function Addclient() {
 				},
 				{
 					headers: {
-						Authorization: `Token ${token}`
+						Authorization: `Bearer ${token}`
 					}
 				}
 			)
 				.then((response) => {
-					setclients((prevProducts) => [...prevProducts, response.data]);
-					history.push(`/${bussiness_id}/clients`);
+					// setclients((prevProducts) => [...prevProducts, response.data]);
+					setSuccessMsg(true);
+                	setErrorMsg('');
+					setTimeout(() => {
+						history.push(`/clients`);
+					}, 1000);
 				})
-				.catch((err) => console.log('Error adding product:', err))
+				.catch((error => {
+					if (error.response && error.response.status === 401) 
+					{
+						document.getElementById("modal").click();
+						sessionStorage.removeItem("token");
+						sessionStorage.removeItem("id");
+						sessionStorage.removeItem("role");
+						sessionStorage.removeItem("name");
+					} 
+					else if (error.response?.data)
+					{
+						const errors = error.response.data;
+						let errorMessages = ["Client creation failed due to the following:"];
+				
+	
+						Object.keys(errors).forEach((key) => {
+							errorMessages.push(`- ${key}: ${errors[key].join(", ")}`);
+						});
+				
+						setErrorMsg(errorMessages.join("\n"));
+					}    
+				}));
 
-			for (let element of formElements) {
-				const e = { target: element }
-				e.target.value = ""
-			}
 		}
 
 	}
@@ -150,7 +181,29 @@ function Addclient() {
 							<form className="needs-validation m-5" noValidate onSubmit={(e) => e.preventDefault()} ref={formRef}>
 								<div className="" >
 									<h1 style={{ textAlign: "center" }}>Add client</h1>
-
+									
+									{successMsg && (
+                                <div className="alert alert-success text-center" role="alert">
+                                    Client Added successfully! Redirecting...
+                                </div>
+                                )}
+                                {errorMsg && (
+                                <div className="alert alert-danger text-center" role="alert">
+                                    {errorMsg.split("\n").map((line, index) => (
+                                        <div key={index}>{line}</div>
+                                    ))}
+                                </div>
+                                )}
+								<Modal
+                                    id="modal"
+									target="session-modal"
+                                    hidden={true} 
+                                    modal_title={"Session expired!"} 
+                                    modal_message={"Your login Session has expired, please login again"} 
+                                    modal_accept_text={"Go To Login"} 
+                                    modal_accept={() => history.push('/login')} 
+                                    modal_close={() => history.push('/login')} 
+                                />
 									<Input
 										idn="name"
 										inlabl="Name"
@@ -186,7 +239,7 @@ function Addclient() {
 
 									<div className='d-flex justify-content-around' >
 										<Button bclr="success" title1="Add client" mar="15px" clck={valall} />
-										<Button bclr="primary" title1="Go Back" clck={() => history.push(`/${bussiness_id}/clients`)} />
+										<Button bclr="primary" title1="Go Back" clck={() => history.push(`/clients`)} />
 										{/* <Button bclr="primary" title1="login" clck={changepage}/> */}
 									</div>
 								</div>

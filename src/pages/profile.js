@@ -1,11 +1,13 @@
 import Button from "../components/button"
 // import Input from "../components/inputs"
 import { useHistory } from 'react-router-dom';
-import { useSelector} from 'react-redux';
+// import { useSelector} from 'react-redux';
 import profileicon from "../assets/blank-profile.png" 
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Modal2 from "../components/modal2" 
+import Modal from '../components/modal';
+
 
 
 function Profile(){
@@ -13,8 +15,14 @@ function Profile(){
     // const user = useSelector((state) => state.user.user)
     const [user, setUser] = useState({});
     console.log(user)
-    const id = useSelector((state) => state.user.user.id)
-    const token = localStorage.getItem("token");
+    const id = sessionStorage.getItem("id");
+    const token = sessionStorage.getItem("token");
+    useEffect(() => {
+                if(!id)
+                    history.push('/')
+            }, [id, history])
+    
+
     useEffect(() => {
             axios
                 .get(`http://127.0.0.1:8000/users/${id}/`, {
@@ -25,10 +33,17 @@ function Profile(){
                 .then((response) => {
                     setUser(response.data);
                 })
-                .catch((err) => {
-                    console.error("Error fetching client details:", err);
+                .catch((error) => {
+                   if (error.response && error.response.status === 401) 
+					{
+						document.getElementById("modal").click();
+						sessionStorage.removeItem("token");
+						sessionStorage.removeItem("id");
+						sessionStorage.removeItem("role");
+						sessionStorage.removeItem("name");
+					}
                 });
-            }, [id]);
+            }, [id, token]);
     return(
         <>
         <div className="d-flex flex-column justify-content-center">
@@ -37,6 +52,16 @@ function Profile(){
                         <img src={profileicon} style={{height: "250px"}} alt=''></img>
                     </div>
                     <div>
+                    <Modal
+                        id="modal"
+                        hidden={true} 
+                        target="session-modal"
+                        modal_title={"Session expired!"} 
+                        modal_message={"Your login Session has expired, please login again"} 
+                        modal_accept_text={"Go To Login"} 
+                        modal_accept={() => history.push('/login')} 
+                        modal_close={() => history.push('/login')} 
+                    />
                         <h1>User info</h1>
                         <hr></hr>
                         <div className="d-flex flex-row gap-5">

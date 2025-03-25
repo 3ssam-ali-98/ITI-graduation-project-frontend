@@ -1,25 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import Button from "../components/button";
 import Input from "../components/inputs";
 import axios from "axios";
+import Modal from '../components/modal';
+
 
 function EditTask() {
     const formRef = useRef();
     const history = useHistory();
     const { task_id } = useParams();
-    const businessId = useSelector((state) => state.user.user.id);
-    const token = localStorage.getItem("token");
+    // const businessId = useSelector((state) => state.user.user.id);
+    const token = sessionStorage.getItem("token");
 
     const [task, setTask] = useState(null);
     const [employees, setEmployees] = useState([]);
     const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg2, setErrorMsg2] = useState("");
     const [successMsg, setSuccessMsg] = useState(false);
+    const id = sessionStorage.getItem("id");
+    
+        useEffect(() => {
+                if(!id)
+                    history.push('/')
+            }, [id, history])
 
     useEffect(() => {
         axios.get(`http://127.0.0.1:8000/tasks/${task_id}/`, {
-            headers: { Authorization: `Token ${token}` }
+            headers: { Authorization: `Bearer ${token}` }
         })
             .then(response => {
                 const fetchedTask = response.data;
@@ -28,16 +37,32 @@ function EditTask() {
                     deadline: fetchedTask.deadline ? fetchedTask.deadline.slice(0, 16) : "" // Format for datetime-local input
                 });
             })
-            .catch(() => setErrorMsg("Error fetching task."));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) 
+					{
+						document.getElementById("modal").click();
+						sessionStorage.removeItem("token");
+						sessionStorage.removeItem("id");
+						sessionStorage.removeItem("role");
+						sessionStorage.removeItem("name");
+					}setErrorMsg("Error fetching task.")});
     }, [task_id, token]);
 
     useEffect(() => {
         axios.get("http://127.0.0.1:8000/employees/", {
-            headers: { Authorization: `Token ${token}` }
+            headers: { Authorization: `Bearer ${token}` }
         })
             .then(response => setEmployees(response.data))
-            .catch(() => setErrorMsg("Error fetching employees."));
-    }, []);
+            .catch((error) => {
+                if (error.response && error.response.status === 401) 
+					{
+						document.getElementById("modal").click();
+						sessionStorage.removeItem("token");
+						sessionStorage.removeItem("id");
+						sessionStorage.removeItem("role");
+						sessionStorage.removeItem("name");
+					}setErrorMsg("Error fetching employees.")});
+    },);
 
     if (!task) {
         return <div className="text-center text-danger">{errorMsg || "Loading task..."}</div>;
@@ -70,13 +95,35 @@ function EditTask() {
         };
 
         axios.put(`http://127.0.0.1:8000/tasks/${task_id}/`, updatedTask, {
-            headers: { Authorization: `Token ${token}` }
+            headers: { Authorization: `Bearer ${token}` }
         })
             .then(() => {
                 setSuccessMsg(true);
-                setTimeout(() => history.push(`/${businessId}/tasks`), 1000);
+                setErrorMsg2('');
+                setTimeout(() => history.push(`/tasks`), 1000);
             })
-            .catch(() => setErrorMsg("Error updating task."));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) 
+					{
+						document.getElementById("modal").click();
+						sessionStorage.removeItem("token");
+						sessionStorage.removeItem("id");
+						sessionStorage.removeItem("role");
+						sessionStorage.removeItem("name");
+					} 
+					else if (error.response?.data)
+					{
+						const errors = error.response.data;
+						let errorMessages = ["Client creation failed due to the following:"];
+				
+	
+						Object.keys(errors).forEach((key) => {
+							errorMessages.push(`- ${key}: ${errors[key].join(", ")}`);
+						});
+				
+						setErrorMsg2(errorMessages.join("\n"));
+					}
+            });
     };
 
     return (
@@ -87,6 +134,23 @@ function EditTask() {
                 {successMsg && (
                     <div className="alert alert-success text-center">Task updated successfully! Redirecting...</div>
                 )}
+                {errorMsg2 && (
+                <div className="alert alert-danger text-center" role="alert">
+                    {errorMsg2.split("\n").map((line, index) => (
+                        <div key={index}>{line}</div>
+                    ))}
+                </div>
+                )}
+                <Modal
+                    id="modal"
+                    hidden={true} 
+                    target="session-modal"
+                    modal_title={"Session expired!"} 
+                    modal_message={"Your login Session has expired, please login again"} 
+                    modal_accept_text={"Go To Login"} 
+                    modal_accept={() => history.push('/login')} 
+                    modal_close={() => history.push('/login')} 
+                />
 
                 <Input 
                     idn="name" 

@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { useParams } from 'react-router-dom';
-import Button from "./button";
-import { useHistory } from "react-router-dom";
+// import { useParams } from 'react-router-dom';
+// import Button from "./button";
+// import { useHistory } from "react-router-dom";
 import Modal from "./modal";
 import { useState } from "react";
 
 function Tablec({ clients, deleteclientHandler, pagesnumber }) {
-  const { bussiness_id } = useParams();
+  // const { bussiness_id } = useParams();
   // const history = useHistory();
   const [clientId, setProductId] = useState(null);
 
@@ -19,7 +19,7 @@ function Tablec({ clients, deleteclientHandler, pagesnumber }) {
   }
 
   const moreDetails = (client_id) => {
-    return `/${bussiness_id}/clients/${client_id}`
+    return `/clients/${client_id}`
   }
 
   return (
@@ -46,9 +46,10 @@ function Tablec({ clients, deleteclientHandler, pagesnumber }) {
               <td className="d-flex justify-content-around align-items-center">
                 <Modal 
                   modal_button_text={"Delete"} 
+                  target="delete-modal"
                   modal_title={"Removal Confirmation"} 
                   modal_message={"Are you sure you want to delete?"} 
-                  modal_reject_text={"No, Canecl"} 
+                  modal_reject_text={"No, Cancel"} 
                   modal_accept_text={"Yes, I am sure"} 
                   modal_button={() => getclientid(client.id)} 
                   modal_accept={() => deletclient(clientId)} 

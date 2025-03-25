@@ -10,7 +10,7 @@ import axios from "axios";
 function Register(){
     
     const formRef = useRef();
-    const usersdata = JSON.parse(localStorage.getItem('usersdata')) || []
+    const usersdata = JSON.parse(sessionStorage.getItem('usersdata')) || []
     const [errorMsg, setErrorMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState(false);
     
@@ -266,7 +266,11 @@ function Register(){
 
     return(
         <>
-            <form className="needs-validation m-5" noValidate style={{width: '25%', border: "1px solid black", padding: "20px", borderRadius: '10px'}} onSubmit={(e) => e.preventDefault()} ref={formRef}>
+        <div className="row p-3 m-5">
+			<div className="col-lg-8 co-md-6 col-sm-12 mx-auto">
+				<div className="card">
+					<div className="card-body">
+            <form className="needs-validation m-5" noValidate onSubmit={(e) => e.preventDefault()} ref={formRef}>
                 <div className="" >
                     <h1 style={{textAlign: "center"}}>Register</h1>
 
@@ -311,6 +315,10 @@ function Register(){
                     </div>
                 </div>
             </form>
+            </div>
+                </div>
+            </div>
+        </div>
         </>
     )
 

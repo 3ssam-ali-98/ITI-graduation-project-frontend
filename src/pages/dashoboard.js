@@ -1,18 +1,28 @@
 import PrimaryInfoCard from "../components/PrimaryInfoCard";
-import SecondryInfoCard from "../components/SecondryInfoCard";
-import clockIcon from "../assets/clock-icon.png"
-import walletIcon from "../assets/wallet-icon.png"
-import DashboardCard2 from "../components/DashboardCard2";
-import DashboardCard3 from "../components/DashboardCard3";
-import DashboardCard4 from "../components/DashboardCard4";
+// import SecondryInfoCard from "../components/SecondryInfoCard";
+// import clockIcon from "../assets/clock-icon.png"
+// import walletIcon from "../assets/wallet-icon.png"
+// import DashboardCard2 from "../components/DashboardCard2";
+// import DashboardCard3 from "../components/DashboardCard3";
+// import DashboardCard4 from "../components/DashboardCard4";
 import { useSelector} from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Dashboard() {
 
 
 	const name = useSelector((state) => state.user.user.name)
-  const id = useSelector((state) => state.user.user.id)
+  	// const id = useSelector((state) => state.user.user.id)
 	const state = useSelector((state) => state);
+	const id = sessionStorage.getItem("id");
+	const history = useHistory();
+	
+	
+		useEffect(() => {
+				if(!id)
+					history.push('/')
+			}, [id, history])
 
 	console.log(state);
 

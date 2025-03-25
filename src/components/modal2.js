@@ -6,10 +6,10 @@ function Modal2(props) {
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [retypePassword, setRetypePassword] = useState("");
-	const token = localStorage.getItem("token");
+	const token = sessionStorage.getItem("token");
     const [errorMsg, setErrorMsg] = useState("");
     const [errorMsg2, setErrorMsg2] = useState("");
-    const id = localStorage.getItem("id");
+    const id = sessionStorage.getItem("id");
     const [successMsg, setSuccessMsg] = useState(false);
     
 
@@ -28,7 +28,7 @@ function Modal2(props) {
                 password: currentPassword,
             },{
                 headers: {
-                    Authorization: `Token ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             });
 
@@ -57,7 +57,7 @@ function Modal2(props) {
                 password: newPassword,
             },{
                 headers: {
-                    Authorization: `Token ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             }).then((response) => {
                 setSuccessMsg(true);

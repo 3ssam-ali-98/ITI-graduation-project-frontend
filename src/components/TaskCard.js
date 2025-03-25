@@ -1,24 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "../components/button";
 import Modal from "../components/modal";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 
-function TaskCard({ task, onDelete }) {
-    const user = useSelector((state) => state.user.user);
-    const businessId = user?.business?.id;
+function TaskCard({ task, deletetaskHandler }) {
+    // const user = useSelector((state) => state.user.user);
+    // const businessId = user?.business?.id;
     const history = useHistory();
-    const token = localStorage.getItem("token");
-    const [showAlert, setShowAlert] = useState(false);
-    const userRole = localStorage.getItem("role");
+    // const token = sessionStorage.getItem("token");
+    // const [showAlert, setShowAlert] = useState(false);
+    const userRole = sessionStorage.getItem("role");
     const isOwner = userRole === "Business Owner";
+    const [TaskId, setTaskId] = useState(null);
 
-    useEffect(() => {
-        if (window.bootstrap) {
-            window.bootstrap.Modal.getOrCreateInstance(document.getElementById(`deleteTaskModal-${task.id}`));
-        }
-    }, [task.id]);
+    const gettaskid = (e) => {
+        setTaskId(e)
+    }
+
+    const delettask = (e) => {
+        deletetaskHandler(e)
+    }
+
+    // useEffect(() => {
+    //     if (window.bootstrap) {
+    //         window.bootstrap.Modal.getOrCreateInstance(document.getElementById(`deleteTaskModal-${task.id}`));
+    //     }
+    // }, [task.id]);
 
     const formatDate = (dateString) => {
         if (!dateString) return "No deadline";
@@ -35,39 +44,38 @@ function TaskCard({ task, onDelete }) {
         }).format(date);
     };
 
-    const deleteTask = async () => {
-        if (!token) {
-            alert("Unauthorized: Please log in first.");
-            return;
-        }
 
-        try {
-            await axios.delete(`http://127.0.0.1:8000/tasks/${task.id}/`, {
-                headers: { Authorization: `Token ${token}` }
-            });
-            setShowAlert(true);
-            setTimeout(() => {
-                setShowAlert(false);
-                onDelete(task.id);
-            }, 2000);
-        } catch (error) {
-            console.error("Error deleting task:", error);
-            alert("Error deleting task. Please try again.");
-        }
-    };
+    //     try {
+    //          axios.delete(`http://127.0.0.1:8000/tasks/${e}/`, {
+    //             headers: { Authorization: `Bearer ${token}` }
+    //         }).then((response) => {
+    //             console.log('Product deleted:', response.data)
+    //             setShowAlert(true);
+    //             setTimeout(() => {
+    //             setShowAlert(false);
+    //         }, 1000);
+    //           }) 
+    //     } catch (error) {
+    //         console.error("Error deleting task:", error);
+    //         alert("Error deleting task. Please try again.");
+    //     }
+    // };
 
-    const handleDeleteClick = () => {
-        const modal = new window.bootstrap.Modal(document.getElementById(`deleteTaskModal-${task.id}`));
-        modal.show();
-    };
+    // const handleDeleteClick = () => {
+    //     const modal = new window.bootstrap.Modal(document.getElementById(`deleteTaskModal-${task.id}`));
+    //     modal.show();
+    // };
 
     return (
+        <>
+        {task.map((task ,index) => (
+            <div key={task.id} className="col-lg-4 col-md-6">
         <div className="card shadow-lg border-0 rounded-4 p-4">
-            {showAlert && (
+            {/* {showAlert && (
                 <div className="alert alert-success text-center fw-bold" role="alert">
                     ✅ Task deleted successfully
                 </div>
-            )}
+            )} */}
 
             <h4 className="card-title fw-bold text-center text-primary">{task.name}</h4>
             <hr />
@@ -98,7 +106,7 @@ function TaskCard({ task, onDelete }) {
                     bclr="info" 
                     title1="View Details" 
                     mar="10px" 
-                    clck={() => history.push(`/${businessId}/tasks/${task.id}`)} 
+                    clck={() => history.push(`/tasks/${task.id}`)} 
                 />
                 {isOwner && (
                     <>
@@ -106,27 +114,34 @@ function TaskCard({ task, onDelete }) {
                             bclr="primary" 
                             title1="Edit Task" 
                             mar="10px" 
-                            clck={() => history.push(`/${businessId}/edit-task/${task.id}`)} 
+                            clck={() => history.push(`/edit-task/${task.id}`)} 
                         />
-                        <Button 
+                        {/* <Button 
                             bclr="danger" 
                             title1="Delete Task" 
                             mar="10px" 
                             clck={handleDeleteClick} 
+                        /> */}
+                        <Modal 
+                        modal_id={`deleteTaskModal-${TaskId}`} 
+                        target="delete-modal"
+                        modal_button_text="Delete Task"
+                        modal_title="Confirm Deletion" 
+                        modal_message={`Are you sure you want to delete this task?`} 
+                        modal_reject_text="Cancel" 
+                        modal_accept_text="Delete" 
+                        modal_button={() => gettaskid(task.id)}
+                        modal_accept={() => delettask(TaskId)} 
                         />
                     </>
                 )}
             </div>
 
-            <Modal 
-                modal_id={`deleteTaskModal-${task.id}`} 
-                modal_title="Confirm Deletion" 
-                modal_message={`Are you sure you want to delete the task: "${task.name}"?`} 
-                modal_reject_text="Cancel" 
-                modal_accept_text="Delete" 
-                modal_accept={deleteTask} 
-            />
         </div>
+        </div>
+       
+        ))}
+        </>
     );
 }
 

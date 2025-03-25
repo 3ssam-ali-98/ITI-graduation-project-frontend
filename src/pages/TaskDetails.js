@@ -2,31 +2,46 @@ import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import Button from "../components/button";
+import Modal from '../components/modal';
+
 
 function TaskDetails() {
-    const { task_id, bussiness_id } = useParams();
+    const { task_id} = useParams();
     const history = useHistory();
     const [task, setTask] = useState(null);
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
+    const id = sessionStorage.getItem("id");
+    
+        useEffect(() => {
+                if(!id)
+                    history.push('/')
+            }, [id, history])
 
     useEffect(() => {
         axios.get(`http://127.0.0.1:8000/tasks/${task_id}/`, {
             headers: {
-                Authorization: `Token ${token}`
+                Authorization: `Bearer ${token}`
             }
         })
         .then(response => {
             setTask(response.data);
         })
         .catch(error => {
-            console.error("Error fetching task details:", error);
+            if (error.response && error.response.status === 401) 
+                {
+                    document.getElementById("modal").click();
+                    sessionStorage.removeItem("token");
+                    sessionStorage.removeItem("id");
+                    sessionStorage.removeItem("role");
+                    sessionStorage.removeItem("name");
+                } 
         });
     }, [task_id, token]);
 
     const markAsCompleted = () => {
         axios.patch(`http://127.0.0.1:8000/tasks/${task_id}/`, { completed: true }, {
             headers: {
-                Authorization: `Token ${token}`,
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             }
         })
@@ -34,7 +49,14 @@ function TaskDetails() {
             setTask(response.data);
         })
         .catch(error => {
-            console.error("Error updating task status:", error);
+            if (error.response && error.response.status === 401) 
+                {
+                    document.getElementById("modal").click();
+                    sessionStorage.removeItem("token");
+                    sessionStorage.removeItem("id");
+                    sessionStorage.removeItem("role");
+                    sessionStorage.removeItem("name");
+                } 
         });
     };
 
@@ -60,6 +82,16 @@ function TaskDetails() {
             {/* Title */}
             <h2 className="fw-bold text-center text-primary">{task.name}</h2>
             <hr />
+            <Modal
+                id="modal"
+                target="session-modal"
+                hidden={true} 
+                modal_title={"Session expired!"} 
+                modal_message={"Your login Session has expired, please login again"} 
+                modal_accept_text={"Go To Login"} 
+                modal_accept={() => history.push('/login')} 
+                modal_close={() => history.push('/login')} 
+            />
 
             {/* Task Details */}
             <div className="mb-3">
@@ -88,7 +120,7 @@ function TaskDetails() {
                 <Button 
                     bclr="secondary" 
                     title1="Back to Tasks" 
-                    clck={() => history.push(`/${bussiness_id}/tasks`)} 
+                    clck={() => history.push(`/tasks`)} 
                 />
             </div>
         </div>

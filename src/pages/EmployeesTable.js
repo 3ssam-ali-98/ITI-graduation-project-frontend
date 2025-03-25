@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Tablec from "../components/Tablec";
+// import Tablec from "../components/Tablec";
 import PaginationBtn from "../components/PaginationBtn";
 import Button from "../components/button";
-import { useHistory, Link, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Modal from "../components/modal";
+
 
 
 function EmployeesTable() {
@@ -14,10 +15,17 @@ function EmployeesTable() {
 	const [totalPages, setTotalPages] = useState(1);
 	const [employeesPerPage] = useState(10);
 	const [filteredEmployees, setFilteredEmployees] = useState(employees);
-	const [searchQuery, setSearchQuery] = useState('');
+	
+	// const [searchQuery, setSearchQuery] = useState('');
 	const history = useHistory();
-	const { bussiness_id } = useParams();
-	const token = localStorage.getItem("token");
+	// const { bussiness_id } = useParams();
+	const token = sessionStorage.getItem("token");
+	const id = sessionStorage.getItem("id");
+	
+		useEffect(() => {
+				if(!id)
+					history.push('/')
+			}, [id, history])
 
 	const fetchEmployees = () => {
 		axios.get("http://127.0.0.1:8000/employees/",
@@ -33,8 +41,15 @@ function EmployeesTable() {
 				setTotalPages(Math.ceil(totalEmployees.length / employeesPerPage));
 				setLoading(false);
 			})
-			.catch((err) => {
-				console.error("Error fetching employees:", err);
+			.catch((error) => {
+				if (error.response && error.response.status === 401) 
+					{
+						document.getElementById("modal").click();
+						sessionStorage.removeItem("token");
+						sessionStorage.removeItem("id");
+						sessionStorage.removeItem("role");
+						sessionStorage.removeItem("name");
+					} 
 				setLoading(false);
 			});
 	}
@@ -42,7 +57,7 @@ function EmployeesTable() {
 	useEffect(() => {
 
 		fetchEmployees();
-	}, []);
+	},[]);
 
 	const deleteEmployeeHandler = (e) => {
 
@@ -55,7 +70,16 @@ function EmployeesTable() {
 			.then((response) => {
 				fetchEmployees();
 			})
-			.catch((err) => console.log('Error deleting Employee:', err))
+			.catch((error) => {
+				if (error.response && error.response.status === 401) 
+					{
+						document.getElementById("modal").click();
+						sessionStorage.removeItem("token");
+						sessionStorage.removeItem("id");
+						sessionStorage.removeItem("role");
+						sessionStorage.removeItem("name");
+					}
+			})
 	}
 
 	const indexOfLastEmployee = currentPage * employeesPerPage;
@@ -68,7 +92,7 @@ function EmployeesTable() {
 
 	const searchfunc = (e) => {
 		const query = e.target.value.toLowerCase();
-		setSearchQuery(query);
+		// setSearchQuery(query);
 
 		const filtered = employees.filter(emp =>
 			emp.name.toLowerCase().includes(query)
@@ -93,9 +117,19 @@ function EmployeesTable() {
 							<button class="btn btn-outline-primary" type="submit">Search</button>
 						</form>
 					</div>
+					<Modal
+						id="modal"
+						hidden={true} 
+						target="session-modal"
+						modal_title={"Session expired!"} 
+						modal_message={"Your login Session has expired, please login again"} 
+						modal_accept_text={"Go To Login"} 
+						modal_accept={() => history.push('/login')} 
+						modal_close={() => history.push('/login')} 
+					/>
 
 					<div className="d-flex justify-content-center align-items-center mt-3">
-						<Button bclr={"success"} title1={"Add employee"} clck={() => history.push(`/${bussiness_id}/add-employee`)} />
+						<Button bclr={"success"} title1={"Add employee"} clck={() => history.push(`/add-employee`)} />
 					</div>   
 
 					<table className="table table-responsive table-striped table-bordered " style={{ borderColor: "#4D869C", color: "#4D869C", }}>
@@ -111,16 +145,17 @@ function EmployeesTable() {
 								{currentEmployees.map((employee, index) => (
 								<tr style={{ borderBottom: "1px solid #7AB2B2" }}>
 									<td>
-											{employee.username}
+											{employee.first_name} {employee.last_name}
 									</td>
 									<td>{employee.mobile_phone}</td>
 									<td>{employee.email}</td>
 									<td className="d-flex justify-content-around align-items-center">
 										<Modal
 											modal_button_text={"Delete"}
+											target="delete-modal"
 											modal_title={"Removal Confirmation"}
 											modal_message={"Are you sure you want to delete?"}
-											modal_reject_text={"No, Canecl"}
+											modal_reject_text={"No, Cancel"}
 											modal_accept_text={"Yes, I am sure"}
 											modal_accept={() => deleteEmployeeHandler(employee.id)}
 										/>

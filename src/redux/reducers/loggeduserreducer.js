@@ -1,7 +1,11 @@
 const INITIAL_VALUE = {
-	user: { role: "", name: "", id: "", token: "" }
-}
-
+	user: {
+		role: sessionStorage.getItem("role") || "",
+		name: sessionStorage.getItem("name") || "",
+		id: sessionStorage.getItem("id") || "",
+		token: sessionStorage.getItem("token") || ""
+	}
+};
 export function loggeduser(state = INITIAL_VALUE, action) {
 	console.log("Reducer action triggered:", action);  // Log the action
 	switch (action.type) {
