@@ -70,11 +70,9 @@ function ClientTable() {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
 
-
     const filtered = clients.filter(client =>
       client.name.toLowerCase().includes(query)
     );
-
 
     setFilteredClients(filtered);
     setTotalPages(Math.ceil(filtered.length / clientsPerPage));

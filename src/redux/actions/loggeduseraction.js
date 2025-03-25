@@ -1,9 +1,4 @@
-export const loggedUser = (payload) => ({
-    type: "user",
-    payload
-  });
-
-  // export const Userid = (payload) => ({
-  //   type: "id",
-  //   payload
-  // });
+export const loggedUser = (user) => ({
+  type: "user",
+  payload: user,
+});

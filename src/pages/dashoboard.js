@@ -24,18 +24,18 @@ function Dashboard() {
 				<PrimaryInfoCard ownerName={name} cardPercent="72" businessId={id} />
 					<div className="col-lg-4 col-md-4 order-1">
 						<div className="row">
-							<SecondryInfoCard cardHeader="Profit" cardNumber="12,628" cardPercentage="72.34" cardIcon={clockIcon} />
-							<SecondryInfoCard cardHeader="Sales" cardNumber="4,679" cardPercentage="28.42" cardIcon={walletIcon} />
+							{/* <SecondryInfoCard cardHeader="Profit" cardNumber="12,628" cardPercentage="72.34" cardIcon={clockIcon} /> */}
+							{/* <SecondryInfoCard cardHeader="Sales" cardNumber="4,679" cardPercentage="28.42" cardIcon={walletIcon} /> */}
 						</div>
 					</div>
 				
 			</div>
 
-			<div className="row mb-5">
+			{/* <div className="row mb-5">
 				<DashboardCard2 totalOrders="8,258" totalSales="42.82" cardNumber1="82.5" cardNumber2="23.8" cardNumber3="849" cardNumber4="99" />
 				<DashboardCard3 cardNumber1="234.21" cardNumber2="443.99" cardNumber3="87.11" cardNumber4="121.5" />
 				<DashboardCard4 cardNumber="84,686k" cardPercent="68.2" />
-			</div>
+			</div> */}
 
 		</div>
 		</>
