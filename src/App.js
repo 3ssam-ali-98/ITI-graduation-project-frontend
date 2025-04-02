@@ -20,6 +20,8 @@ import EmployeesTable from './pages/EmployeesTable';
 import EditProfile from './pages/editprofile';
 import TaskDetails from "./pages/TaskDetails";
 import Analytics from './pages/Analytics';
+import PremiumPage from './pages/PremiumPage';
+
 
 
 function App() {
@@ -51,6 +53,7 @@ function App() {
                   <Route exact path="/employees" component={EmployeesTable} />
                   <Route exact path="/add-employee" component={AddEmployee}/>
                   <Route exact path="/analytics" component={Analytics} />
+                  <Route exact path="/premium" component={PremiumPage}/>
                 {/* </div> */}
               </div>
             </Switch>
