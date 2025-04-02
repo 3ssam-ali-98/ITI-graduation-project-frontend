@@ -39,12 +39,15 @@ function Navbar() {
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#hero-section">Home</HashLink></li>
                         <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#services">Services</HashLink></li>
+                        <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#pricing">Pricing</HashLink></li>
                         <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#about">About Us</HashLink></li>
                         <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#contact">Contact Us</HashLink></li>
                     </ul>
                     <div className="d-flex gap-2">
                     {name ? null : (<button className="btn btn-light" onClick={() => history.push('/login')}>Login</button>)}
                     {name ? null : (<button className="btn btn-primary" onClick={() => history.push('/register')}>Register</button>)}
+                    {/* {name && <button className="btn btn-warning" onClick={() => history.push('/premium')}>Go Premium</button>} */}
+                    <button className="btn btn-warning" onClick={() => history.push('/premium')}>Go Premium</button>
                     {name && (<button className="btn btn-danger m-2" onClick={logout}>Log out</button>)}
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import Services from './Services';
 import AboutUs from './AboutUs';
 import ContactUs from './ContactUs';
 import Footer from './Footer';
-
+import Pricing from './Pricing';
 
 function LandingPage() {
 	return (
@@ -11,6 +11,7 @@ function LandingPage() {
 		<div className=''>
 			<HeroSection />
 			<Services />
+			<Pricing />			
 			<AboutUs />
 			<ContactUs />
 			<Footer />
