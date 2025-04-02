@@ -8,6 +8,8 @@ import PrimaryInfoCard from "../components/PrimaryInfoCard";
 import { useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
+import axios from "axios";
+import MyCard from "../components/MyCard";
 
 function Dashboard() {
 
@@ -27,6 +29,16 @@ function Dashboard() {
 
 	// console.log(state);
 
+	useEffect(() => {
+        axios.get("/api/task-insights/")
+            .then((response) => {
+                console.log("Task insights fetched:", response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching task insights:", error);
+            });
+    }, []);
+
 	return (
 		<>
 		<div className="container">
@@ -34,13 +46,16 @@ function Dashboard() {
 			<div className="row mt-5">
 				<PrimaryInfoCard ownerName={name} cardPercent="72" role={role} />
 					<div className="col-lg-4 col-md-4 order-1">
+					
+
 						<div className="row">
 							{/* <SecondryInfoCard cardHeader="Profit" cardNumber="12,628" cardPercentage="72.34" cardIcon={clockIcon} /> */}
 							{/* <SecondryInfoCard cardHeader="Sales" cardNumber="4,679" cardPercentage="28.42" cardIcon={walletIcon} /> */}
 						</div>
 					</div>
-				
+					<MyCard />
 			</div>
+
 
 			{/* <div className="row mb-5">
 				<DashboardCard2 totalOrders="8,258" totalSales="42.82" cardNumber1="82.5" cardNumber2="23.8" cardNumber3="849" cardNumber4="99" />

@@ -19,6 +19,7 @@ import Profile from './pages/profile';
 import EmployeesTable from './pages/EmployeesTable'; 
 import EditProfile from './pages/editprofile';
 import TaskDetails from "./pages/TaskDetails";
+import Analytics from './pages/Analytics';
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
                   <Route exact path="/edit-profile" component={EditProfile}/>
                   <Route exact path="/employees" component={EmployeesTable} />
                   <Route exact path="/add-employee" component={AddEmployee}/>
+                  <Route exact path="/analytics" component={Analytics} />
                 {/* </div> */}
               </div>
             </Switch>
