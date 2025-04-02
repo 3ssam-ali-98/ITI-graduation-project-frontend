@@ -21,6 +21,7 @@ import EditProfile from './pages/editprofile';
 import TaskDetails from "./pages/TaskDetails";
 import Analytics from './pages/Analytics';
 import PremiumPage from './pages/PremiumPage';
+import PaymentSuccess from './pages/paymentsucess';
 
 
 
@@ -54,6 +55,7 @@ function App() {
                   <Route exact path="/add-employee" component={AddEmployee}/>
                   <Route exact path="/analytics" component={Analytics} />
                   <Route exact path="/premium" component={PremiumPage}/>
+                  <Route path="/payment-success" component={PaymentSuccess} />
                 {/* </div> */}
               </div>
             </Switch>

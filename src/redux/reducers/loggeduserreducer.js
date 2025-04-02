@@ -3,7 +3,9 @@ const INITIAL_VALUE = {
 		role: sessionStorage.getItem("role") || "",
 		name: sessionStorage.getItem("name") || "",
 		id: sessionStorage.getItem("id") || "",
-		token: sessionStorage.getItem("token") || ""
+		token: sessionStorage.getItem("token") || "",
+		is_premuim: sessionStorage.getItem("is_premuim") || ""
+
 	}
 };
 export function loggeduser(state = INITIAL_VALUE, action) {

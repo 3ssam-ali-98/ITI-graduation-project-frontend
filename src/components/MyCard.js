@@ -11,7 +11,7 @@ function MyCard({ isPremium }) {
 
   return (
     <div>
-      <h2>Business Analytics</h2>
+      {/* <h2>Business Analytics</h2> */}
       {/* Display summary analytics here */}
       {!isPremium && <button onClick={handlePremiumClick}>Premium</button>}
     </div>

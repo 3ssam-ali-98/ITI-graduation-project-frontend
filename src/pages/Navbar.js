@@ -12,7 +12,8 @@ function Navbar() {
         sessionStorage.removeItem("id");
         sessionStorage.removeItem("role");
         sessionStorage.removeItem("name");
-        history.push('/login')
+        sessionStorage.removeItem("is_premium");
+        history.push('/')
         // dispatch(Userid(''))
     }
 
@@ -32,6 +33,7 @@ function Navbar() {
                 {name && (<div className="d-flex flex-row">
                     <button className="nav-link text-white" onClick={() => history.push(`/profile`)} style={{marginRight : '10px'}}>Welcome back, {name.split(" ")[0]}</button> 
                     <button className="nav-link text-white" style={{marginRight : '10px'}} onClick={() => history.push(`/dashboard`)}>Buissness insights</button>
+                    {name &&(<button className="btn btn-warning" onClick={() => history.push('/premium')}>Go Premium</button>)}
                     {/* <button className="nav-link text-white" onClick={() => history.push(`/${id}/add-employee`)} style={{marginRight : '10px'}}>Add employee</button> */}
 
                 </div>)}
@@ -47,7 +49,6 @@ function Navbar() {
                     {name ? null : (<button className="btn btn-light" onClick={() => history.push('/login')}>Login</button>)}
                     {name ? null : (<button className="btn btn-primary" onClick={() => history.push('/register')}>Register</button>)}
                     {/* {name && <button className="btn btn-warning" onClick={() => history.push('/premium')}>Go Premium</button>} */}
-                    <button className="btn btn-warning" onClick={() => history.push('/premium')}>Go Premium</button>
                     {name && (<button className="btn btn-danger m-2" onClick={logout}>Log out</button>)}
                     </div>
                 </div>

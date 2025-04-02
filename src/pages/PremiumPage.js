@@ -1,8 +1,33 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+
 
 function PremiumPage() {
     const history = useHistory();
+    const token = sessionStorage.getItem("token");
+    console.log(token)
+
+
+    const handleUpgrade = async () => {
+        try { 
+            const response = await axios.post(
+                "http://127.0.0.1:8000/payment/", 
+                {},
+                {
+                    headers: { 
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+    
+            if (response.data.approval_url) {
+                window.location.href = response.data.approval_url;
+            }
+        } catch (error) {
+            console.error("Payment error:", error);
+        }
+    };
 
     return (
         <div className="container mt-5">
@@ -30,12 +55,13 @@ function PremiumPage() {
 
             <div className="text-center mt-4">
                 <h3>Payment Method</h3>
-                <button className="btn btn-success me-2" onClick={() => alert("Redirecting to PayPal...")}>Pay with PayPal</button>
-                <button className="btn btn-primary" onClick={() => alert("Redirecting to Stripe...")}>Pay with Credit Card</button>
+                <button className="btn btn-success me-2" onClick={handleUpgrade}>Pay with PayPal</button>
+                
+                {/* <button className="btn btn-primary" onClick={() => alert("Redirecting to Stripe...")}>Pay with Credit Card</button> */}
             </div>
 
             <div className="text-center mt-4">
-                <button className="btn btn-secondary" onClick={() => history.push("/")}>Go Back</button>
+                <button className="btn btn-secondary" onClick={() => history.push('/')}>Go Back</button>
             </div>
         </div>
     );

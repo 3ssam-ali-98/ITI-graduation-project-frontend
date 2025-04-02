@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from "axios";
 import MyCard from "../components/MyCard";
+import Pricing from "./Pricing";
 
 function Dashboard() {
 
@@ -19,6 +20,8 @@ function Dashboard() {
 	// const state = useSelector((state) => state);
 	const id = sessionStorage.getItem("id");
 	const role = sessionStorage.getItem("role");
+	const is_premium = sessionStorage.getItem("is_premuim") === "true";
+	console.log(is_premium);
 	const history = useHistory();
 	
 	
@@ -29,15 +32,15 @@ function Dashboard() {
 
 	// console.log(state);
 
-	useEffect(() => {
-        axios.get("/api/task-insights/")
-            .then((response) => {
-                console.log("Task insights fetched:", response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching task insights:", error);
-            });
-    }, []);
+	// useEffect(() => {
+    //     axios.get("/api/task-insights/")
+    //         .then((response) => {
+    //             console.log("Task insights fetched:", response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error fetching task insights:", error);
+    //         });
+    // }, []);
 
 	return (
 		<>
@@ -53,7 +56,10 @@ function Dashboard() {
 							{/* <SecondryInfoCard cardHeader="Sales" cardNumber="4,679" cardPercentage="28.42" cardIcon={walletIcon} /> */}
 						</div>
 					</div>
-					<MyCard />
+					<h2>Business Analytics</h2>
+					{is_premium ? <MyCard /> : <Pricing />}
+					{/* {is_premium === true && <MyCard />}
+					{is_premium === false && (<Pricing />)} */}
 			</div>
 
 

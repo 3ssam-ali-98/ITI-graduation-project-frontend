@@ -84,11 +84,12 @@ function Login(){
         })
         .then(response => {
             console.log('User registered successfully:', response.data);
-            dispatch(loggedUser({role : response.data.user_type, name : response.data.user_name, id : response.data.user_id}))
+            dispatch(loggedUser({role : response.data.user_type, name : response.data.user_name, id : response.data.user_id, is_premuim : response.data.is_premuim}))
             sessionStorage.setItem("token", response.data.token);
             sessionStorage.setItem("id", response.data.user_id);
             sessionStorage.setItem("role", response.data.user_type);
             sessionStorage.setItem("name", response.data.user_name);
+            sessionStorage.setItem("is_premuim", response.data.is_premuim);
             navigate.push('/');  
         })
         .catch(error => {

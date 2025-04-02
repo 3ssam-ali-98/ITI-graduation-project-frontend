@@ -34,7 +34,7 @@ function Analytics() {
             }
 
             // Proceed with the API request if token is valid
-            axios.get("/api/tasks-analytics/", {
+            axios.get("http://127.0.0.1:8000/tasks-analytics/", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
