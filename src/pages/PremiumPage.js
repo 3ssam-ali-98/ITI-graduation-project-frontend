@@ -4,67 +4,109 @@ import axios from "axios";
 
 
 function PremiumPage() {
-    const history = useHistory();
-    const token = sessionStorage.getItem("token");
-    console.log(token)
+	const history = useHistory();
+	const token = sessionStorage.getItem("token");
+	const handleUpgrade = async () => {
+		try {
+			console.log("Starting payment process...");
+			const response = await axios.post(
+				"http://127.0.0.1:8000/payment/",
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
+			console.log("Payment API response:", response.data);
 
-    const handleUpgrade = async () => {
-        try { 
-            const response = await axios.post(
-                "http://127.0.0.1:8000/payment/", 
-                {},
-                {
-                    headers: { 
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            );
-    
-            if (response.data.approval_url) {
-                window.location.href = response.data.approval_url;
-            }
-        } catch (error) {
-            console.error("Payment error:", error);
-        }
-    };
+			if (response.data.approval_url) {
+				console.log("Opening payment window...");
+				const paymentWindow = window.open(response.data.approval_url, "_blank", "width=800,height=600");
 
-    return (
-        <div className="container mt-5">
-            <h1 className="text-center text-primary">Go Premium</h1>
-            <p className="text-center">Upgrade to premium and unlock powerful features!</p>
+				// Define the message handler
+				const handleMessage = (event) => {
+					console.log("Received message from popup:", event);
 
-            <div className="row mt-4">
-                <div className="col-md-6">
-                    <h3>Premium Benefits</h3>
-                    <ul className="list-group">
-                        <li className="list-group-item">✔ Get email notifications when an employee is assigned a task</li>
-                        <li className="list-group-item">✔ Advanced task analysis and performance insights</li>
-                        <li className="list-group-item">✔ Priority support and dedicated assistance</li>
-                        <li className="list-group-item">✔ Access to premium reports and dashboards</li>
-                    </ul>
-                </div>
-                <div className="col-md-6">
-                    <h3>Pricing</h3>
-                    <div className="card p-3 shadow">
-                        <h4 className="text-center">$9.99/month</h4>
-                        <p className="text-center">Cancel anytime.</p>
-                    </div>
-                </div>
-            </div>
+					if (event.origin !== "http://127.0.0.1:8000") {
+						console.warn("Ignored message from unauthorized origin:", event.origin);
+						return;
+					}
 
-            <div className="text-center mt-4">
-                <h3>Payment Method</h3>
-                <button className="btn btn-success me-2" onClick={handleUpgrade}>Pay with PayPal</button>
-                
-                {/* <button className="btn btn-primary" onClick={() => alert("Redirecting to Stripe...")}>Pay with Credit Card</button> */}
-            </div>
+					try {
+						const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
+						console.log("Parsed message data:", data);
 
-            <div className="text-center mt-4">
-                <button className="btn btn-secondary" onClick={() => history.push('/')}>Go Back</button>
-            </div>
-        </div>
-    );
+						if (data && data.message === "Payment successful, business upgraded.") {
+							console.log("Payment successful, closing popup and redirecting...");
+							window.removeEventListener("message", handleMessage);
+							clearInterval(checkPopup); // Ensure the interval is cleared
+							if (paymentWindow) paymentWindow.close();
+							history.push("/dashboard/");
+						} else {
+							console.warn("Unexpected message data:", data);
+						}
+					} catch (err) {
+						console.error("Error parsing message data:", err);
+					}
+				};
+
+				// Debugging: Check if the popup window is loaded and sending messages
+				const checkPopup = setInterval(() => {
+					if (paymentWindow.closed) {
+						console.log("Popup window closed by user.");
+						clearInterval(checkPopup);
+						window.removeEventListener("message", handleMessage); // Remove listener when popup is closed
+					}
+				}, 1000);
+
+				// Add the event listener
+				window.addEventListener("message", handleMessage);
+			} else {
+				console.warn("No approval_url in response:", response.data);
+			}
+		} catch (error) {
+			console.error("Payment error:", error);
+		}
+	};
+
+	return (
+		<div className="container mt-5">
+			<h1 className="text-center text-primary">Go Premium</h1>
+			<p className="text-center">Upgrade to premium and unlock powerful features!</p>
+
+			<div className="row mt-4">
+				<div className="col-md-6">
+					<h3>Premium Benefits</h3>
+					<ul className="list-group">
+						<li className="list-group-item">✔ Get email notifications when an employee is assigned a task</li>
+						<li className="list-group-item">✔ Advanced task analysis and performance insights</li>
+						<li className="list-group-item">✔ Priority support and dedicated assistance</li>
+						<li className="list-group-item">✔ Access to premium reports and dashboards</li>
+					</ul>
+				</div>
+				<div className="col-md-6">
+					<h3>Pricing</h3>
+					<div className="card p-3 shadow">
+						<h4 className="text-center">$9.99/month</h4>
+						<p className="text-center">Cancel anytime.</p>
+					</div>
+				</div>
+			</div>
+
+			<div className="text-center mt-4">
+				<h3>Payment Method</h3>
+				<button className="btn btn-success me-2" onClick={handleUpgrade}>Pay with PayPal</button>
+
+				{/* <button className="btn btn-primary" onClick={() => alert("Redirecting to Stripe...")}>Pay with Credit Card</button> */}
+			</div>
+
+			<div className="text-center mt-4">
+				<button className="btn btn-secondary" onClick={() => history.push('/')}>Go Back</button>
+			</div>
+		</div>
+	);
 }
 
 export default PremiumPage;
