@@ -6,7 +6,7 @@ function Modal(props) {
 				{props.modal_button_text}
 			</button>
 			<div class="modal fade" id={`modal-${props.target}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby={`modalLabel-${props.target}`} aria-hidden="true">
-				<div class="modal-dialog">
+				<div class={`modal-dialog modal-dialog-${props.location} modal-${props.size}`} >
 					<div class="modal-content">
 						<div class="modal-header">
 							<h1 class="modal-title fs-5" id={`modalLabel-${props.target}`}>{props.modal_title}</h1>
@@ -17,7 +17,7 @@ function Modal(props) {
 						</div>
 						<div class="modal-footer">
 							{props.modal_reject_text && (<button type="button" class="btn btn-primary" data-bs-dismiss="modal">{props.modal_reject_text}</button>)}
-							<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={props.modal_accept}>{props.modal_accept_text}</button>
+							<button type="button" class={`btn btn-${props.color || "danger"}`} data-bs-dismiss="modal" onClick={props.modal_accept}>{props.modal_accept_text}</button>
 						</div>
 					</div>
 				</div>

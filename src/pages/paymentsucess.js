@@ -1,29 +1,44 @@
 import React, { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import axios from "axios";
+import Modal from "../components/modal";
+import { useDispatch} from 'react-redux';
+import { loggedUser } from '../redux/actions/loggeduseraction';
 
-const PaymentSuccess = () => {
+
+
+
+const PaymentResult = () => {
     const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const status = params.get("status");
+    const message = params.get("message");
     const navigate = useHistory();
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(location.search);
-        const paymentId = urlParams.get("paymentId");
-        const payerID = urlParams.get("PayerID");
+            document.getElementById("payment-result").click()
+            dispatch(loggedUser(''))
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("id");
+            sessionStorage.removeItem("role");
+            sessionStorage.removeItem("name");
+            sessionStorage.removeItem("is_premium");
+    }, []);
 
-        if (paymentId && payerID) {
-            axios.post("http://localhost:8000/execute-payment/", {
-                paymentId,
-                PayerID: payerID
-            }).then(() => {
-                navigate.push("/dashboard");
-            }).catch(() => {
-                navigate.push("/payment-failed");
-            });
-        }
-    }, [location, navigate]);
+    return (
+        <Modal id="payment-result"
+            location="centered"
+            target="payment"
+            hidden={true} 
+            color="primary"
+            modal_title={status} 
+            modal_message={`${message} Please login again!`}
+            modal_accept_text={"Go to login"}
+            modal_accept={() => navigate.push('/login')}/>
+    );
 
-    return <h2>Processing Payment...</h2>;
+    
 };
 
-export default PaymentSuccess;
+export default PaymentResult;
