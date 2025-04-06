@@ -22,6 +22,7 @@ import TaskDetails from "./pages/TaskDetails";
 import Analytics from './pages/Analytics';
 import PremiumPage from './pages/PremiumPage';
 import PaymentSuccess from './pages/paymentsucess';
+import BusinessDetails from './pages/BusinessDetails';
 
 
 
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/clients" component={ClientTable} exact/>
                 <Route path="/clients/:client_id" component={ClientDetails} exact/>
                 <Route path="/tasks/:task_id" component={TaskDetails} exact/>
+                <Route path="/businessdetail/:id" component={BusinessDetails} exact/>
                 {/* <div className='d-flex container-fluid flex-wrap align-content-center justify-content-center'> */}
                   <Route exact path="/add-client" component={Addclient}/>
                   <Route exact path="/edit-client/:client_id" component={Editclient}/>
