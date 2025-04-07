@@ -56,7 +56,6 @@ function Dashboard() {
 							{/* <SecondryInfoCard cardHeader="Sales" cardNumber="4,679" cardPercentage="28.42" cardIcon={walletIcon} /> */}
 						</div>
 					</div>
-					<h2>Business Analytics</h2>
 					{is_premium ? <MyCard /> : <Pricing />}
 					{/* {is_premium === true && <MyCard />}
 					{is_premium === false && (<Pricing />)} */}
