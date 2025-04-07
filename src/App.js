@@ -23,6 +23,9 @@ import Analytics from './pages/Analytics';
 import PremiumPage from './pages/PremiumPage';
 import PaymentSuccess from './pages/paymentsucess';
 import BusinessDetails from './pages/BusinessDetails';
+import PaymentResult from './pages/paymentsucess';
+import AdminLogin from './pages/admin-login';
+import AdminDashboard from './pages/admin-dashboard';
 
 
 
@@ -51,13 +54,15 @@ function App() {
                   <Route exact path="/add-client" component={Addclient}/>
                   <Route exact path="/edit-client/:client_id" component={Editclient}/>
                   <Route exact path="/login" component={Login}/>
+                  <Route exact path="/admin-login" component={AdminLogin}/>
                   <Route exact path="/register" component={Register}/>
                   <Route exact path="/edit-profile" component={EditProfile}/>
                   <Route exact path="/employees" component={EmployeesTable} />
                   <Route exact path="/add-employee" component={AddEmployee}/>
                   <Route exact path="/analytics" component={Analytics} />
                   <Route exact path="/premium" component={PremiumPage}/>
-                  <Route path="/payment-success" component={PaymentSuccess} />
+                  <Route path="/payment-result" component={PaymentResult} />
+                  <Route path="/admin-dashboard" component={AdminDashboard} />
                 {/* </div> */}
               </div>
             </Switch>
