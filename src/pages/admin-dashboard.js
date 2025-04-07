@@ -85,7 +85,7 @@ const AdminDashboard = () => {
                         {/* <td>{item.id}</td> */}
                         <td>{item.first_name} {item.last_name}</td>
                         <td>{item.email}</td>
-                        <td><Link to={`/business/${item.business}`}>
+                        <td><Link to={`/businessdetail/${item.business}`}>
                             {item.business_name}
                         </Link></td>
                         <td>{item.user_type}</td>
@@ -95,7 +95,7 @@ const AdminDashboard = () => {
                       ) : (
                         <>
                           {/* <td>{item.id}</td> */}
-                          <td><Link to={`/business/${item.id}`}>
+                          <td><Link to={`/businessdetail/${item.id}`}>
                             {item.name}
                         </Link></td>
                           <td>{item.owner_name}</td>

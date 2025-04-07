@@ -21,7 +21,7 @@ import EditProfile from './pages/editprofile';
 import TaskDetails from "./pages/TaskDetails";
 import Analytics from './pages/Analytics';
 import PremiumPage from './pages/PremiumPage';
-import PaymentSuccess from './pages/paymentsucess';
+// import PaymentSuccess from './pages/paymentsucess';
 import BusinessDetails from './pages/BusinessDetails';
 import PaymentResult from './pages/paymentsucess';
 import AdminLogin from './pages/admin-login';

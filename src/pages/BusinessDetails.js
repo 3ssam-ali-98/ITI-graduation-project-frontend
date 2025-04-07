@@ -14,7 +14,11 @@ const BusinessDetail = () => {
     useEffect(() => {
         const fetchBusinessDetails = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/businessdetail/${id}/`);
+                const response = await axios.get(`http://127.0.0.1:8000/businessdetail/${id}/`, {
+                    headers: {
+                      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                    },
+                  });
                 setBusiness(response.data.business);
                 setEmployees(response.data.employees);
                 setTasks(response.data.tasks);
@@ -64,7 +68,7 @@ const BusinessDetail = () => {
                         <tr>
                             <td style={tdStyle}>{business.name}</td>
                             <td style={tdStyle}>
-                                {business.owner.first_name} {business.owner.last_name}
+                                {business.owner_name}
                             </td>
                             <td style={tdStyle}>{business.is_premium ? "Yes" : "No"}</td>
                         </tr>

@@ -2,6 +2,8 @@ import { useHistory } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
 import { useDispatch, useSelector} from 'react-redux';
 import { loggedUser } from '../redux/actions/loggeduseraction';
+import avatar from "../assets/premuim.jpg"
+
 // import { Userid } from '../redux/actions/loggeduseraction';
 
 function Navbar() {
@@ -21,6 +23,8 @@ function Navbar() {
     const dispatch = useDispatch();
     // const name = sessionStorage.getItem("name");
     const name = useSelector((state) => state.user.user.name)
+	const is_premium = sessionStorage.getItem("is_premuim") === "true";
+
     // console.log(useSelector((state) => state.user.user))
     // const id = useSelector((state) => state.user.user.id)
     return (
@@ -33,7 +37,15 @@ function Navbar() {
                 {name && (<div className="d-flex flex-row">
                     <button className="nav-link text-white" onClick={() => history.push(`/profile`)} style={{marginRight : '10px'}}>Welcome back, {name.split(" ")[0]}</button> 
                     <button className="nav-link text-white" style={{marginRight : '10px'}} onClick={() => history.push(`/dashboard`)}>Buissness insights</button>
-                    {name &&(<button className="btn btn-warning" onClick={() => history.push('/premium')}>Go Premium</button>)}
+                    {name && (
+                        is_premium ? (
+                            <></>
+                        ) : (
+                            <button className="btn btn-warning" onClick={() => history.push('/premium')}>
+                            Go Premium
+                            </button>
+                        )
+                        )}
                     {/* <button className="nav-link text-white" onClick={() => history.push(`/${id}/add-employee`)} style={{marginRight : '10px'}}>Add employee</button> */}
 
                 </div>)}
