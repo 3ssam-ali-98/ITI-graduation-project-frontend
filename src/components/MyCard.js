@@ -32,12 +32,23 @@ function MyCard({ isPremium }) {
   };
 
   return (
-    <div className="card" style={{ width: '18rem' }}>
-      <img src={analytics} className="card-img-top" alt="Tasks Analytics" style={{ height: 'auto', maxHeight: '200px', objectFit: 'cover', marginTop:'10px'}} />
-      <div className="card-body">
-        <h5 className="card-title">Tasks Analytics</h5>
-        <p className="card-text">Get the latest updates on your Business.</p>
-        <button onClick={handleNavigate} className="btn btn-primary">
+    <div className="card shadow-sm" style={{ width: '20rem', borderRadius: '10px', overflow: 'hidden', border: '1px solid #ddd' }}>
+      <img 
+        src={analytics} 
+        className="card-img-top" 
+        alt="Tasks Analytics" 
+        style={{ height: 'auto', maxHeight: '200px', objectFit: 'cover', marginTop: '10px', borderBottom: '1px solid #ddd' }} 
+      />
+      <div className="card-body text-center">
+        <h5 className="card-title" style={{ fontWeight: 'bold', color: '#333' }}>Tasks Analytics</h5>
+        <p className="card-text" style={{ fontSize: '0.9rem', color: '#555' }}>
+          Get the latest updates on your business performance and insights.
+        </p>
+        <button 
+          onClick={handleNavigate} 
+          className="btn btn-primary" 
+          style={{ backgroundColor: '#007bff', borderColor: '#007bff', padding: '10px 20px', borderRadius: '5px' }}
+        >
           Go to Analytics
         </button>
       </div>

@@ -103,38 +103,63 @@ function ClientTable() {
 
   return (
     <div className="container my-4">
-      <h1 className="text-center mb-4" style={{ color: '#4D869C' }}>
+      <h1 className="text-center mb-4" style={{ color: '#4D869C', fontWeight: 'bold' }}>
         Clients List
       </h1>
       {loading ? (
-        <p style={{ fontSize: '1.2rem', color: '#7AB2B2' }}>Loading clients...</p>
+        <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
+          <p style={{ fontSize: '1.5rem', color: '#7AB2B2' }}>Loading clients...</p>
+        </div>
       ) : (
         <>
-          <div className="mb-3" >
-          <Modal
+          <div className="mb-4">
+            <Modal
               id="modal"
               target="session-modal"
-              hidden={true} 
-              modal_title={"Session expired!"} 
-              modal_message={"Your login Session has expired, please login again"} 
-              modal_accept_text={"Go To Login"} 
-              modal_accept={() => history.push('/login')} 
-              modal_close={() => history.push('/login')} 
-          />
-            <form class="d-flex justify-content-center" role="search">
-              <input class="form-control me-2 w-25" type="search" placeholder="Search Clients" aria-label="Search" onChange={searchfun} />
-              <button class="btn btn-outline-primary" type="submit">Search</button>
+              hidden={true}
+              modal_title={"Session expired!"}
+              modal_message={"Your login session has expired, please login again."}
+              modal_accept_text={"Go To Login"}
+              modal_accept={() => history.push('/login')}
+              modal_close={() => history.push('/login')}
+            />
+            <form className="d-flex justify-content-center mb-3" role="search">
+              <input
+                className="form-control me-2 w-50"
+                type="search"
+                placeholder="Search Clients"
+                aria-label="Search"
+                onChange={searchfun}
+                style={{ borderRadius: '20px', padding: '10px' }}
+              />
+              <button className="btn btn-primary" type="button" style={{ borderRadius: '20px' }}>
+                Search
+              </button>
             </form>
           </div>
-            <div className="d-flex justify-content-center align-items-center mt-3">
-              <Button bclr={"success"} title1={"Add Client"} clck={() => history.push(`/add-client`)} />
-            </div>  
-          <Tablec clients={currentClients} deleteclientHandler={deleteclientHandler} pagesnumber={currentPage} role={role} />
-          <PaginationBtn
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          <div className="d-flex justify-content-center align-items-center mb-4">
+            <Button
+              bclr={"success"}
+              title1={"Add Client"}
+              clck={() => history.push(`/add-client`)}
+              style={{ padding: '10px 20px', borderRadius: '20px' }}
+            />
+          </div>
+          <div className="table-responsive">
+            <Tablec
+              clients={currentClients}
+              deleteclientHandler={deleteclientHandler}
+              pagesnumber={currentPage}
+              role={role}
+            />
+          </div>
+          <div className="d-flex justify-content-center mt-4">
+            <PaginationBtn
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
         </>
       )}
     </div>
