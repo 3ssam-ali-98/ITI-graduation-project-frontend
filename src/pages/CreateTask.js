@@ -103,14 +103,19 @@ function CreateTask() {
 					else if (error.response?.data)
 					{
 						const errors = error.response.data;
-						let errorMessages = ["Client creation failed due to the following:"];
-				
-	
-						Object.keys(errors).forEach((key) => {
-							errorMessages.push(`- ${key}: ${errors[key].join(", ")}`);
-						});
-				
-						setErrorMsg(errorMessages.join("\n"));
+                        let errorMessages = ["Task creation failed due to the following:"];
+
+                        if (typeof errors.detail === "string") {
+                            errorMessages.push(`- ${errors.detail}`);
+                        } else {
+                            Object.keys(errors).forEach((key) => {
+                                const messages = Array.isArray(errors[key]) ? errors[key].join(", ") : errors[key];
+                                errorMessages.push(`- ${key}: ${messages}`);
+                            });
+                        }
+
+                        setErrorMsg(errorMessages.join("\n"));
+
 					} 
             });
     };

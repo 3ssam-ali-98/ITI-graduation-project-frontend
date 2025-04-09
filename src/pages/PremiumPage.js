@@ -7,69 +7,61 @@ function PremiumPage() {
 	const history = useHistory();
 	const token = sessionStorage.getItem("token");
 	const handleUpgrade = async () => {
-		try {
-			console.log("Starting payment process...");
-			const response = await axios.post(
-				"http://127.0.0.1:8000/payment/",
-				{},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`
-					}
-				}
-			);
 
-			console.log("Payment API response:", response.data);
+ 
 
-			if (response.data.approval_url) {
-				console.log("Opening payment window...");
-				const paymentWindow = window.open(response.data.approval_url, "_blank", "width=800,height=600");
+        try { 
+ 
 
-				// Define the message handler
-				const handleMessage = (event) => {
-					console.log("Received message from popup:", event);
+            const response = await axios.post(
+ 
 
-					if (event.origin !== "http://127.0.0.1:8000") {
-						console.warn("Ignored message from unauthorized origin:", event.origin);
-						return;
-					}
+                "http://127.0.0.1:8000/payment/", 
+ 
 
-					try {
-						const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
-						console.log("Parsed message data:", data);
+                {},
+ 
 
-						if (data && data.message === "Payment successful, business upgraded.") {
-							console.log("Payment successful, closing popup and redirecting...");
-							window.removeEventListener("message", handleMessage);
-							clearInterval(checkPopup); // Ensure the interval is cleared
-							if (paymentWindow) paymentWindow.close();
-							history.push("/dashboard/");
-						} else {
-							console.warn("Unexpected message data:", data);
-						}
-					} catch (err) {
-						console.error("Error parsing message data:", err);
-					}
-				};
+                {
+ 
 
-				// Debugging: Check if the popup window is loaded and sending messages
-				const checkPopup = setInterval(() => {
-					if (paymentWindow.closed) {
-						console.log("Popup window closed by user.");
-						clearInterval(checkPopup);
-						window.removeEventListener("message", handleMessage); // Remove listener when popup is closed
-					}
-				}, 1000);
+                    headers: { 
+ 
 
-				// Add the event listener
-				window.addEventListener("message", handleMessage);
-			} else {
-				console.warn("No approval_url in response:", response.data);
-			}
-		} catch (error) {
-			console.error("Payment error:", error);
-		}
-	};
+                        Authorization: `Bearer ${token}`
+ 
+
+                    }
+ 
+
+                }
+ 
+
+            );
+ 
+
+    
+ 
+
+            if (response.data.approval_url) {
+ 
+
+                window.location.href = response.data.approval_url;
+ 
+
+            }
+ 
+
+        } catch (error) {
+ 
+
+            console.error("Payment error:", error);
+ 
+
+        }
+ 
+
+    };
 
 	return (
 		<div className="container mt-5">

@@ -48,9 +48,9 @@ function Profile(){
         <>
         <div className="d-flex flex-column justify-content-center">
                 <div className="d-flex flex-row align-content-center container mt-5 gap-5">
-                    <div>
+                    {/* <div>
                         <img src={profileicon} style={{height: "250px"}} alt=''></img>
-                    </div>
+                    </div> */}
                     <div>
                     <Modal
                         id="modal"

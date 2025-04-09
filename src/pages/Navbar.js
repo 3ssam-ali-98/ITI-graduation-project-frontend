@@ -2,7 +2,7 @@ import { useHistory } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
 import { useDispatch, useSelector} from 'react-redux';
 import { loggedUser } from '../redux/actions/loggeduseraction';
-import avatar from "../assets/premuim.jpg"
+// import avatar from "../assets/premuim.jpg"
 
 // import { Userid } from '../redux/actions/loggeduseraction';
 
@@ -30,7 +30,7 @@ function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg sticky-top" style={{ backgroundColor: "#4D869C" }}>
             <div className="container">
-                <HashLink className="navbar-brand text-white" smooth to="/">Management App</HashLink>
+                <HashLink className="navbar-brand text-white" smooth to="/">Manage My Business</HashLink>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -53,7 +53,7 @@ function Navbar() {
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#hero-section">Home</HashLink></li>
                         <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#services">Services</HashLink></li>
-                        <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#pricing">Pricing</HashLink></li>
+                        {/* <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#pricing">Pricing</HashLink></li> */}
                         <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#about">About Us</HashLink></li>
                         <li className="nav-item"><HashLink className="nav-link text-white" smooth to="/#contact">Contact Us</HashLink></li>
                     </ul>

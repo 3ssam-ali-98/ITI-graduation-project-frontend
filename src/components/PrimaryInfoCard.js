@@ -14,9 +14,9 @@ function PrimaryInfoCard({ ownerName, cardPercent, role }) {
 				<div className="d-flex align-items-end row">
 					<div className="col-sm-7">
 						<div className="card-body">
-							<h5 className="card-title text-primary">Congratulations { ownerName }! 🎉</h5>
+							<h5 className="card-title text-primary">Welcome back { ownerName }! 🎉</h5>
 							<p className="mb-4">
-								You have done <span className="fw-bold">{ cardPercent }%</span> more sales today. Check your business analytics
+								Choose your next steps to get the most out of your business management experience.
 							</p>
 							<div className="gap-2 d-flex">
 								<Link to={`/clients`} className="btn btn-sm btn-outline-primary">Manage Clients</Link>
