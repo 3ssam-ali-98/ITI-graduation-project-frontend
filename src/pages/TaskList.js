@@ -64,6 +64,9 @@ function TaskList() {
 	return (
 		<div className="container mt-4">
 			<h2 className="text-center mb-4">Task List</h2>
+			{role === "Business Owner" && (<div className="d-flex justify-content-center mt-5 mb-5">
+				<Button bclr="success" title1="Add Task" mar="15px" clck={() => history.push(`/create-task`)} />
+			</div>)}
 			<div className="row g-4">
 				<Modal
 					id="modal"
@@ -79,9 +82,9 @@ function TaskList() {
 				<TaskCard task={tasks} deletetaskHandler={deleteTaskHandler} />
 
 			</div>
-			{role === "Business Owner" && (<div className="d-flex justify-content-center mt-5">
-				<Button bclr="success" title1="Add Task" mar="15px" clck={() => history.push(`/create-task`)} />
-			</div>)}
+			<div className="d-flex justify-content-center" style={{ marginTop: '20px' }}>
+                    <Button bclr="primary" clck={()=> history.push("/dashboard")} title1={"Go Back"} />
+            </div>
 		</div>
 	);
 };

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Button from '../components/button';
+import { useHistory } from 'react-router-dom';
 
 const BusinessDetail = () => {
     const { id } = useParams(); // الحصول على id من URL
@@ -10,6 +12,7 @@ const BusinessDetail = () => {
     const [clients, setClients] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const history = useHistory();
 
     useEffect(() => {
         const fetchBusinessDetails = async () => {
@@ -135,6 +138,9 @@ const BusinessDetail = () => {
                     ))}
                 </tbody>
             </table>
+            <div className="d-flex justify-content-center" style={{ marginTop: '20px' }}>
+                    <Button bclr="primary" clck={()=> history.push("/admin-dashboard")} title1={"Go Back"} />
+            </div>
         </div>
     );
 };

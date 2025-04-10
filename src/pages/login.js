@@ -40,7 +40,7 @@ function Login() {
 			}
 		}
 		else if (e.target.id === "password") {
-			if (value.length >= 8) {
+			if (value.length >= 1) {
 				e.target.className = "form-control"
 				setPassword(value)
 			}

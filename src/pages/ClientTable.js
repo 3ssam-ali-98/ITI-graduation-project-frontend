@@ -162,6 +162,9 @@ function ClientTable() {
           </div>
         </>
       )}
+      <div className="d-flex justify-content-center" style={{ marginTop: '20px' }}>
+              <Button bclr="primary" clck={()=> history.push("/dashboard")} title1={"Go Back"} />
+      </div>
     </div>
   );
 }

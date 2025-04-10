@@ -1,6 +1,11 @@
 import HeroPic from '../assets/Free-web-apps-scaled.jpg';
+import { useSelector} from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function HeroSection() {
+
+		const name = useSelector((state) => state.user.user.name)
+	
 	return (
 		<section
 			className="py-5 text-center text-white"
@@ -27,8 +32,8 @@ function HeroSection() {
 				<p style={{ fontSize: "1.2rem", marginBottom: "2rem" }}>
 					A powerful management tool for businesses of all sizes.
 				</p>
-				<a
-					href="/register"
+				{!name &&(<Link
+					to="/register"
 					className="btn btn-primary btn-lg"
 					style={{
 						backgroundColor: "#007bff",
@@ -39,7 +44,7 @@ function HeroSection() {
 					}}
 				>
 					Get Started
-				</a>
+				</Link>)}
 			</div>
 		</section>
 	);

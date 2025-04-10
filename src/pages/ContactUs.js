@@ -16,7 +16,7 @@ function ContactUs() {
 						<strong>Phone:</strong> +123 456 7890
 					</p>
 				</div>
-				<form style={{ maxWidth: "500px", margin: "0 auto", textAlign: "left" }}>
+				{/* <form style={{ maxWidth: "500px", margin: "0 auto", textAlign: "left" }}>
 					<div style={{ marginBottom: "15px" }}>
 						<label htmlFor="name" style={{ display: "block", marginBottom: "5px", color: "#4D869C" }}>
 							Name
@@ -67,7 +67,7 @@ function ContactUs() {
 					>
 						Send Message
 					</button>
-				</form>
+				</form> */}
 			</div>
 		</section>
 	);

@@ -44,9 +44,9 @@ function Addclient() {
 	});
 
 	const mailrgx = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]{4,}\.[a-zA-Z]{3,}$/
-	const phone_adrress_rgx = /^^[1-9]\d*$/;
+	const phone_adrress_rgx = /^(010|011|012|015)\d{8}$/;
 	const namergx = /^[A-Za-z]{3,}$/;
-	const notesrgx = /^(?!\s)(?!.*\s{2,})[\S\s]{15,}$/
+	const notesrgx = /^(?!\s)(?!.*\s{2,})[\S\s]{5,}$/
 	const [invalmsg, setInvalmsg] = useState("");
 
 	const checkinp = (e) => {

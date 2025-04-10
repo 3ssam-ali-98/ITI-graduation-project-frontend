@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Button from '../components/button';
+import { useHistory } from 'react-router-dom';
 
 function Analytics() {
 	const [analyticsData, setAnalyticsData] = useState(null);
 	const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(true);
+		const history = useHistory();
+
 
 	useEffect(() => {
 		setLoading(true);
@@ -42,6 +46,7 @@ function Analytics() {
 				.then((response) => {
 					setAnalyticsData(response.data);
 					setLoading(false);
+					console.log("Analytics data fetched:", response.data); // Logging for debugging
 				})
 				.catch((error) => {
 					console.error("Error fetching analytics:", error.response || error);
@@ -87,7 +92,7 @@ function Analytics() {
 				</div>
 				<div className="col-md-4">
 					<div className="card shadow-sm p-3">
-						<h5 className="text-warning">Top Employee (Completed Tasks)</h5>
+						<h5 className="text-warning">Top Employee (Completed Tasks this Month)</h5>
 						<p className="fs-5">{analyticsData.top_employee_completed || "N/A"}</p>
 					</div>
 				</div>
@@ -95,21 +100,21 @@ function Analytics() {
 			<div className="row g-4 mt-4">
 				<div className="col-md-4">
 					<div className="card shadow-sm p-3">
-						<h5 className="text-info">Completed Within Deadline</h5>
+						<h5 className="text-info">Tasks completed Within Deadline this Month</h5>
 						<p className="fs-4 fw-bold">{analyticsData.completed_within_deadline}</p>
 						<p className="text-muted">Change: {analyticsData.completed_within_deadline_percentage_change}</p>
 					</div>
 				</div>
 				<div className="col-md-4">
 					<div className="card shadow-sm p-3">
-						<h5 className="text-danger">Completed After Deadline</h5>
+						<h5 className="text-danger">Tasks completed After Deadline this Month</h5>
 						<p className="fs-4 fw-bold">{analyticsData.completed_after_deadline}</p>
 						<p className="text-muted">Change: {analyticsData.completed_after_deadline_percentage_change}</p>
 					</div>
 				</div>
 				<div className="col-md-4">
 					<div className="card shadow-sm p-3">
-						<h5 className="text-secondary">Top Employee (Assigned Tasks)</h5>
+						<h5 className="text-warning">Employee with the most assigned tasks</h5>
 						<p className="fs-5">{analyticsData.top_employee_assigned || "N/A"}</p>
 					</div>
 				</div>
@@ -117,7 +122,7 @@ function Analytics() {
 			<div className="row g-4 mt-4">
 				<div className="col-md-4">
 					<div className="card shadow-sm p-3">
-						<h5 className="text-dark">Top Employee (Uncompleted Tasks)</h5>
+						<h5 className="text-warning">Employee with the most uncompleted tasks</h5>
 						<p className="fs-5">{analyticsData.top_employee_uncompleted || "N/A"}</p>
 					</div>
 				</div>
@@ -130,7 +135,7 @@ function Analytics() {
 									<li key={index} className="list-group-item">
 										<strong>{task.name}</strong> <br />
 										<span className="text-muted">Deadline: {new Date(task.deadline).toLocaleDateString()}</span> <br />
-										<span className="text-muted">Assigned to: {task.assigned_to__username}</span>
+										<span className="text-muted">Assigned to: {task.assigned_to__first_name} {task.assigned_to__last_name} </span>
 									</li>
 								))
 							) : (
@@ -148,7 +153,7 @@ function Analytics() {
 									<li key={index} className="list-group-item">
 										<strong>{task.name}</strong> <br />
 										<span className="text-muted">Deadline: {new Date(task.deadline).toLocaleDateString()}</span> <br />
-										<span className="text-muted">Assigned to: {task.assigned_to__username}</span>
+										<span className="text-muted">Assigned to: {task.assigned_to__first_name} {task.assigned_to__last_name}</span>
 									</li>
 								))
 							) : (
@@ -158,6 +163,9 @@ function Analytics() {
 					</div>
 				</div>
 			</div>
+			<div className="d-flex justify-content-center" style={{ marginTop: '20px' }}>
+                    <Button bclr="primary" clck={()=> history.push("/dashboard")} title1={"Go Back"} />
+            </div>
 		</div>
 	);
 }
